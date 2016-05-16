@@ -12,6 +12,7 @@
 
 
 
+    <mvc:resources mapping="/plugins/**" location="/plugins/" />
     <context:component-scan base-package="org.soippo"/>
     <mvc:annotation-driven />
 

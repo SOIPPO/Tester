@@ -28,6 +28,7 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                     $http.post('register', $scope.user).then(
                         function successCallback(response) {
                             console.log(response);
+                            $window.location.href = '/messages/registration-success';
                         },
                         function errorCallback(response) {
                             console.log(response);

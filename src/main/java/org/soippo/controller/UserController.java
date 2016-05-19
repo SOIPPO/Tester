@@ -85,6 +85,14 @@ public class UserController {
                 .toJson(users);
     }
 
+    @RequestMapping(value = "/messages/{message}")
+    @ResponseBody
+    public ModelAndView displayMessages(ModelAndView model, @PathVariable String message) {
+        model.addObject("message", message);
+        model.setViewName("messages");
+        return model;
+    }
+
     private String serializeGroup(JsonSerializer<User> userSerializer, JsonSerializer<Group> groupSerializer) {
         return new GsonBuilder()
                 .registerTypeAdapter(User.class, userSerializer)

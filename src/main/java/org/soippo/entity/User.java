@@ -21,7 +21,7 @@ public class User implements Serializable {
 
     @SerializedName("lastName")
     @Column(name = "last_name", nullable = false)
-    private String secondName;
+    private String lastName;
 
     @SerializedName("middleName")
     @Column(name = "middle_name", nullable = false)
@@ -59,12 +59,12 @@ public class User implements Serializable {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String secondName) {
+        this.lastName = secondName;
     }
 
     public String getMiddleName() {

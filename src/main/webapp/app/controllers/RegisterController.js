@@ -31,9 +31,26 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                         },
                         function errorCallback(response) {
                             console.log(response);
+                            if(response.data == emailInUseErrorCode) {
+                                $scope.setEmailValidation(false);
+                            }
+
+                            if(response.data == userExistsErrorCode) {
+                                $scope.setUserValidation(false);
+                            }
                         }
                     );
                 }
+            };
+
+            $scope.setEmailValidation = function(value) {
+                $scope.registerForm.email.$setValidity("alreadyexists", value);
+            };
+
+            $scope.setUserValidation = function(value) {
+                $scope.registerForm.lastName.$setValidity("alreadyexists", value);
+                $scope.registerForm.firstName.$setValidity("alreadyexists", value);
+                $scope.registerForm.middleName.$setValidity("alreadyexists", value);
             };
 
             $scope.fillDummy = function () {

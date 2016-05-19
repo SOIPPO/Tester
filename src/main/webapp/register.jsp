@@ -3,6 +3,7 @@
 <%@ page import="org.soippo.entity.User" %>
 <%@ page import="org.soippo.utils.GroupWithoutUserlistSerializer" %>
 <%@ page import="org.soippo.utils.UserSerializer" %>
+<%@ page import="org.soippo.utils.ErrorCode" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -21,9 +22,10 @@
 
     <script>
         var grouplistData = ${grouplist};
+        var emailInUseErrorCode = "<%= ErrorCode.EMAIL_ALREADY_IN_USE %>";
+        var userExistsErrorCode = "<%= ErrorCode.USER_ALREADY_EXISTS %>";
     </script>
 </head>
-
 <body ng-controller="registerFormController" ng-init="fillGroupData('grouplistData')">
 
 <form class="form-horizontal" name="registerForm" ng-submit="submitForm(registerForm.$valid)"
@@ -31,6 +33,8 @@
     <div class="form-group">
         <label for="last_name" class="col-sm-2 control-label"><spring:message
                 code="registration.fields.last_name"/></label>
+
+
         <div class="col-sm-10">
             <input type="text"
                    class="form-control"
@@ -41,6 +45,7 @@
                    ng-model-options="{updateOn: 'blur'}"
                    ng-minlength="3"
                    ng-maxlength="50"
+                   ng-change="setUserValidation(true)"
                    required>
 
             <div class="help-block" ng-show="registerForm.$submitted || registerForm.lastName.$touched">
@@ -52,6 +57,9 @@
                 </span>
                 <span ng-show="registerForm.lastName.$error.maxlength">
                     <spring:message code="registration.messages.maxlength.last_name"/>
+                </span>
+                 <span ng-show="(!registerForm.firstName.$touched && registerForm.lastName.$touched || !registerForm.middleName.$touched)&& registerForm.lastName.$error.alreadyexists">
+                    <spring:message code="registration.messages.user.alreadyexists"/>
                 </span>
             </div>
         </div>
@@ -70,6 +78,7 @@
                    ng-model-options="{updateOn: 'blur'}"
                    ng-minlength="3"
                    ng-maxlength="50"
+                   ng-change="setUserValidation(true)"
                    required>
 
             <div class="help-block" ng-show="registerForm.$submitted || registerForm.firstName.$touched">
@@ -99,6 +108,7 @@
                    ng-model-options="{updateOn: 'blur'}"
                    ng-minlength="3"
                    ng-maxlength="50"
+                   ng-change="setUserValidation(true)"
                    required>
             <div class="help-block" ng-show="registerForm.$submitted || registerForm.middleName.$touched">
                 <span ng-show="registerForm.middleName.$error.required">
@@ -126,11 +136,15 @@
                    ng-model-options="{updateOn: 'blur'}"
                    ng-minlength="3"
                    ng-maxlength="50"
+                   ng-change="setEmailValidation(true)"
                    required>
 
             <div class="help-block" ng-show="registerForm.$submitted || registerForm.email.$touched">
                 <span ng-show="registerForm.email.$error.required">
                     <spring:message code="registration.messages.required.email"/>
+                </span>
+                <span ng-show="!registerForm.email.$touched && registerForm.email.$error.alreadyexists">
+                    <spring:message code="registration.messages.email.alreadyexists"/>
                 </span>
             </div>
         </div>

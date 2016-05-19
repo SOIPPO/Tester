@@ -3,6 +3,8 @@ package org.soippo.service;
 import org.soippo.entity.Group;
 import org.soippo.entity.User;
 import org.soippo.exceptions.NotUniqueEmailException;
+import org.soippo.exceptions.NotUniqueUserException;
+import org.soippo.exceptions.UserValidationException;
 import org.soippo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,13 @@ public class UserService {
     @Resource
     private UserRepository userRepository;
 
-    public User saveUser(User user) throws NotUniqueEmailException{
-        if(checkUniqueEmail(user.getEmail())) {
+    public User saveUser(User user) throws UserValidationException {
+        if (!checkUniqueEmail(user.getEmail())) {
             throw new NotUniqueEmailException("Email must be unique!");
+        }
+
+        if (!checkUniqueUser(user)) {
+            throw new NotUniqueUserException("User already exists!");
         }
         return userRepository.save(user);
     }
@@ -26,6 +32,15 @@ public class UserService {
     }
 
     private boolean checkUniqueEmail(String email) {
-        return userRepository.findByEmail(email) != null;
+        return userRepository.findByEmail(email) == null;
+    }
+
+    private boolean checkUniqueUser(User user) {
+        List<User> users = userRepository.findAllByFirstNameAndLastNameAndMiddleNameAndGroup(user.getFirstName(),
+                user.getLastName(),
+                user.getMiddleName(),
+                user.getGroup());
+
+        return (users == null || users.isEmpty());
     }
 }

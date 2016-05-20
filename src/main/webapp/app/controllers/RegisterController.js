@@ -11,27 +11,32 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                 "passwordRepeat": "testpassword",
 
             };
-
+            var getFirstElement = function(obj) {
+                for(var key in obj) {
+                    if(obj.hasOwnProperty(key)) {
+                        return obj[key];
+                    }
+                }
+            };
+            
             $scope.fillGroupData = function (paramName) {
                 $scope.grouplist = $window[paramName];
-                $scope.user.group = $scope.grouplist[0];
-                dummyData.group = $scope.grouplist[0];
+                $scope.user.group = getFirstElement($scope.grouplist);
+                dummyData.group = $scope.user.group;
             };
 
             $scope.resetForm = function () {
                 $scope.user = angular.copy({});
-                $scope.user.group = $scope.grouplist[0];
+                $scope.user.group = getFirstElement($scope.grouplist);
             };
 
             $scope.submitForm = function (isValid) {
                 if (isValid) {
                     $http.post('register', $scope.user).then(
                         function successCallback(response) {
-                            console.log(response);
                             $window.location.href = '/messages/registration-success';
                         },
                         function errorCallback(response) {
-                            console.log(response);
                             if(response.data == emailInUseErrorCode) {
                                 $scope.setEmailValidation(false);
                             }

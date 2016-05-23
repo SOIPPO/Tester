@@ -207,6 +207,7 @@
                     name="group"
                     class="form-control"
                     ng-model="user.group"
+                    ng-change="setUserValidation(true); setEmailValidation(true)"
                     ng-options="group.name for group in grouplist track by group.id">
             </select>
 

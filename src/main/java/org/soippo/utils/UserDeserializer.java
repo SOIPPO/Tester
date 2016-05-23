@@ -11,7 +11,7 @@ public class UserDeserializer implements JsonDeserializer<User> {
     public User deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         User user = new Gson().fromJson(json, User.class);
         String password = json.getAsJsonObject().get("password").getAsString();
-        user.setPasswordHash(new BCryptPasswordEncoder().encode(password));
+        user.setPasswordHash(new BCryptPasswordEncoder(11).encode(password));
         user.setRole(UserRoles.USER);
         return user;
     }

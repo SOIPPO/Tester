@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
@@ -12,74 +12,25 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
-    <mvc:resources mapping="/**" location="/" />
-    <mvc:resources mapping="/plugins/**" location="/plugins/" />
+    <context:property-placeholder properties-ref="deployProperties"/>
 
+    <mvc:resources mapping="/**" location="/"/>
+    <mvc:resources mapping="/plugins/**" location="/plugins/"/>
+
+    <context:annotation-config/>
     <context:component-scan base-package="org.soippo"/>
-    <mvc:annotation-driven />
-    <jpa:repositories base-package="org.soippo.repository" />
+    <mvc:annotation-driven/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/tester"/>
-        <property name="username" value="postgres"/>
-        <property name="password" value="root"/>
-    </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="mappingResources" value="hibernate.cfg.xml" />
-        <!--<property name="configLocation" value="classpath:hibernate.cfg.xml" />-->
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL94Dialect</prop>
-            </props>
-        </property>
-    </bean>
+    <import resource="hibernate.cfg.xml"/>
+    <import resource="messagesConfig.xml"/>
 
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="SOIPPO_PU" />
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-    </bean>
-
-    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-
-    <bean id="messageSource"
-          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basename" value="classpath:messages" />
-        <property name="defaultEncoding" value="UTF-8"/>
-    </bean>
-
-    <bean id="localeChangeInterceptor"
-          class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="lang" />
-    </bean>
-
-    <bean id="localeResolver"
-          class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="defaultLocale" value="ua"/>
-    </bean>
-
-    <bean id="handlerMapping"
-          class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-        <property name="interceptors">
-            <ref bean="localeChangeInterceptor" />
-        </property>
-    </bean>
-
-    <mvc:interceptors>
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-            <property name="paramName" value="lang" />
-        </bean>
-    </mvc:interceptors>
+    <bean id="deployProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean"
+          p:location="classpath:hibernate.properties"/>
 
 </beans>

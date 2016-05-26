@@ -12,7 +12,9 @@ public class UserDeserializer implements JsonDeserializer<User> {
         User user = new Gson().fromJson(json, User.class);
         String password = json.getAsJsonObject().get("password").getAsString();
         user.setPasswordHash(new BCryptPasswordEncoder(11).encode(password));
-        user.setRole(UserRoles.USER);
+        if(user.getRole() == null) {
+            user.setRole(UserRoles.USER);
+        }
         return user;
     }
 }

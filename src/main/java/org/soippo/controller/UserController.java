@@ -28,7 +28,7 @@ public class UserController {
     @RequestMapping("/")
     public ModelAndView homePage(ModelAndView model) {
         model.addObject("user_message", "Hello world!");
-        model.setViewName("home");
+        model.setViewName("/");
         return model;
     }
 

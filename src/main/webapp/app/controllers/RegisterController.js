@@ -11,14 +11,14 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                 "passwordRepeat": "testpassword",
 
             };
-            var getFirstElement = function(obj) {
-                for(var key in obj) {
-                    if(obj.hasOwnProperty(key)) {
+            var getFirstElement = function (obj) {
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
                         return obj[key];
                     }
                 }
             };
-            
+
             $scope.fillGroupData = function (paramName) {
                 $scope.grouplist = $window[paramName];
                 $scope.user.group = getFirstElement($scope.grouplist);
@@ -31,17 +31,18 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
             };
 
             $scope.submitForm = function (isValid) {
+                console.log(isValid);
                 if (isValid) {
                     $http.post('register', $scope.user).then(
                         function successCallback(response) {
                             $window.location.href = '/messages/registration-success';
                         },
                         function errorCallback(response) {
-                            if(response.data == emailInUseErrorCode) {
+                            if (response.data == emailInUseErrorCode) {
                                 $scope.setEmailValidation(false);
                             }
 
-                            if(response.data == userExistsErrorCode) {
+                            if (response.data == userExistsErrorCode) {
                                 $scope.setUserValidation(false);
                             }
                         }
@@ -49,11 +50,11 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                 }
             };
 
-            $scope.setEmailValidation = function(value) {
+            $scope.setEmailValidation = function (value) {
                 $scope.registerForm.email.$setValidity("alreadyexists", value);
             };
 
-            $scope.setUserValidation = function(value) {
+            $scope.setUserValidation = function (value) {
                 $scope.registerForm.lastName.$setValidity("alreadyexists", value);
                 $scope.registerForm.firstName.$setValidity("alreadyexists", value);
                 $scope.registerForm.middleName.$setValidity("alreadyexists", value);

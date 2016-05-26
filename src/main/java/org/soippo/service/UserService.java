@@ -17,13 +17,16 @@ public class UserService {
     private UserRepository userRepository;
 
     public User saveUser(User user) throws UserValidationException {
-        if (!checkUniqueEmail(user.getEmail())) {
-            throw new NotUniqueEmailException("Email must be unique!");
+        if(user.getId() != null && userRepository.findOne(user.getId()) == null) {
+            if (!checkUniqueEmail(user.getEmail())) {
+                throw new NotUniqueEmailException("Email must be unique!");
+            }
+
+            if (!checkUniqueUser(user)) {
+                throw new NotUniqueUserException("User already exists!");
+            }
         }
 
-        if (!checkUniqueUser(user)) {
-            throw new NotUniqueUserException("User already exists!");
-        }
         return userRepository.save(user);
     }
 
@@ -42,5 +45,9 @@ public class UserService {
                 user.getGroup());
 
         return (users == null || users.isEmpty());
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

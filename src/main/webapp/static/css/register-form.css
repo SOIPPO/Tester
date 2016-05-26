@@ -16,3 +16,13 @@
 .ng-submitted input.ng-invalid {
     border-color: red;
 }
+
+.ng-submitted select.ng-invalid {
+    border-color: red;
+}
+
+.vertical-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -21,16 +21,27 @@
     <context:component-scan base-package="org.soippo"/>
     <mvc:annotation-driven/>
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
-
 
     <import resource="hibernate.cfg.xml"/>
     <import resource="messagesConfig.xml"/>
 
     <bean id="deployProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean"
           p:location="classpath:hibernate.properties"/>
+
+
+    <bean id="tilesConfigurer"
+          class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions" value="WEB-INF/tiles.xml" />
+    </bean>
+
+    <bean id="tilesViewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass">
+            <value>
+                org.springframework.web.servlet.view.tiles3.TilesView
+            </value>
+        </property>
+        <property name="order" value="0"/>
+    </bean>
 
 </beans>

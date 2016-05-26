@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <definition name="/" template="/layout/views/user-layout.jsp">
+        <put-attribute name="title" value="FrameworkOnly | Apache Tiles 3 + Spring 4 MVC"></put-attribute>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"></put-attribute>
+        <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"></put-attribute>
+
+        <put-attribute name="header" value=""></put-attribute>
+        <put-attribute name="body" value="/home.jsp"></put-attribute>
+    </definition>
+
+    <definition name="/register" template="/layout/views/login-layout.jsp">
+        <put-attribute name="title" value="Register New User"></put-attribute>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"></put-attribute>
+        <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"></put-attribute>
+
+        <put-attribute name="header" value="/layout/views/static/login-header.jsp"></put-attribute>
+
+        <put-attribute name="body" value="/layout/views/pages/register.jsp"></put-attribute>
+    </definition>
+
+
+    <definition name="/login" template="/layout/views/login-layout.jsp">
+        <put-attribute name="title" value="Login User"></put-attribute>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"></put-attribute>
+        <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"></put-attribute>
+
+        <put-attribute name="header" value="/layout/views/static/login-header.jsp"></put-attribute>
+
+        <put-attribute name="body" value="/layout/views/pages/login.jsp"></put-attribute>
+    </definition>
+</tiles-definitions>

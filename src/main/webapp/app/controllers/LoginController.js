@@ -1,7 +1,6 @@
 angular.module("loginPage", []).controller("loginController",
     ["$scope", '$window', "$http",
         function ($scope, $window, $http) {
-
             var getFirstElement = function (obj) {
                 for (var key in obj) {
                     if (obj.hasOwnProperty(key)) {
@@ -18,7 +17,7 @@ angular.module("loginPage", []).controller("loginController",
 
             $scope.updateUserList = function () {
                 $http({
-                    url: 'userlistbygroup',
+                    url: '/api/userlistbygroup',
                     method: "GET",
                     params: {group_id: $scope.user.group.id}
                 }).success(function (data) {
@@ -62,7 +61,7 @@ angular.module("loginPage", []).controller("loginController",
                 }
             };
 
-            $scope.setPasswordValidation = function(value) {
+            $scope.setPasswordValidation = function (value) {
                 console.log("password validation");
                 $scope.loginForm.password.$setValidity("incorrect", value);
             };

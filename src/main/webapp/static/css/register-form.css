@@ -1,3 +1,10 @@
+body {
+    background-color: #F0EFEF;
+}
+
+.locallization-panel img{
+    height: 18px;
+}
 /*Show red border if kept the input empty after touching*/
 .ng-touched.ng-invalid-required {
     border-color: red;

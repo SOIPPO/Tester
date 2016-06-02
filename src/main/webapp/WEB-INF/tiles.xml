@@ -19,7 +19,7 @@
         <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"></put-attribute>
 
         <put-attribute name="header" value="/layout/views/static/login-header.jsp"></put-attribute>
-
+        <put-attribute name="footer" value="/layout/views/static/login-footer.jsp"></put-attribute>
         <put-attribute name="body" value="/layout/views/pages/register.jsp"></put-attribute>
     </definition>
 
@@ -30,7 +30,20 @@
         <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"></put-attribute>
 
         <put-attribute name="header" value="/layout/views/static/login-header.jsp"></put-attribute>
+        <put-attribute name="footer" value="/layout/views/static/login-footer.jsp"></put-attribute>
 
         <put-attribute name="body" value="/layout/views/pages/login.jsp"></put-attribute>
+    </definition>
+
+
+    <definition name="/userlist" template="/layout/views/admin-layout.jsp">
+        <put-attribute name="title" value="UserList"></put-attribute>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"></put-attribute>
+        <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"></put-attribute>
+
+        <put-attribute name="header" value="/layout/views/static/login-header.jsp"></put-attribute>
+        <put-attribute name="footer" value="/layout/views/static/login-footer.jsp"></put-attribute>
+
+        <put-attribute name="body" value="/layout/views/pages/userlist.jsp"></put-attribute>
     </definition>
 </tiles-definitions>

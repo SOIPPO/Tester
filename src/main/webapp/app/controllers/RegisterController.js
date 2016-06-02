@@ -2,6 +2,7 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
     ["$scope", '$window', "$http",
         function ($scope, $window, $http) {
             $scope.user = {};
+
             var dummyData = {
                 "firstName": "Vasya",
                 "lastName": "Vasin",
@@ -33,7 +34,7 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
             $scope.submitForm = function (isValid) {
                 console.log(isValid);
                 if (isValid) {
-                    $http.post('register', $scope.user).then(
+                    $http.post('/api/register', $scope.user).then(
                         function successCallback(response) {
                             $window.location.href = '/messages/registration-success';
                         },

@@ -25,6 +25,7 @@
         <intercept-url pattern="/plugins/**" access="permitAll"/>
         <intercept-url pattern="/app/**" access="permitAll"/>
         <intercept-url pattern="/static/**" access="permitAll"/>
+        <intercept-url pattern="/api/**" access="permitAll"/>
 
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <intercept-url pattern="/admin/**" access="hasAuthority('ADMINISTRATOR')"/>

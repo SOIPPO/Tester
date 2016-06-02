@@ -37,7 +37,7 @@ public class LoginController {
         return model;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/register", method = RequestMethod.POST)
     public ResponseEntity registerUser(@RequestBody String userData) {
         User user = new GsonBuilder()
                 .registerTypeAdapter(User.class, new UserDeserializer())

@@ -32,19 +32,19 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping(value = "/simplegrouplist")
+    @RequestMapping(value = "/api/simplegrouplist")
     @ResponseBody
     public String simpleGroupList() {
         return serializeService.serializeGroup(new UserSerializer(), new GroupWithoutUserlistSerializer());
     }
 
-    @RequestMapping(value = "/fullgrouplist")
+    @RequestMapping(value = "/api/fullgrouplist")
     @ResponseBody
     public String extendedGroupList() {
         return serializeService.serializeGroup(new UserSerializer(), new GroupWithUserlistSerializer());
     }
 
-    @RequestMapping(value = "/userlistbygroup", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/userlistbygroup", method = RequestMethod.GET)
     @ResponseBody
     public String userListByGroup(@RequestParam(name = "group_id") Long groupId) {
         List<User> users = userService.findUsersInGroup(groupService.findGroup(groupId));

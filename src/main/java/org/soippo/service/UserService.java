@@ -19,11 +19,11 @@ public class UserService {
     public User saveUser(User user) throws UserValidationException {
         if(user.getId() != null && userRepository.findOne(user.getId()) == null) {
             if (!checkUniqueEmail(user.getEmail())) {
-                throw new NotUniqueEmailException("Email must be unique!");
+                throw new NotUniqueEmailException();
             }
 
             if (!checkUniqueUser(user)) {
-                throw new NotUniqueUserException("User already exists!");
+                throw new NotUniqueUserException();
             }
         }
 

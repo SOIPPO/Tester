@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript" src="app/controllers/LoginController.js"></script>
 <script>
     var grouplistData = ${grouplist};
@@ -82,3 +83,25 @@
         </form>
     </div>
 </div>
+
+<% pageContext.setAttribute("ref", request.getParameter("ref")); %>
+
+<c:if test="${\"1\".equals(ref)}">
+    <script type="text/javascript">
+        $(window).load(function () {
+            $('#registerSuccessModal').modal('show');
+        });
+    </script>
+    <div class="modal fade" tabindex="-1" role="dialog" id="registerSuccessModal" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style = "padding: 15px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><spring:message code="registration-success"/></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:if>
+

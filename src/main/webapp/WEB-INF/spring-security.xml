@@ -21,6 +21,7 @@
 
     <http use-expressions="true" auto-config="true">
         <intercept-url pattern="/login" access="permitAll"/>
+        <intercept-url pattern="/messages/**" access="permitAll"/>
         <intercept-url pattern="/login-error" access="permitAll"/>
         <intercept-url pattern="/register" access="permitAll"/>
         <intercept-url pattern="/plugins/**" access="permitAll"/>

@@ -36,7 +36,7 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                 if (isValid) {
                     $http.post('/api/register', $scope.user).then(
                         function successCallback(response) {
-                            $window.location.href = '/messages/registration-success';
+                            $window.location.href = '/login?ref=1';
                         },
                         function errorCallback(response) {
                             if (response.data == emailInUseErrorCode) {

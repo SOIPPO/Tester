@@ -17,14 +17,11 @@ public class UserService {
     private UserRepository userRepository;
 
     public User saveUser(User user) throws UserValidationException {
-        if(user.getId() != null && userRepository.findOne(user.getId()) == null) {
-            if (!checkUniqueEmail(user.getEmail())) {
-                throw new NotUniqueEmailException();
-            }
-
-            if (!checkUniqueUser(user)) {
-                throw new NotUniqueUserException();
-            }
+        if (!checkUniqueEmail(user.getEmail())) {
+            throw new NotUniqueEmailException();
+        }
+        if (!checkUniqueUser(user)) {
+            throw new NotUniqueUserException();
         }
 
         return userRepository.save(user);

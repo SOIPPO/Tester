@@ -1,0 +1,45 @@
+body {
+    background-color: #F0EFEF;
+}
+
+.locallization-panel img {
+    height: 18px;
+}
+
+/*Show red border if kept the input empty after touching*/
+.ng-touched.ng-invalid-required {
+    border-color: red;
+}
+
+/* Show red border when stuff has been typed in, but its invalid */
+.ng-dirty.ng-invalid {
+    border-color: red;
+}
+
+.ng-submitted input.ng-invalid {
+    border-color: red;
+}
+
+.ng-submitted select.ng-invalid {
+    border-color: red;
+}
+
+.vertical-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.remove-button {
+    margin-left: 3px;
+}
+
+
+input[type=text].ng-invalid,
+input[type=email].ng-invalid,
+input[type=password].ng-invalid,
+select.ng-invalid,
+textarea.ng-invalid {
+    border-left: solid 3px red;
+}
+

@@ -32,11 +32,15 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
             };
 
             $scope.submitForm = function (isValid) {
-                console.log(isValid);
+                // console.log(isValid);
                 if (isValid) {
+                    $.blockUI({
+                        message: null
+                    });
                     $http.post('/api/register', $scope.user).then(
                         function successCallback(response) {
                             $window.location.href = '/login?ref=1';
+                            $.unblockUI();
                         },
                         function errorCallback(response) {
                             if (response.data == emailInUseErrorCode) {
@@ -46,6 +50,7 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                             if (response.data == userExistsErrorCode) {
                                 $scope.setUserValidation(false);
                             }
+                            $.unblockUI();
                         }
                     );
                 }

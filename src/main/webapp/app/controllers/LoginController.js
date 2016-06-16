@@ -39,8 +39,10 @@ angular.module("loginPage", []).controller("loginController",
             };
 
             $scope.submitForm = function (isValid) {
-                console.log(isValid);
                 if (isValid) {
+                    $.blockUI({
+                        message: null
+                    });
                     $http({
                         url: '/login',
                         method: "POST",
@@ -50,19 +52,18 @@ angular.module("loginPage", []).controller("loginController",
                         }
                     }).then(
                         function successCallback(response) {
-                            console.log("success!");
                             $window.location.href = '/';
+                            $.unblockUI();
                         },
                         function errorCallback(response) {
-                            console.log("failed!");
                             $scope.setPasswordValidation(false);
+                            $.unblockUI();
                         }
                     );
                 }
             };
 
             $scope.setPasswordValidation = function (value) {
-                console.log("password validation");
                 $scope.loginForm.password.$setValidity("incorrect", value);
             };
         }]

@@ -1,6 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script type="text/javascript" src="app/controllers/LoginController.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/app/controllers/LoginController.js"></script>
 <script>
     var grouplistData = ${grouplist};
 </script>

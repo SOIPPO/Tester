@@ -34,7 +34,9 @@ angular.module("editUser", []).controller("editUserController",
                 if (isValid) {
                     $http.post('/admin/saveuser', $scope.user).then(
                         function successCallback(response) {
-                            console.log("saved successfully!");
+                            $('#editUserModal').modal('hide');
+                            var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
+                            $('#userlist').DataTable().ajax.reload();
                         },
                         function errorCallback(response) {
                             console.log("error! ");

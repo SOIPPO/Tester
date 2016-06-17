@@ -43,7 +43,7 @@ public class AdminController {
     public ModelAndView userListPage(ModelAndView model) {
         model.addObject("grouplist", serializeService.serializeGroup(new UserSerializer(), new GroupWithoutUserlistSerializer()));
         model.addObject("rolesList", new Gson().toJson(UserRoles.values()));
-        model.setViewName("userlist");
+        model.setViewName("/userlist");
         return model;
     }
 

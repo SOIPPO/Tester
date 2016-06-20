@@ -7,6 +7,7 @@ import org.soippo.exceptions.NotUniqueUserException;
 import org.soippo.exceptions.UserValidationException;
 import org.soippo.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,14 +18,20 @@ public class UserService {
     private UserRepository userRepository;
 
     public User saveUser(User user) throws UserValidationException {
-        if (!checkUniqueEmail(user.getEmail())) {
-            throw new NotUniqueEmailException();
-        }
-        if (!checkUniqueUser(user)) {
-            throw new NotUniqueUserException();
+        if (user.getId() == null) {
+            if (!checkUniqueEmail(user.getEmail())) {
+                throw new NotUniqueEmailException();
+            }
+            if (!checkUniqueUser(user)) {
+                throw new NotUniqueUserException();
+            }
         }
 
         return userRepository.save(user);
+    }
+    @Transactional
+    public void deleteUser(Long userId) {
+        userRepository.delete(userId);
     }
 
     public List<User> findUsersInGroup(Group group) {

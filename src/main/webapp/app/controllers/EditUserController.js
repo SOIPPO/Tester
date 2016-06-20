@@ -44,7 +44,19 @@ angular.module("editUser", []).controller("editUserController",
                     );
                 }
             };
-
+            $scope.deleteUser = function (userId) {
+                console.log(userId);
+                $http.post('/admin/deleteuser', userId).then(
+                    function successCallback(response) {
+                        $('#editUserModal').modal('hide');
+                        var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
+                        $('#userlist').DataTable().ajax.reload();
+                    },
+                    function errorCallback(response) {
+                        console.log("error! ");
+                    }
+                );
+            };
             var getFirstElement = function (obj) {
                 for (var key in obj) {
                     if (obj.hasOwnProperty(key)) {

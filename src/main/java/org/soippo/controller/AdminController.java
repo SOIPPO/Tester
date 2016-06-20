@@ -63,4 +63,11 @@ public class AdminController {
             return ResponseEntity.badRequest().body(new Gson().toJson(ex.getErrorCode()));
         }
     }
+
+
+    @RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
+    public ResponseEntity saveUser(@RequestBody Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok().build();
+    }
 }

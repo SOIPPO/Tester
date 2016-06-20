@@ -26,6 +26,9 @@
                 }
             ],
 
+            "language": {
+                "url": "<%= String.format("%s/plugins/datatables/i18n/%s.json", request.getContextPath(), response.getLocale().getLanguage())%>"
+            }
         });
 
         $('#userlist tbody').on('click', 'span', function () {

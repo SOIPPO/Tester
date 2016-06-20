@@ -21,26 +21,20 @@
                 {"data": "role"},
                 {
                     "data": null,
-                    "defaultContent": "<button class='btn btn-warning btn-xs edit-button'>Edit</button><button class='btn btn-danger btn-xs remove-button'>Delete</button>",
+                    "defaultContent": "<span class=\"glyphicon glyphicon-pencil\" style = \"cursor: pointer\" aria-hidden=\"true\"></span>",
                     "orderable": false
                 }
             ],
         });
 
-        $('#userlist tbody').on('click', 'button.edit-button', function () {
+        $('#userlist tbody').on('click', 'span', function () {
             var data = userlistTable.row($(this).parents('tr')).data();
             console.log(data);
             angular.element($('#editUserModal')).scope().fillUserData(data);
             $('#editUserModal').modal('show');
         });
 
-        $('#userlist tbody').on('click', 'button.remove-button', function () {
-            var data = userlistTable.row($(this).parents('tr')).data();
-            console.log("remove");
-            console.log(data);
-//            angular.element($('#editUserModal')).scope().fillUserData(data);
-            $('#removeUserDialog').modal('show');
-        });
+
 
     });
 </script>
@@ -283,29 +277,11 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)">Delete user</button>
+                    <%--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
+                    <button type="submit" class="btn btn-success">Save changes</button>
                 </div>
             </div>
         </form>
-    </div>
-</div>
-
-
-<div class="modal fade" tabindex="-1" role="dialog" id = "removeUserDialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                <p>One fine body&hellip;</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
     </div>
 </div>

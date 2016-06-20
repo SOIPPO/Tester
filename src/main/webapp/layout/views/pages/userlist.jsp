@@ -25,6 +25,7 @@
                     "orderable": false
                 }
             ],
+
         });
 
         $('#userlist tbody').on('click', 'span', function () {
@@ -48,7 +49,7 @@
         <th><spring:message code="registration.fields.middle_name"/></th>
         <th><spring:message code="registration.fields.email"/></th>
         <th><spring:message code="registration.fields.group"/></th>
-        <th>Role</th>
+        <th><spring:message code="admin.userlist.role"/></th>
         <th></th>
     </tr>
     </thead>
@@ -60,7 +61,7 @@
         <th><spring:message code="registration.fields.middle_name"/></th>
         <th><spring:message code="registration.fields.email"/></th>
         <th><spring:message code="registration.fields.group"/></th>
-        <th>Role</th>
+        <th><spring:message code="admin.userlist.role"/></th>
         <th></th>
     </tr>
     </tfoot>
@@ -85,7 +86,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Edit User</h4>
+                    <h4 class="modal-title" id="myModalLabel"><spring:message code="admin.userlist.modal_title"/></h4>
                 </div>
                 <div class="modal-body">
 
@@ -257,8 +258,7 @@
 
 
                     <div class="form-group">
-                        <label for="group" class="col-sm-3 control-label"><spring:message
-                                code="registration.fields.group"/></label>
+                        <label for="group" class="col-sm-3 control-label"><spring:message code="admin.userlist.role"/></label>
                         <div class="col-sm-9">
                             <select id="role"
                                     name="role"
@@ -277,9 +277,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)">Delete user</button>
-                    <%--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
-                    <button type="submit" class="btn btn-success">Save changes</button>
+                    <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)"><spring:message code="message.delete"/></button>
+                    <button type="submit" class="btn btn-success"><spring:message code="message.save"/></button>
                 </div>
             </div>
         </form>

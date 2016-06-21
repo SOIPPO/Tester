@@ -2,8 +2,10 @@ package org.soippo.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.soippo.entity.Group;
 import org.soippo.entity.User;
 import org.soippo.exceptions.UserValidationException;
+import org.soippo.service.GroupService;
 import org.soippo.service.SerializeService;
 import org.soippo.service.UserService;
 import org.soippo.utils.GroupWithoutUserlistSerializer;
@@ -27,6 +29,8 @@ public class AdminController {
     @Resource
     private UserService userService;
     @Resource
+    private GroupService groupService;
+    @Resource
     private SerializeService serializeService;
 
     @RequestMapping(value = "/userlist", method = RequestMethod.POST)
@@ -47,7 +51,6 @@ public class AdminController {
         return model;
     }
 
-
     @RequestMapping(value = "/saveuser", method = RequestMethod.POST)
     public ResponseEntity saveUser(@RequestBody String userData) {
         User user = new GsonBuilder()
@@ -64,10 +67,48 @@ public class AdminController {
         }
     }
 
-
     @RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
     public ResponseEntity saveUser(@RequestBody Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
+
+    @RequestMapping(value = "/grouplist", method = RequestMethod.POST)
+    @ResponseBody
+    public String groupList() {
+        return serializeService.serializeGroup(new UserSerializer(), new GroupWithoutUserlistSerializer());
+    }
+
+    @RequestMapping(value = "/grouplist", method = RequestMethod.GET)
+    public ModelAndView groupListPage(ModelAndView model) {
+        model.addObject("grouplist", serializeService.serializeGroup(new UserSerializer(), new GroupWithoutUserlistSerializer()));
+        model.setViewName("/grouplist");
+        return model;
+    }
+
+    @RequestMapping(value = "/savegroup", method = RequestMethod.POST)
+    public ResponseEntity saveGroup(@RequestBody String groupData) {
+        Group group = new GsonBuilder()
+                .create()
+                .fromJson(groupData, Group.class);
+        groupService.saveGroup(group);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/deletegroup", method = RequestMethod.POST)
+    public ResponseEntity saveGroup(@RequestBody Long groupId) {
+        groupService.deleteGroup(groupId);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/checkgroup", method = RequestMethod.POST)
+    public ResponseEntity checkGroupNameAvailability(@RequestBody String name) {
+        if(groupService.checkGroupNameAvailability(name)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+
 }

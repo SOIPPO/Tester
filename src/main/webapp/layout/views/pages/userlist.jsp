@@ -25,7 +25,15 @@
                     "orderable": false
                 }
             ],
-
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    text: '<spring:message code="admin.userlist.create_user"/>',
+                    action: function ( e, dt, node, config ) {
+                        $('#editUserModal').modal('show');
+                    }
+                }
+            ],
             "language": {
                 "url": "<%= String.format("%s/plugins/datatables/i18n/%s.json", request.getContextPath(), response.getLocale().getLanguage())%>"
             }
@@ -33,7 +41,7 @@
 
         $('#userlist tbody').on('click', 'span', function () {
             var data = userlistTable.row($(this).parents('tr')).data();
-            console.log(data);
+//            console.log(data);
             angular.element($('#editUserModal')).scope().fillUserData(data);
             $('#editUserModal').modal('show');
         });

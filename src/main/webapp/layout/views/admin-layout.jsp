@@ -8,10 +8,12 @@
     <tiles:insertAttribute name="styles"/>
     <tiles:insertAttribute name="scriptjs"/>
 </head>
-<body class="vertical-center">
+<body>
 <c:set var="pageUrl" scope="session" value="<%= new UrlPathHelper().getOriginatingRequestUri(request) %>"/>
 <tiles:insertAttribute name="header"/>
-<tiles:insertAttribute name="body"/>
+<div id="content">
+    <tiles:insertAttribute name="body"/>
+</div>
 <tiles:insertAttribute name="footer"/>
 </body>
 </html>

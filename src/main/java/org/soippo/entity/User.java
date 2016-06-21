@@ -39,7 +39,7 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserRoles role;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "group_id")
     private Group group;
 

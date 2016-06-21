@@ -19,7 +19,7 @@ public class Group {
     @SerializedName("name")
     private String name;
 
-    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="group")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="group")
     private List<User> users;
 
     public Long getId() {

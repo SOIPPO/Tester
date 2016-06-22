@@ -17,7 +17,7 @@ angular.module("editGroup", []).controller("editGroupController",
             };
 
             $scope.submitForm = function (isValid) {
-                console.log(isValid);
+                // console.log(isValid);
                 if (isValid) {
                     $http.post('/admin/savegroup', $scope.data).then(
                         function successCallback(response) {
@@ -41,7 +41,7 @@ angular.module("editGroup", []).controller("editGroupController",
             };
 
             $scope.deleteGroup = function (groupId) {
-                console.log(groupId);
+                // console.log(groupId);
                 $http.post('/admin/deletegroup', groupId).then(
                     function successCallback(response) {
                         $('#editGroupModal').modal('hide');

@@ -25,6 +25,7 @@
                 {
                     text: '<spring:message code="admin.grouplist.create_group"/>',
                     action: function (e, dt, node, config) {
+                        $('#deleteButton').hide();
                         $('#editGroupModal').modal('show');
                     }
                 }
@@ -36,7 +37,7 @@
 
         $('#grouplist tbody').on('click', 'span', function () {
             var data = grouplistTable.row($(this).parents('tr')).data();
-//            console.log(data);
+            $('#deleteButton').show();
             angular.element($('#editGroupModal')).scope().fillGroupData(data);
             $('#editGroupModal').modal('show');
         });
@@ -90,7 +91,7 @@
                                    class="form-control"
                                    id="last_name"
                                    name="lastName"
-                                   placeholder='<spring:message code="registration.fields.last_name"/>'
+                                   placeholder='<spring:message code="registration.fields.group"/>'
                                    ng-model="data.name"
                                    ng-model-options="{updateOn: 'blur'}"
                                    ng-change="checkGroupAvailability(data.group)"
@@ -110,7 +111,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" ng-click="deleteGroup(data.id)"><spring:message
+                    <button type="button" class="btn btn-danger" ng-click="deleteGroup(data.id)" id="deleteButton"><spring:message
                             code="message.delete"/></button>
                     <button type="submit" class="btn btn-success"><spring:message code="message.save"/></button>
                 </div>

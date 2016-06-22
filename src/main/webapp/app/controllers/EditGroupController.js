@@ -5,19 +5,16 @@ angular.module("editGroup", []).controller("editGroupController",
                     return $http.post('/admin/checkgroup', $scope.data.name).then(
                         function successCallback(response) {
                             $scope.registerForm.lastName.$setValidity("alreadyexists", true);
-                            // console.log("good");
                             return true;
                         },
                         function errorCallback(response) {
                             $scope.registerForm.lastName.$setValidity("alreadyexists", false);
-                            // console.log("bad");
                             return false;
                         }
                     );
             };
 
             $scope.submitForm = function (isValid) {
-                // console.log(isValid);
                 if (isValid) {
                     $http.post('/admin/savegroup', $scope.data).then(
                         function successCallback(response) {
@@ -26,7 +23,7 @@ angular.module("editGroup", []).controller("editGroupController",
                             $('#grouplist').DataTable().ajax.reload();
                         },
                         function errorCallback(response) {
-                            console.log("error! ");
+
                         }
                     );
                 }
@@ -36,12 +33,9 @@ angular.module("editGroup", []).controller("editGroupController",
                 $scope.$apply(function() {
                     $scope.data = data;
                 });
-
-                // console.log($scope.user);
             };
 
             $scope.deleteGroup = function (groupId) {
-                // console.log(groupId);
                 $http.post('/admin/deletegroup', groupId).then(
                     function successCallback(response) {
                         $('#editGroupModal').modal('hide');
@@ -49,7 +43,6 @@ angular.module("editGroup", []).controller("editGroupController",
                         $('#grouplist').DataTable().ajax.reload();
                     },
                     function errorCallback(response) {
-                        // console.log("error! ");
                     }
                 );
             };

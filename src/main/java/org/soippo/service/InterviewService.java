@@ -15,4 +15,16 @@ public class InterviewService {
     public List<Interview> findAll() {
         return interviewRepository.findAll();
     }
+
+    public Interview findOne(Long id) {
+        return interviewRepository.findOne(id);
+    }
+
+    public Interview save(Interview interview) {
+        return interviewRepository.save(interview);
+    }
+
+    public void delete(Long interviewId) {
+        interviewRepository.delete(interviewId);
+    }
 }

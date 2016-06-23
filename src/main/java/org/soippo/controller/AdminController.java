@@ -8,10 +8,10 @@ import org.soippo.exceptions.UserValidationException;
 import org.soippo.service.GroupService;
 import org.soippo.service.SerializeService;
 import org.soippo.service.UserService;
-import org.soippo.utils.GroupWithoutUserlistSerializer;
-import org.soippo.utils.UserDeserializer;
+import org.soippo.serialization.GroupWithoutUserlistSerializer;
+import org.soippo.serialization.UserDeserializer;
 import org.soippo.utils.UserRoles;
-import org.soippo.utils.UserSerializer;
+import org.soippo.serialization.UserSerializer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -108,6 +108,12 @@ public class AdminController {
         } else {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @RequestMapping(value = "/interviewlist", method = RequestMethod.GET)
+    public ModelAndView interviewListPage(ModelAndView model) {
+        model.setViewName("/interviewlist");
+        return model;
     }
 
 

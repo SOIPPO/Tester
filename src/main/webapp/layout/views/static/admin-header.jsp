@@ -16,6 +16,12 @@
                 </li>
             </ul>
 
+            <ul class="nav navbar-nav">
+                <li <c:if test="${pageUrl == '/admin/interviewlist'}">class="active"</c:if>>
+                    <a href="/admin/interviewlist"><spring:message code="menu.interviewlist"/></a>
+                </li>
+            </ul>
+
 
             <div class="nav navbar-nav navbar-right row locallization-panel">
                 <a class="navbar-brand" href="${pageUrl}?lang=ua">

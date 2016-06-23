@@ -10,6 +10,13 @@
                 </li>
             </ul>
 
+            <ul class="nav navbar-nav">
+                <li <c:if test="${pageUrl == '/admin/grouplist'}">class="active"</c:if>>
+                    <a href="/admin/grouplist"><spring:message code="menu.grouplist"/></a>
+                </li>
+            </ul>
+
+
             <div class="nav navbar-nav navbar-right row locallization-panel">
                 <a class="navbar-brand" href="${pageUrl}?lang=ua">
                     <img src="${pageContext.request.contextPath}/static/images/flags/ua.gif">

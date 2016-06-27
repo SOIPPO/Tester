@@ -1,5 +1,7 @@
 package org.soippo.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,17 +11,20 @@ public class Interview {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SerializedName("id")
     private Long id;
 
     @Column(name = "title")
+    @SerializedName("title")
     private String title;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "question2interview",
             joinColumns = {@JoinColumn(name = "interview_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "question_id", referencedColumnName = "id")})
     @OrderColumn(name = "order")
-   private List<Question> questions;
+    @SerializedName("questions")
+    private List<Question> questions;
 
     public String getTitle() {
         return title;

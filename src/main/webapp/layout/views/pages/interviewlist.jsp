@@ -4,27 +4,24 @@
         src="${pageContext.request.contextPath}/app/controllers/InterviewListController.js"></script>
 
 <script>
-    function showConfirmModal(interviewId, interviewTitle) {
-        $('#interviewIdField').val(interviewId);
-        $('#deleteConfirm').modal('show');
-        $('#interviewToDeleteTitle').empty();
-        $('#interviewToDeleteTitle').append(interviewTitle);
-    }
+    var interviewlistData = ${interviewlist};
+
 </script>
 <div ng-app="interviewList"
+     ng-init="fillInterviewData('interviewlistData')"
      ng-controller="interviewListController">
 
     <ul class="list-group">
-        <c:forEach var="interview" items="${interviewlist}">
-            <li class="list-group-item">
-                <a href="/admin/editinterview/${interview.getId()}">${interview.getTitle()}</a>
+        <li class="list-group-item" ng-repeat="interview in interviewlist">
+            <a href="/admin/editinterview/{{interview.id}}">{{interview.title}}</a>
 
-                <div class="pull-right" onclick="showConfirmModal(${interview.getId()}, '${interview.getTitle()}')" style=" cursor: pointer">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </div>
-            </li>
-        </c:forEach>
+            <div class="pull-right" ng-click="showConfirmModal(interview.id, interview.title)"
+                 style=" cursor: pointer">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </div>
+        </li>
     </ul>
+
 
     <div class="pull-right">
         <button type="button" class="btn btn-success" onclick="$('#newInterviewModal').modal('show');"><spring:message
@@ -97,8 +94,10 @@
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" id="interviewIdField"/>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="cancel"/></button>
-                        <button type="button" class="btn btn-danger" ng-click="deleteInterview()"><spring:message code="delete"/></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message
+                                code="cancel"/></button>
+                        <button type="button" class="btn btn-danger" ng-click="deleteInterview()"><spring:message
+                                code="delete"/></button>
                     </div>
                 </div>
             </div>

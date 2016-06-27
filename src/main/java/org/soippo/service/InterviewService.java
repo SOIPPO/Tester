@@ -3,11 +3,13 @@ package org.soippo.service;
 import org.soippo.entity.Interview;
 import org.soippo.repository.InterviewRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Service
+@Transactional
 public class InterviewService {
     @Resource
     private InterviewRepository interviewRepository;

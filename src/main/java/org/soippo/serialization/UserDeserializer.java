@@ -1,7 +1,8 @@
-package org.soippo.utils;
+package org.soippo.serialization;
 
 import com.google.gson.*;
 import org.soippo.entity.User;
+import org.soippo.utils.UserRoles;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.lang.reflect.Type;

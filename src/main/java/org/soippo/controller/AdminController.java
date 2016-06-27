@@ -113,9 +113,15 @@ public class AdminController {
 
     @RequestMapping(value = "/interviewlist", method = RequestMethod.GET)
     public ModelAndView interviewListPage(ModelAndView model) {
-        model.addObject("interviewlist", interviewService.findAll());
+        model.addObject("interviewlist", interviewList());
         model.setViewName("/interviewlist");
         return model;
+    }
+
+    @RequestMapping(value = "/interview/list", method = RequestMethod.POST)
+    @ResponseBody
+    public String interviewList() {
+        return new Gson().toJson(interviewService.findAll());
     }
 
     @RequestMapping(value = "/editinterview/{id}", method = RequestMethod.GET)
@@ -125,13 +131,13 @@ public class AdminController {
         return model;
     }
 
-    @RequestMapping(value = "/newinterview", method = RequestMethod.POST)
+    @RequestMapping(value = "/interview/new", method = RequestMethod.POST)
     public ResponseEntity createNewInterview(@RequestBody String interviewTitle) {
         Interview interview = new Interview().setTitle(interviewTitle);
         interviewService.save(interview);
         return ResponseEntity.ok().build();
     }
-    @RequestMapping(value = "/deleteinterview", method = RequestMethod.POST)
+    @RequestMapping(value = "/interview/delete", method = RequestMethod.POST)
     public ResponseEntity deleteInterview(@RequestBody Long interviewId) {
         interviewService.delete(interviewId);
         return ResponseEntity.ok().build();

@@ -1,12 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/app/controllers/InterviewListController.js"></script>
+
 
 <script>
     var interviewlistData = ${interviewlist};
-
+    var localizationMessages = {};
+    localizationMessages['success-delete'] = "<spring:message code="popup.messages.success-deletion"/>"
+    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>"
 </script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/app/controllers/InterviewListController.js"></script>
+
 <div ng-app="interviewList"
      ng-init="fillInterviewData('interviewlistData')"
      ng-controller="interviewListController">
@@ -24,8 +28,9 @@
 
 
     <div class="pull-right">
-        <button type="button" class="btn btn-success" onclick="$('#newInterviewModal').modal('show');"><spring:message
-                code="admin.interviewlist.new-interview"/></button>
+        <button type="button" class="btn btn-success" onclick="$('#newInterviewModal').modal('show');">
+            <spring:message code="admin.interviewlist.new-interview"/>
+        </button>
     </div>
 
 

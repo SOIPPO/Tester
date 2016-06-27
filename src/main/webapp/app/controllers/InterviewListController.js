@@ -18,12 +18,13 @@ angular.module("interviewList", []).controller("interviewListController",
                 }
             };
 
-            $scope.deleteInterview = function (interviewId) {
+            $scope.deleteInterview = function () {
+                var interviewId = $('#interviewIdField').val();
                 $http.post('/admin/deleteinterview', interviewId).then(
                     function successCallback(response) {
-                        $('#newInterviewModal').modal('hide');
+                        $('#deleteConfirm').modal('hide');
                         var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
-                        // $('#grouplist').DataTable().ajax.reload();
+                        
                     },
                     function errorCallback(response) {
                     }

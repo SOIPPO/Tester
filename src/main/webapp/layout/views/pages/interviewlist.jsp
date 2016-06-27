@@ -2,6 +2,15 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/app/controllers/InterviewListController.js"></script>
+
+<script>
+    function showConfirmModal(interviewId, interviewTitle) {
+        $('#interviewIdField').val(interviewId);
+        $('#deleteConfirm').modal('show');
+        $('#interviewToDeleteTitle').empty();
+        $('#interviewToDeleteTitle').append(interviewTitle);
+    }
+</script>
 <div ng-app="interviewList"
      ng-controller="interviewListController">
 
@@ -9,8 +18,10 @@
         <c:forEach var="interview" items="${interviewlist}">
             <li class="list-group-item">
                 <a href="/admin/editinterview/${interview.getId()}">${interview.getTitle()}</a>
-                <div class="pull-right" ng-click="deleteInterview(${interview.getId()})" style=" cursor: pointer"><span
-                        class="glyphicon glyphicon-remove" aria-hidden="true"></span></div>
+
+                <div class="pull-right" onclick="showConfirmModal(${interview.getId()}, '${interview.getTitle()}')" style=" cursor: pointer">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </div>
             </li>
         </c:forEach>
     </ul>
@@ -71,5 +82,26 @@
                 </div>
             </form>
         </div>
+    </div>
+    <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm">
+        <form>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><spring:message code="modal.interview.delete.title"/></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p><spring:message code="modal.interview.delete.message"/></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="interviewIdField"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="cancel"/></button>
+                        <button type="button" class="btn btn-danger" ng-click="deleteInterview()"><spring:message code="delete"/></button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

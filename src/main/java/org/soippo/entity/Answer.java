@@ -19,12 +19,13 @@ public class Answer {
     @SerializedName("text")
     private String text;
 
+    @Column(name = "order")
+    private Long order;
 
+    @Column(name = "question_id")
+    private Long questionId;
 
-//    @OneToMany
-//    @JoinTable(name = "answer2question",
-//            joinColumns = {@JoinColumn(name = "answer_id", referencedColumnName = "id")},
-//            inverseJoinColumns = {@JoinColumn(name = "question_id", referencedColumnName = "id")}
-//    )
-//    private List<Question> questions;
+    public Long getOrder() {
+        return order;
+    }
 }

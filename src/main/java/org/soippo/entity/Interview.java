@@ -18,11 +18,9 @@ public class Interview {
     @SerializedName("title")
     private String title;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "question2interview",
-            joinColumns = {@JoinColumn(name = "interview_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "question_id", referencedColumnName = "id")})
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Question.class, mappedBy = "interviewId")
     @OrderColumn(name = "order")
+    @OrderBy("order")
     @SerializedName("questions")
     private List<Question> questions;
 
@@ -35,16 +33,16 @@ public class Interview {
         return this;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public Interview setQuestions(List<Question> questions) {
-        this.questions = questions;
-        return this;
-    }
-
     public Long getId() {
         return id;
     }
+
+//    public List<Question> getAnswers() {
+//        Comparator<Question> questionComparator = (o1, o2) -> Long.compare(o1.getOrder(), o2.getOrder());
+//        return questions.stream().sorted(questionComparator).collect(Collectors.toList());
+//    }
+//
+//    public void setQuestions(Set<Question> questions) {
+//        this.questions = questions;
+//    }
 }

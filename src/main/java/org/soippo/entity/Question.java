@@ -8,10 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "questions")
-public class Question{
+public class Question {
     @Id
     @Column(name = "id")
     @SerializedName("id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "text")
@@ -23,30 +24,23 @@ public class Question{
     @SerializedName("type")
     private QuestionType questionType;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = Answer.class, mappedBy = "questionId")
-    @OrderColumn(name = "order")
-    @OrderBy("order")
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Answer.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
+    @OrderBy("answer_order")
     @SerializedName("answers")
     private List<Answer> answers;
 
-    @Column(name = "order")
+    @Column(name = "question_order")
     @SerializedName("order")
     private Long order;
 
     @Column(name = "interview_id")
     @SerializedName("interview_id")
+    @JoinColumn(name = "questions_interview_FK")
     private Long interviewId;
 
     public Long getOrder() {
         return order;
     }
 
-//    public List<Answer> getAnswers() {
-//        Comparator<Answer> answerComparator = (o1, o2) -> Long.compare(o1.getOrder(), o2.getOrder());
-//        return answers.stream().sorted(answerComparator).collect(Collectors.toList());
-//    }
-//
-//    public void setAnswers(Set<Answer> answers) {
-//        this.answers = answers;
-//    }
 }

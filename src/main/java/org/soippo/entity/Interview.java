@@ -18,9 +18,10 @@ public class Interview {
     @SerializedName("title")
     private String title;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = Question.class, mappedBy = "interviewId")
-    @OrderColumn(name = "order")
-    @OrderBy("order")
+    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @JoinColumn(name = "interview_id")
+    @OrderColumn(name = "question_order")
+    @OrderBy("question_order")
     @SerializedName("questions")
     private List<Question> questions;
 
@@ -37,12 +38,4 @@ public class Interview {
         return id;
     }
 
-//    public List<Question> getAnswers() {
-//        Comparator<Question> questionComparator = (o1, o2) -> Long.compare(o1.getOrder(), o2.getOrder());
-//        return questions.stream().sorted(questionComparator).collect(Collectors.toList());
-//    }
-//
-//    public void setQuestions(Set<Question> questions) {
-//        this.questions = questions;
-//    }
 }

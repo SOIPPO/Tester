@@ -8,3 +8,4 @@
 <script src="${pageContext.request.contextPath}/plugins/alertifyjs/alertify.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angular-xeditable/js/xeditable.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angular-xeditable/js/bootstrap-editable.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/jqueryui/jquery-ui.min.js"></script>

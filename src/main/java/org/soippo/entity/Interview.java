@@ -18,7 +18,7 @@ public class Interview {
     @SerializedName("title")
     private String title;
 
-    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, targetEntity = Question.class)
     @JoinColumn(name = "interview_id")
     @OrderColumn(name = "question_order")
     @OrderBy("question_order")
@@ -38,4 +38,7 @@ public class Interview {
         return id;
     }
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
 }

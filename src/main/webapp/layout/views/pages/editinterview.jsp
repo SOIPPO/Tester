@@ -2,6 +2,8 @@
 
 <script>
     var interviewdata = ${interviewdata};
+    var localizationMessages = {};
+    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>"
     $(function () {
         $("#sortable tbody").sortable({
             revert: true,
@@ -30,7 +32,7 @@
 <div ng-app="editInterview"
      ng-controller="editInterviewController"
      ng-init="fillData('interviewdata')">
-    <%--{{interviewdata}}--%>
+
     <div class="col-md-11 center-block" id="interviewblock">
 
         <div class="panel panel-default">
@@ -42,7 +44,7 @@
             <div class="panel-body">
                 <table class="table table-bordered" id="sortable">
                     <tbody>
-                    <tr ng-repeat="question in interviewdata.questions | filter:emptyOrNull | orderBy:'order' track by $index"
+                    <tr ng-repeat="question in interviewdata.questions | filter:emptyOrNull | orderBy:'question_order' track by $index"
                         ng-switch on="question.type"
 
                         id="question_{{question.localId}}">
@@ -64,7 +66,9 @@
                                                    disabled>
                                             <a href="#" editable-text="answer.text">{{ answer.text|| "empty" }}</a>
                                         </label>
-                                        <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="deleteAnswer(question.localId, answer.localId)" style="cursor:pointer;"></span>
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"
+                                              ng-click="deleteAnswer(question.localId, answer.localId)"
+                                              style="cursor:pointer;"></span>
                                     </div>
                                 </div>
                             </div>
@@ -76,13 +80,16 @@
                                             <input type="checkbox" value="" disabled>
                                             <a href="#" editable-text="answer.text">{{ answer.text|| "empty" }}</a>
                                         </label>
-                                        <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="deleteAnswer(question.localId, answer.localId)" style="cursor:pointer;"></span>
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"
+                                              ng-click="deleteAnswer(question.localId, answer.localId)"
+                                              style="cursor:pointer;"></span>
                                     </div>
                                 </div>
                             </div>
 
                             <div style="margin-top: 10px;">
-                                <button type="button" class="btn btn-info btn-xs" ng-click="addAnswer(question.localId)">
+                                <button type="button" class="btn btn-info btn-xs"
+                                        ng-click="addAnswer(question.localId)">
                                     <spring:message code="admin.interview.add-answer"/>
                                 </button>
                             </div>
@@ -96,7 +103,9 @@
             </div>
 
         </div>
-        <button type="button" class="btn btn-success pull-right" ng-click="interviewSave()">Save</button>
+        <button type="button" class="btn btn-success pull-right" ng-click="interviewSave()">
+            <spring:message code="message.save"/>
+        </button>
     </div>
 
     <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"

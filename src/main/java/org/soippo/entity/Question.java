@@ -27,12 +27,13 @@ public class Question {
     @OneToMany(fetch = FetchType.EAGER, targetEntity = Answer.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
     @OrderBy("answer_order")
+    @OrderColumn(name = "answer_order")
     @SerializedName("answers")
     private List<Answer> answers;
 
     @Column(name = "question_order")
-    @SerializedName("order")
-    private Long order;
+    @SerializedName("question_order")
+    private Long question_order;
 
     @Column(name = "interview_id")
     @SerializedName("interview_id")
@@ -40,7 +41,10 @@ public class Question {
     private Long interviewId;
 
     public Long getOrder() {
-        return order;
+        return question_order;
     }
 
+    public List<Answer> getAnswers() {
+        return answers;
+    }
 }

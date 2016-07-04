@@ -6,14 +6,15 @@ import org.soippo.entity.Group;
 import org.soippo.entity.Interview;
 import org.soippo.entity.User;
 import org.soippo.exceptions.UserValidationException;
+import org.soippo.serialization.GroupWithoutUserlistSerializer;
+import org.soippo.serialization.UserDeserializer;
+import org.soippo.serialization.UserSerializer;
 import org.soippo.service.GroupService;
 import org.soippo.service.InterviewService;
 import org.soippo.service.SerializeService;
 import org.soippo.service.UserService;
-import org.soippo.serialization.GroupWithoutUserlistSerializer;
-import org.soippo.serialization.UserDeserializer;
 import org.soippo.utils.UserRoles;
-import org.soippo.serialization.UserSerializer;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -145,9 +146,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/interview/save", method = RequestMethod.POST)
-    public ResponseEntity saveInterview(@RequestBody String interviewData) {
+    public ResponseEntity<Interview> saveInterview(@RequestBody String interviewData) {
         Interview interview = new GsonBuilder().create().fromJson(interviewData, Interview.class);
-        interviewService.save(interview);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(interviewService.save(interview), HttpStatus.OK);
     }
 }

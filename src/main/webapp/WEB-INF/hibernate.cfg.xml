@@ -61,6 +61,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL94Dialect</prop>
+                <prop key="hibernate.jdbc.batch_size">3</prop>
             </props>
         </property>
     </bean>

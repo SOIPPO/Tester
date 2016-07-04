@@ -18,14 +18,14 @@ public class Answer {
     private String text;
 
     @Column(name = "answer_order")
-    @SerializedName("order")
-    private Long order;
+    @SerializedName("answer_order")
+    private Long answer_order;
 
     @Column(name = "question_id")
     @SerializedName("question_id")
     private Long questionId;
 
     public Long getOrder() {
-        return order;
+        return answer_order;
     }
 }

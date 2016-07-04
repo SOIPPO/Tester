@@ -3,7 +3,7 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
         function ($scope, $window, $http) {
             var localQuestionId = 1;
             var localAnswerId = 1;
-            
+
             $scope.fillData = function (paramName) {
                 $scope.interviewdata = $window[paramName];
                 for (var pos in $scope.interviewdata.questions) {
@@ -47,7 +47,7 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
                 for (var questionId in $scope.interviewdata.questions) {
                     var question = $scope.interviewdata.questions[questionId];
                     if (!!question) {
-                        question.order = order[question.localId];
+                        question.question_order = order[question.localId];
                     }
                 }
             };
@@ -62,7 +62,7 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
                     'localId': localQuestionId++,
                     'answers': [],
                     'type': questionType,
-                    'order': $scope.interviewdata.questions.length
+                    'question_order': $scope.interviewdata.questions.length
                 };
                 $scope.interviewdata.questions.push(newQuestion);
                 $('#addNewQuestion').modal('hide')
@@ -70,7 +70,7 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
 
             $scope.addAnswer = function (questionId) {
                 var pos = getQuestionPositionById(questionId);
-                var newAnswer = {'order' : $scope.interviewdata.questions[pos].answers.length};
+                var newAnswer = {'answer_order' : $scope.interviewdata.questions[pos].answers.length};
                 $scope.interviewdata.questions[pos].answers.push(newAnswer);
             };
 
@@ -84,7 +84,10 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
             $scope.interviewSave = function() {
                 $http.post('/admin/interview/save', $scope.interviewdata).then(
                     function successCallback(response) {
-                        console.log("success");
+                        // console.log("success");
+                        var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                            // console.log('dismissed');
+                        });
                     },
                     function errorCallback(response) {
                         console.log("fail");

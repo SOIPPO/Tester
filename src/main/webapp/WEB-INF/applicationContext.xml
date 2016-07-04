@@ -16,6 +16,8 @@
 
     <mvc:resources mapping="/**" location="/"/>
     <mvc:resources mapping="/plugins/**" location="/plugins/"/>
+    <mvc:resources mapping="/static/**" location="/static/"/>
+
 
     <context:annotation-config/>
     <context:component-scan base-package="org.soippo"/>

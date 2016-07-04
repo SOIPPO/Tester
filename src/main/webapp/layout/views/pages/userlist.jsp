@@ -4,6 +4,8 @@
 <script>
     var grouplistData = ${grouplist};
     var rolelistData = ${rolesList};
+    var localizationMessages = {};
+    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>"
     $(document).ready(function () {
         var userlistTable = $('#userlist').DataTable({
             "ajax": {

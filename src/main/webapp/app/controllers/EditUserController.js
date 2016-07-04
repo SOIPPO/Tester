@@ -35,7 +35,9 @@ angular.module("editUser", []).controller("editUserController",
                     $http.post('/admin/saveuser', $scope.user).then(
                         function successCallback(response) {
                             $('#editUserModal').modal('hide');
-                            var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
+                            var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                                // console.log('dismissed');
+                            });
                             $('#userlist').DataTable().ajax.reload();
                         },
                         function errorCallback(response) {
@@ -49,7 +51,9 @@ angular.module("editUser", []).controller("editUserController",
                 $http.post('/admin/deleteuser', userId).then(
                     function successCallback(response) {
                         $('#editUserModal').modal('hide');
-                        var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
+                        var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                            // console.log('dismissed');
+                        });
                         $('#userlist').DataTable().ajax.reload();
                     },
                     function errorCallback(response) {

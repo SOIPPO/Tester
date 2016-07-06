@@ -7,6 +7,9 @@
     <tiles:insertAttribute name="scriptjs"/>
 </head>
 <body>
+<tiles:insertAttribute name="header"/>
+<div id="content">
     <tiles:insertAttribute name="body"/>
+</div>
 </body>
 </html>

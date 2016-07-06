@@ -12,6 +12,14 @@
         <put-attribute name="body" value="/home.jsp"/>
     </definition>
 
+    <definition name="/modules" template="/layout/views/user-layout.jsp">
+        <put-attribute name="title" value="Interview List"/>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
+        <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
+        <put-attribute name="header" value="/layout/views/static/user-header.jsp"/>
+        <put-attribute name="body" value="/layout/views/pages/interviewlist.jsp"/>
+    </definition>
+
     <definition name="/register" template="/layout/views/login-layout.jsp">
         <put-attribute name="title" value="Register New User"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
@@ -65,7 +73,7 @@
         <put-attribute name="header" value="/layout/views/static/admin-header.jsp"/>
         <put-attribute name="footer" value="/layout/views/static/admin-footer.jsp"/>
 
-        <put-attribute name="body" value="/layout/views/pages/interviewlist.jsp"/>
+        <put-attribute name="body" value="/layout/views/pages/interviewlist-edit.jsp"/>
     </definition>
 
     <definition name="/editinterview" template="/layout/views/admin-layout.jsp">

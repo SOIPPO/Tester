@@ -3,6 +3,7 @@ package org.soippo.controller;
 import com.google.gson.GsonBuilder;
 import org.soippo.entity.User;
 import org.soippo.service.GroupService;
+import org.soippo.service.InterviewService;
 import org.soippo.service.SerializeService;
 import org.soippo.service.UserService;
 import org.soippo.serialization.GroupWithUserlistSerializer;
@@ -25,10 +26,20 @@ public class UserController {
     @Resource
     private SerializeService serializeService;
 
+    @Resource
+    private InterviewService interviewService;
+
     @RequestMapping("/")
     public ModelAndView homePage(ModelAndView model) {
         model.addObject("user_message", "Hello world!");
         model.setViewName("/");
+        return model;
+    }
+
+    @RequestMapping("/modules")
+    public ModelAndView interviewlistPage(ModelAndView model) {
+        model.addObject("interviewlist", interviewService.findAll());
+        model.setViewName("/modules");
         return model;
     }
 

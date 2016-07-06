@@ -3,21 +3,21 @@ package org.soippo.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.soippo.entity.Group;
+import org.soippo.entity.Interview;
 import org.soippo.entity.User;
 import org.soippo.exceptions.UserValidationException;
+import org.soippo.serialization.GroupWithoutUserlistSerializer;
+import org.soippo.serialization.UserDeserializer;
+import org.soippo.serialization.UserSerializer;
 import org.soippo.service.GroupService;
+import org.soippo.service.InterviewService;
 import org.soippo.service.SerializeService;
 import org.soippo.service.UserService;
-import org.soippo.utils.GroupWithoutUserlistSerializer;
-import org.soippo.utils.UserDeserializer;
 import org.soippo.utils.UserRoles;
-import org.soippo.utils.UserSerializer;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -32,6 +32,8 @@ public class AdminController {
     private GroupService groupService;
     @Resource
     private SerializeService serializeService;
+    @Resource
+    private InterviewService interviewService;
 
     @RequestMapping(value = "/userlist", method = RequestMethod.POST)
     @ResponseBody
@@ -103,12 +105,49 @@ public class AdminController {
 
     @RequestMapping(value = "/checkgroup", method = RequestMethod.POST)
     public ResponseEntity checkGroupNameAvailability(@RequestBody String name) {
-        if(groupService.checkGroupNameAvailability(name)) {
+        if (groupService.checkGroupNameAvailability(name)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
 
+    @RequestMapping(value = "/interviewlist", method = RequestMethod.GET)
+    public ModelAndView interviewListPage(ModelAndView model) {
+        model.addObject("interviewlist", interviewList());
+        model.setViewName("/interviewlist");
+        return model;
+    }
 
+    @RequestMapping(value = "/interview/list", method = RequestMethod.POST)
+    @ResponseBody
+    public String interviewList() {
+        return new Gson().toJson(interviewService.findAll());
+    }
+
+    @RequestMapping(value = "/editinterview/{id}", method = RequestMethod.GET)
+    public ModelAndView editinterviewPage(@PathVariable Long id, ModelAndView model) {
+        model.addObject("interviewdata", new Gson().toJson(interviewService.findOne(id)));
+        model.setViewName("/editinterview");
+        return model;
+    }
+
+    @RequestMapping(value = "/interview/new", method = RequestMethod.POST)
+    public ResponseEntity createNewInterview(@RequestBody String interviewTitle) {
+        Interview interview = new Interview().setTitle(interviewTitle);
+        interviewService.save(interview);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/interview/delete", method = RequestMethod.POST)
+    public ResponseEntity deleteInterview(@RequestBody Long interviewId) {
+        interviewService.delete(interviewId);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/interview/save", method = RequestMethod.POST)
+    public ResponseEntity<Interview> saveInterview(@RequestBody String interviewData) {
+        Interview interview = new GsonBuilder().create().fromJson(interviewData, Interview.class);
+        return new ResponseEntity<>(interviewService.save(interview), HttpStatus.OK);
+    }
 }

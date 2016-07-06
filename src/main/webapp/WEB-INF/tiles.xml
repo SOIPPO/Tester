@@ -57,14 +57,26 @@
         <put-attribute name="body" value="/layout/views/pages/grouplist.jsp"/>
     </definition>
 
-    <definition name="/messages" template="/layout/views/messages.jsp">
-        <put-attribute name="title" value="Register New User"></put-attribute>
-        <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"></put-attribute>
-        <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"></put-attribute>
+    <definition name="/interviewlist" template="/layout/views/admin-layout.jsp">
+        <put-attribute name="title" value="Interview List"/>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
+        <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
 
-        <put-attribute name="header" value="/layout/views/static/login-header.jsp"></put-attribute>
-        <put-attribute name="footer" value="/layout/views/static/login-footer.jsp"></put-attribute>
-        <put-attribute name="body" value="/layout/views/pages/register.jsp"></put-attribute>
+        <put-attribute name="header" value="/layout/views/static/admin-header.jsp"/>
+        <put-attribute name="footer" value="/layout/views/static/admin-footer.jsp"/>
+
+        <put-attribute name="body" value="/layout/views/pages/interviewlist.jsp"/>
+    </definition>
+
+    <definition name="/editinterview" template="/layout/views/admin-layout.jsp">
+        <put-attribute name="title" value="Interview Edit"/>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
+        <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
+
+        <put-attribute name="header" value="/layout/views/static/admin-header.jsp"/>
+        <put-attribute name="footer" value="/layout/views/static/admin-footer.jsp"/>
+
+        <put-attribute name="body" value="/layout/views/pages/editinterview.jsp"/>
     </definition>
 
 </tiles-definitions>

@@ -1,4 +1,4 @@
-package org.soippo.utils;
+package org.soippo.serialization;
 
 import com.google.gson.*;
 import org.soippo.entity.User;

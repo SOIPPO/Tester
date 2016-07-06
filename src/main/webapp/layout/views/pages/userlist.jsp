@@ -5,7 +5,8 @@
     var grouplistData = ${grouplist};
     var rolelistData = ${rolesList};
     var localizationMessages = {};
-    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>"
+    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";
+    localizationMessages['success-delete'] = "<spring:message code="popup.messages.success-deletion"/>";
     $(document).ready(function () {
         var userlistTable = $('#userlist').DataTable({
             "ajax": {
@@ -288,10 +289,35 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)" id="deleteButton"><spring:message code="message.delete"/></button>
+                    <button type="button" class="btn btn-danger" onclick="$('#deleteConfirm').modal('show')" id="deleteButton"><spring:message code="message.delete"/></button>
                     <button type="submit" class="btn btn-success"><spring:message code="message.save"/></button>
                 </div>
             </div>
         </form>
     </div>
+
+    <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm">
+        <form>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><spring:message code="message.modal.user-delete.title"/></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p><spring:message code="message.modal.user-delete.message"/></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="interviewIdField"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message
+                                code="cancel"/></button>
+                        <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)"><spring:message
+                                code="delete"/></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
 </div>

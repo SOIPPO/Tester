@@ -4,6 +4,8 @@
 <script>
     var grouplistData = ${grouplist};
     var rolelistData = ${rolesList};
+    var localizationMessages = {};
+    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>"
     $(document).ready(function () {
         var userlistTable = $('#userlist').DataTable({
             "ajax": {
@@ -30,6 +32,7 @@
                 {
                     text: '<spring:message code="admin.userlist.create_user"/>',
                     action: function ( e, dt, node, config ) {
+                        $('#deleteButton').hide();
                         $('#editUserModal').modal('show');
                     }
                 }
@@ -40,14 +43,11 @@
         });
 
         $('#userlist tbody').on('click', 'span', function () {
+            $('#deleteButton').show();
             var data = userlistTable.row($(this).parents('tr')).data();
-//            console.log(data);
             angular.element($('#editUserModal')).scope().fillUserData(data);
             $('#editUserModal').modal('show');
         });
-
-
-
     });
 </script>
 
@@ -288,7 +288,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)"><spring:message code="message.delete"/></button>
+                    <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)" id="deleteButton"><spring:message code="message.delete"/></button>
                     <button type="submit" class="btn btn-success"><spring:message code="message.save"/></button>
                 </div>
             </div>

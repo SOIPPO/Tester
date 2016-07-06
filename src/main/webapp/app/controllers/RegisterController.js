@@ -9,8 +9,7 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                 "middleName": "Vasilievich",
                 "email": "vasiliy@gmail.com",
                 "password": "testpassword",
-                "passwordRepeat": "testpassword",
-
+                "passwordRepeat": "testpassword"
             };
             var getFirstElement = function (obj) {
                 for (var key in obj) {

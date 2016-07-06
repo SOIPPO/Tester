@@ -15,7 +15,7 @@ angular.module("editUser", []).controller("editUserController",
             $scope.fillUserData = function(data) {
                 $scope.$apply(function() {
                     $scope.user = data;
-                    console.log($scope.grouplist);
+                    // console.log($scope.grouplist);
                     $scope.user.group = getFirstElement($scope.grouplist);
 
                     for(var key in $scope.grouplist) {
@@ -26,20 +26,22 @@ angular.module("editUser", []).controller("editUserController",
                     }
                 });
 
-                console.log($scope.user);
+                // console.log($scope.user);
             };
 
             $scope.submitForm = function (isValid) {
-                console.log(isValid);
+                // console.log(isValid);
                 if (isValid) {
                     $http.post('/admin/saveuser', $scope.user).then(
                         function successCallback(response) {
                             $('#editUserModal').modal('hide');
-                            var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
+                            var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                                // console.log('dismissed');
+                            });
                             $('#userlist').DataTable().ajax.reload();
                         },
                         function errorCallback(response) {
-                            console.log("error! ");
+                            // console.log("error! ");
                         }
                     );
                 }
@@ -49,11 +51,13 @@ angular.module("editUser", []).controller("editUserController",
                 $http.post('/admin/deleteuser', userId).then(
                     function successCallback(response) {
                         $('#editUserModal').modal('hide');
-                        var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
+                        var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                            // console.log('dismissed');
+                        });
                         $('#userlist').DataTable().ajax.reload();
                     },
                     function errorCallback(response) {
-                        console.log("error! ");
+                        // console.log("error! ");
                     }
                 );
             };

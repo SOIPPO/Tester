@@ -19,7 +19,7 @@ angular.module("editGroup", []).controller("editGroupController",
                     $http.post('/admin/savegroup', $scope.data).then(
                         function successCallback(response) {
                             $('#editGroupModal').modal('hide');
-                            var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
+                            var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function(){  console.log('dismissed'); });
                             $('#grouplist').DataTable().ajax.reload();
                         },
                         function errorCallback(response) {
@@ -39,7 +39,8 @@ angular.module("editGroup", []).controller("editGroupController",
                 $http.post('/admin/deletegroup', groupId).then(
                     function successCallback(response) {
                         $('#editGroupModal').modal('hide');
-                        var notification = alertify.notify('success', 'success', 5, function(){  console.log('dismissed'); });
+                        $('#deleteConfirm').modal('hide');
+                        var notification = alertify.notify(localizationMessages['success-delete'], 'success', 5, function(){  console.log('dismissed'); });
                         $('#grouplist').DataTable().ajax.reload();
                     },
                     function errorCallback(response) {

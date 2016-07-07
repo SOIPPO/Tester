@@ -28,4 +28,20 @@ public class Answer {
     public Long getOrder() {
         return answer_order;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Long getAnswer_order() {
+        return answer_order;
+    }
+
+    public Long getQuestionId() {
+        return questionId;
+    }
 }

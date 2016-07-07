@@ -47,4 +47,24 @@ public class Question {
     public List<Answer> getAnswers() {
         return answers;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
+    public Long getQuestion_order() {
+        return question_order;
+    }
+
+    public Long getInterviewId() {
+        return interviewId;
+    }
 }

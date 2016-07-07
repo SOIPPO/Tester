@@ -1,15 +1,16 @@
 package org.soippo.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.soippo.entity.User;
-import org.soippo.service.GroupService;
-import org.soippo.service.InterviewService;
-import org.soippo.service.SerializeService;
-import org.soippo.service.UserService;
 import org.soippo.serialization.GroupWithUserlistSerializer;
 import org.soippo.serialization.GroupWithoutUserlistSerializer;
 import org.soippo.serialization.UserSerializer;
 import org.soippo.serialization.UserSimplifiedSerializer;
+import org.soippo.service.GroupService;
+import org.soippo.service.InterviewService;
+import org.soippo.service.SerializeService;
+import org.soippo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,7 +46,7 @@ public class UserController {
 
     @RequestMapping("/module/{id}")
     public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) {
-        model.addObject("module", interviewService.findOne(id));
+        model.addObject("moduleData", new Gson().toJson(interviewService.findOne(id)));
         model.setViewName("module");
         return model;
     }

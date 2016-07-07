@@ -3,7 +3,7 @@
 <ul class="list-group">
     <c:forEach items="${interviewlist}" var="interview">
     <li class="list-group-item">
-        <a href="/interview/${interview.getId()}">${interview.getTitle() }</a>
+        <a href="/module/${interview.getId()}">${interview.getTitle() }</a>
     </li>
     </c:forEach>
 </ul>

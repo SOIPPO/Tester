@@ -12,12 +12,20 @@
         <put-attribute name="body" value="/home.jsp"/>
     </definition>
 
-    <definition name="/modules" template="/layout/views/user-layout.jsp">
+    <definition name="modules" template="/layout/views/user-layout.jsp">
         <put-attribute name="title" value="Interview List"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
         <put-attribute name="header" value="/layout/views/static/user-header.jsp"/>
         <put-attribute name="body" value="/layout/views/pages/interviewlist.jsp"/>
+    </definition>
+
+    <definition name="module" template="/layout/views/user-layout.jsp">
+        <put-attribute name="title" value="Interview List"/>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
+        <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
+        <put-attribute name="header" value="/layout/views/static/user-header.jsp"/>
+        <put-attribute name="body" value="/layout/views/pages/module.jsp"/>
     </definition>
 
     <definition name="/register" template="/layout/views/login-layout.jsp">

@@ -39,7 +39,14 @@ public class UserController {
     @RequestMapping("/modules")
     public ModelAndView interviewlistPage(ModelAndView model) {
         model.addObject("interviewlist", interviewService.findAll());
-        model.setViewName("/modules");
+        model.setViewName("modules");
+        return model;
+    }
+
+    @RequestMapping("/module/{id}")
+    public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) {
+        model.addObject("module", interviewService.findOne(id));
+        model.setViewName("module");
         return model;
     }
 
@@ -64,14 +71,4 @@ public class UserController {
                 .create()
                 .toJson(users);
     }
-
-    @RequestMapping(value = "/messages/{message}")
-    @ResponseBody
-    public ModelAndView displayMessages(ModelAndView model, @PathVariable String message) {
-        model.addObject("message", message);
-        model.setViewName("messages");
-        return model;
-    }
-
-
 }

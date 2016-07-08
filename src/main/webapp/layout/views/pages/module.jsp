@@ -13,6 +13,8 @@
 <form ng-app="modulePage"
       ng-controller="moduleController"
       ng-init="fillModuleData('moduleData')"
+      ng-submit="sendResults(moduleForm.$valid)"
+      name="moduleForm"
       class="col-md-10 col-md-offset-1">
 
     <div class="panel panel-default"
@@ -22,19 +24,28 @@
         </div>
         <div class="panel-body"
              ng-switch on="question.type">
-            <div ng-switch-when="ONE_VARIANT">
+            <div ng-switch-when="MANY_VARIANTS">
                 <div class="checkbox" ng-repeat="answer in question.answers track by $index">
                     <label>
-                        <input type="checkbox" value="" name="question_{{question.id}}">
+                        <input type="checkbox"
+                               data-ng-value="{{answer.id}}"
+                               name="question_{{question.id}}"
+                               ng-change="switchSelection({{question.id}}, {{answer.id}})"
+                               ng-model="checkboxes[answer.id]">
                         <span class="module_buttons">{{answer.text}}</span>
                     </label>
                 </div>
             </div>
 
-            <div ng-switch-when="MANY_VARIANTS">
+            <div ng-switch-when="ONE_VARIANT">
                 <div class="radio" ng-repeat="answer in question.answers track by $index">
                     <label>
-                        <input type="radio" value="" name="question_{{question.id}}">
+                        <input type="radio"
+                               data-ng-value="{{answer.id}}"
+                               ng-value="{{answer.id}}"
+                               name="question_{{question.id}}"
+                               ng-change="addRadioSelect({{question.id}}, {{answer.id}})"
+                               ng-model="result[question.id]">
                         <span class="module_buttons">{{answer.text}}</span>
                     </label>
                 </div>
@@ -42,6 +53,6 @@
         </div>
     </div>
     <div class="pull-right">
-        <button type="button" class="btn btn-success"><spring:message key="send"/></button>
+        <button type="submit" class="btn btn-success"><spring:message key="send"/></button>
     </div>
 </form>

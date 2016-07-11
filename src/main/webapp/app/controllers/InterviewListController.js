@@ -17,7 +17,6 @@ angular.module("interviewList", []).controller("interviewListController",
 
                             $http.post('/admin/interview/list').then(
                                 function successCallback(response) {
-                                    console.log(response);
                                     $scope.interviewlist = response.data;
                                 },
                                 function errorCallback(response) {
@@ -26,7 +25,6 @@ angular.module("interviewList", []).controller("interviewListController",
 
                             $('#newInterviewModal').modal('hide');
                             var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
-                                console.log('dismissed');
                             });
 
                         },
@@ -50,7 +48,6 @@ angular.module("interviewList", []).controller("interviewListController",
                         );
                         $('#deleteConfirm').modal('hide');
                         var notification = alertify.notify(localizationMessages['success-delete'], 'success', 5, function () {
-                            console.log('dismissed');
                         });
                     },
                     function errorCallback(response) {

@@ -5,8 +5,8 @@
 <script>
     var interviewlistData = ${interviewlist};
     var localizationMessages = {};
-    localizationMessages['success-delete'] = "<spring:message code="popup.messages.success-deletion"/>"
-    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>"
+    localizationMessages['success-delete'] = "<spring:message code="popup.messages.success-deletion"/>";
+    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";
 </script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/app/controllers/InterviewListController.js"></script>
@@ -99,10 +99,12 @@
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" id="interviewIdField"/>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message
-                                code="cancel"/></button>
-                        <button type="button" class="btn btn-danger" ng-click="deleteInterview()"><spring:message
-                                code="delete"/></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <spring:message code="cancel"/>
+                        </button>
+                        <button type="button" class="btn btn-danger" ng-click="deleteInterview()">
+                            <spring:message code="delete"/>
+                        </button>
                     </div>
                 </div>
             </div>

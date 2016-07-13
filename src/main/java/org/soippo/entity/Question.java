@@ -1,5 +1,6 @@
 package org.soippo.entity;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.soippo.utils.QuestionType;
 
@@ -13,15 +14,18 @@ public class Question {
     @Column(name = "id")
     @SerializedName("id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private Long id;
 
     @Column(name = "text")
     @SerializedName("text")
+    @Expose
     private String text;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     @SerializedName("type")
+    @Expose
     private QuestionType questionType;
 
     @OneToMany(fetch = FetchType.EAGER, targetEntity = Answer.class, cascade = CascadeType.ALL)
@@ -29,15 +33,18 @@ public class Question {
     @OrderBy("answer_order")
     @OrderColumn(name = "answer_order")
     @SerializedName("answers")
+    @Expose
     private List<Answer> answers;
 
     @Column(name = "question_order")
     @SerializedName("question_order")
+    @Expose
     private Long question_order;
 
     @Column(name = "interview_id")
     @SerializedName("interview_id")
     @JoinColumn(name = "questions_interview_FK")
+    @Expose
     private Long interviewId;
 
     public Long getOrder() {

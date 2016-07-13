@@ -3,7 +3,7 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
         function ($scope, $window, $http) {
             var localQuestionId = 1;
             var localAnswerId = 1;
-
+            var selectedCorrectAnswers = {};
             $scope.fillData = function (paramName) {
                 $scope.interviewdata = $window[paramName];
                 for (var pos in $scope.interviewdata.questions) {
@@ -11,15 +11,31 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
                     if (questionList.hasOwnProperty(pos) && !!questionList[pos]) {
                         var question = questionList[pos];
                         question['localId'] = localQuestionId++;
-
+                        var selected = [];
                         for (var answerId in question.answers) {
                             if (question.answers.hasOwnProperty(answerId) && !!$scope.interviewdata.questions[pos].answers[answerId]) {
                                 question.answers[answerId]['localId'] = localAnswerId++;
+                                if (question.answers[answerId].isCorrect) {
+                                    selected.push(question.answers[answerId]['localId'] + '');
+                                }
                             }
                         }
+                        selectedCorrectAnswers[question['localId']] = selected;
                     }
                 }
             };
+
+            $scope.isMultiple = function(questionId) {
+                return ($scope.interviewdata.questions[questionId].type == "MANY_VARIANTS") ? "multiple" : "";
+            };
+            angular.element(document).ready(function () {
+                for(var key in selectedCorrectAnswers) {
+                    if(selectedCorrectAnswers.hasOwnProperty(key)) {
+                        $('#correct_answer_' + key).select2().val(selectedCorrectAnswers[key]).trigger("change");
+                    }
+
+                }
+            });
 
             $scope.emptyOrNull = function (item) {
                 return !(item === null)
@@ -70,7 +86,10 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
 
             $scope.addAnswer = function (questionId) {
                 var pos = getQuestionPositionById(questionId);
-                var newAnswer = {'answer_order' : $scope.interviewdata.questions[pos].answers.length};
+                var newAnswer = {
+                    'answer_order': $scope.interviewdata.questions[pos].answers.length,
+                    'localId': localAnswerId++
+                };
                 $scope.interviewdata.questions[pos].answers.push(newAnswer);
             };
 
@@ -78,19 +97,40 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
                 var questionPos = getQuestionPositionById(questionId);
                 var answerPos = getAnswerPositionById(questionId, answerId);
                 delete $scope.interviewdata.questions[questionPos].answers[answerPos];
-
+                $scope.interviewdata.questions[questionPos].answers.length--;
             };
 
-            $scope.interviewSave = function() {
+            $scope.interviewSave = function () {
+                for (var id in $scope.interviewdata.questions) {
+                    if ($scope.interviewdata.questions.hasOwnProperty(id)) {
+                        var question = $scope.interviewdata.questions[id];
+                        if (question) {
+                            var questionPos = getQuestionPositionById(question.localId);
+                            for (var key in  $scope.interviewdata.questions[questionPos].answers) {
+                                if ($scope.interviewdata.questions[questionPos].answers.hasOwnProperty(key)) {
+                                    var answer = $scope.interviewdata.questions[questionPos].answers[key];
+                                    answer.isCorrect = false;
+                                }
+                            }
+                            var correctAnswers = $('#correct_answer_' + question.localId).val();
+                            for (var key in correctAnswers) {
+                                if (correctAnswers.hasOwnProperty(key)) {
+                                    var answerLocalId = correctAnswers[key];
+                                    var answerPos = getAnswerPositionById(question.localId, answerLocalId);
+                                    $scope.interviewdata.questions[questionPos].answers[answerPos].isCorrect = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+
                 $http.post('/admin/interview/save', $scope.interviewdata).then(
                     function successCallback(response) {
-                        // console.log("success");
                         var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
-                            // console.log('dismissed');
                         });
                     },
                     function errorCallback(response) {
-                        console.log("fail");
                     }
                 );
             }

@@ -127,7 +127,11 @@ public class AdminController {
 
     @RequestMapping(value = "/editinterview/{id}", method = RequestMethod.GET)
     public ModelAndView editinterviewPage(@PathVariable Long id, ModelAndView model) {
-        model.addObject("interviewdata", new Gson().toJson(interviewService.findOne(id)));
+
+        model.addObject("interviewdata", new GsonBuilder()
+                .create()
+                .toJson(interviewService
+                        .findOne(id)));
         model.setViewName("/editinterview");
         return model;
     }

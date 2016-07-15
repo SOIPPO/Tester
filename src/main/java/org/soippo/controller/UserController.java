@@ -34,6 +34,8 @@ public class UserController {
     private UserResultsService userResultsService;
     @Resource
     private InterviewService interviewService;
+    @Resource
+    private QuestionService questionService;
 
     @RequestMapping("/")
     public ModelAndView homePage(ModelAndView model) {
@@ -61,17 +63,19 @@ public class UserController {
     public String saveModuleResults(@RequestBody String moduleData) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(auth.getName());
-        Type type = new TypeToken<Map<String, List<String>>>() {}.getType();
-        Map<String, List<String>> temporalDataMap = new Gson().fromJson(moduleData, type);
+        Type type = new TypeToken<Map<Long, List<Long>>>() {}.getType();
+        Map<Long, List<Long>> temporalDataMap = new Gson().fromJson(moduleData, type);
+
         List<UserResults> userResults = temporalDataMap.entrySet()
                 .stream()
                 .map(item -> new UserResults()
                         .setUserId(userId)
-                        .setQuestionId(Long.parseLong(item.getKey()))
+                        .setQuestionId(item.getKey())
                         .setText(String.valueOf(item.getValue())))
                 .collect(Collectors.toList());
         userResultsService.saveAll(userResults);
-        return moduleData;
+
+        return new Gson().toJson(questionService.checkAnswers(temporalDataMap));
     }
 
 

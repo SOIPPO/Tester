@@ -12,11 +12,15 @@ angular.module("modulePage", []).controller("moduleController",
                 return !(item === null)
             };
 
-            $scope.sendResults = function(isValid) {
+            $scope.sendResults = function (isValid) {
                 $.blockUI({message: null});
-                console.log($scope.result);
                 $http.post('/module/saveresults', $scope.result).then(
                     function successCallback(response) {
+                        for (var key in  response.data) {
+                            if (response.data.hasOwnProperty(key)) {
+                                $("#question_title_" + key).css("background-color", (response.data[key]) ? "green" : "red");
+                            }
+                        }
                         $.unblockUI();
                     },
                     function errorCallback(response) {
@@ -25,21 +29,21 @@ angular.module("modulePage", []).controller("moduleController",
                 );
             };
 
-            $scope.addRadioSelect = function(questionId, answerId) {
+            $scope.addRadioSelect = function (questionId, answerId) {
                 $scope.result[questionId] = [];
                 $scope.result[questionId].push(answerId);
             };
 
-            $scope.switchSelection = function(questionId, answerId) {
-                if($scope.result[questionId] === undefined || !$scope.result[questionId]) {
+            $scope.switchSelection = function (questionId, answerId) {
+                if ($scope.result[questionId] === undefined || !$scope.result[questionId]) {
                     $scope.result[questionId] = [];
                 }
 
-                if($scope.checkboxes[answerId]) {
+                if ($scope.checkboxes[answerId]) {
                     $scope.result[questionId].push(answerId);
                 } else {
                     var pos = $scope.result[questionId].indexOf(answerId);
-                    if(pos >= 0) {
+                    if (pos >= 0) {
                         $scope.result[questionId].splice(pos, 1);
                     }
                 }

@@ -235,7 +235,7 @@
                               ng-init="displayError('group', '<spring:message code="registration.messages.required.group"/>')">
                         </span>
                     </div>
-                    <span ng-if="registerForm.repeatPassword.$valid" ng-init="clearMessages('repeat_password')"></span>
+                    <span ng-if="registerForm.group.$valid" ng-init="clearMessages('group')"></span>
                 </div>
             </div>
 

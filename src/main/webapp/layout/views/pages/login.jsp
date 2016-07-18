@@ -41,13 +41,16 @@
                             ng-model="user.username"
                             ng-init="foo = updateUserList() || userlist[0]"
                             ng-options="userData.lastName + ' ' + userData.firstName + ' ' + userData.middleName for userData in userlist track by userData.id"
-                            required>
+                            ng-required="true">
+                            <option></option>
                     </select>
-                    <div class="help-block" ng-show="loginForm.$submitted || loginForm.login.$touched">
-                <span ng-show="loginForm.login.$error.required">
-                    <spring:message code="login.messages.required.student"/>
-                </span>
+
+                    <div ng-if="loginForm.$submitted || loginForm.login.$touched">
+                        <span ng-if="loginForm.login.$error.required"
+                              ng-init="displayError('login', '<spring:message code="login.messages.required.student"/>')">
+                        </span>
                     </div>
+                    <span ng-if="loginForm.login.$valid" ng-init="clearMessages('login')"></span>
                 </div>
             </div>
 
@@ -62,16 +65,19 @@
                            placeholder="<spring:message code="login.fields.password"/>"
                            ng-model="user.password"
                            ng-change="setPasswordValidation(true)"
-                           required>
-                    <div class="help-block" ng-show="loginForm.$submitted || loginForm.password.$touched">
-                <span ng-show="loginForm.password.$error.required">
-                    <spring:message code="login.messages.required.password"/>
-                </span>
-                <span ng-show="loginForm.password.$error.incorrect">
-                    <spring:message code="login.messages.incorrect.password"/>
-                </span>
+                           ng-required="true">
+
+                    <div ng-if="loginForm.$submitted || loginForm.password.$touched">
+                        <span ng-if="loginForm.password.$error.required"
+                           ng-init="displayError('password', '<spring:message code="login.messages.required.password"/>')">
+                        </span>
+                        <span ng-if="loginForm.password.$error.incorrect"
+                              ng-init="displayError('password', '<spring:message code="login.messages.incorrect.password"/>')">
+                        </span>
                     </div>
+                    <span ng-if="loginForm.password.$valid" ng-init="clearMessages('password')"></span>
                 </div>
+
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
@@ -95,7 +101,7 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="registerSuccessModal" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div style = "padding: 15px;">
+                <div style="padding: 15px;">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel"><spring:message code="registration-success"/></h4>

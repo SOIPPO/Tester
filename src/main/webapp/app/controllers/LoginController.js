@@ -66,5 +66,15 @@ angular.module("loginPage", []).controller("loginController",
             $scope.setPasswordValidation = function (value) {
                 $scope.loginForm.password.$setValidity("incorrect", value);
             };
+
+            $scope.displayError = function (element, message) {
+                $('#' + element).tooltip('destroy');
+                $('#' + element).tooltip({'title': message, 'placement' : 'bottom'});
+                $('#' + element).tooltip('show');
+            };
+
+            $scope.clearMessages = function(element) {
+                $('#' + element).tooltip('destroy');
+            };
         }]
 );

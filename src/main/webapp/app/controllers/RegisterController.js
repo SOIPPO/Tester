@@ -3,14 +3,6 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
         function ($scope, $window, $http) {
             $scope.user = {};
 
-            var dummyData = {
-                "firstName": "Vasya",
-                "lastName": "Vasin",
-                "middleName": "Vasilievich",
-                "email": "vasiliy@gmail.com",
-                "password": "testpassword",
-                "passwordRepeat": "testpassword"
-            };
             var getFirstElement = function (obj) {
                 for (var key in obj) {
                     if (obj.hasOwnProperty(key)) {
@@ -22,7 +14,6 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
             $scope.fillGroupData = function (paramName) {
                 $scope.grouplist = $window[paramName];
                 $scope.user.group = getFirstElement($scope.grouplist);
-                dummyData.group = $scope.user.group;
             };
 
             $scope.resetForm = function () {
@@ -31,7 +22,6 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
             };
 
             $scope.submitForm = function (isValid) {
-                // console.log(isValid);
                 if (isValid) {
                     $.blockUI({
                         message: null
@@ -65,8 +55,14 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                 $scope.registerForm.middleName.$setValidity("alreadyexists", value);
             };
 
-            $scope.fillDummy = function () {
-                $scope.user = angular.copy(dummyData);
+            $scope.displayError = function (element, message) {
+                $('#' + element).tooltip('destroy');
+                $('#' + element).tooltip({'title': message, 'placement' : 'bottom'});
+                $('#' + element).tooltip('show');
+            };
+
+            $scope.clearMessages = function(element) {
+                $('#' + element).tooltip('destroy');
             };
         }]
 );

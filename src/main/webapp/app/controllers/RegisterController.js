@@ -56,12 +56,13 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
             };
 
             $scope.displayError = function (element, message) {
-                $('#' + element).tooltip('destroy');
+                $scope.clearMessages();
                 $('#' + element).tooltip({'title': message, 'placement' : 'bottom'});
                 $('#' + element).tooltip('show');
             };
 
             $scope.clearMessages = function(element) {
+                $('#' + element).tooltip();
                 $('#' + element).tooltip('destroy');
             };
         }]

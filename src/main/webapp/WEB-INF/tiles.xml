@@ -5,15 +5,15 @@
 <tiles-definitions>
 
     <definition name="/" template="/layout/views/user-layout.jsp">
-        <put-attribute name="title" value="FrameworkOnly | Apache Tiles 3 + Spring 4 MVC"/>
+        <put-attribute name="title" value="title.home"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
-        <put-attribute name="header" value="/layout/views/static/user-header.jsp"/>
+        <put-attribute name="header" value="/layout/views/static/admin-header.jsp"/>
         <put-attribute name="body" value="/home.jsp"/>
     </definition>
 
     <definition name="/register" template="/layout/views/login-layout.jsp">
-        <put-attribute name="title" value="Register New User"/>
+        <put-attribute name="title" value="title.register"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
 
@@ -24,7 +24,7 @@
 
 
     <definition name="/login" template="/layout/views/login-layout.jsp">
-        <put-attribute name="title" value="Login User"/>
+        <put-attribute name="title" value="title.login"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
 
@@ -36,7 +36,7 @@
 
 
     <definition name="/userlist" template="/layout/views/admin-layout.jsp">
-        <put-attribute name="title" value="UserList"/>
+        <put-attribute name="title" value="title.userlist"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
 
@@ -47,7 +47,7 @@
     </definition>
 
     <definition name="/grouplist" template="/layout/views/admin-layout.jsp">
-        <put-attribute name="title" value="GroupList"/>
+        <put-attribute name="title" value="title.grouplist"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
 
@@ -57,8 +57,8 @@
         <put-attribute name="body" value="/layout/views/pages/grouplist.jsp"/>
     </definition>
 
-    <definition name="/interviewlist" template="/layout/views/admin-layout.jsp">
-        <put-attribute name="title" value="Interview List"/>
+    <definition name="/modules" template="/layout/views/admin-layout.jsp">
+        <put-attribute name="title" value="title.interviewlist"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
 
@@ -68,8 +68,8 @@
         <put-attribute name="body" value="/layout/views/pages/interviewlist.jsp"/>
     </definition>
 
-    <definition name="/editinterview" template="/layout/views/admin-layout.jsp">
-        <put-attribute name="title" value="Interview Edit"/>
+    <definition name="/editmodule" template="/layout/views/admin-layout.jsp">
+        <put-attribute name="title" value="title.editinterview"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
 

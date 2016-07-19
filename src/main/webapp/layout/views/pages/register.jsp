@@ -154,8 +154,11 @@
                         <span ng-if="registerForm.email.$error.required"
                               ng-init="displayError('email', '<spring:message code="registration.messages.required.email"/>')">
                         </span>
-                        <span ng-if="!registerForm.email.$touched && registerForm.email.$error.alreadyexists"
+                        <span ng-if="registerForm.email.$touched && registerForm.email.$error.alreadyexists"
                               ng-init="displayError('email', '<spring:message code="registration.messages.email.alreadyexists"/>')">
+                        </span>
+                        <span ng-if="registerForm.email.$touched && registerForm.email.$error.email"
+                              ng-init="displayError('email', '<spring:message code="registration.messages.email.pattern"/>')">
                         </span>
                     </div>
                     <span ng-if="registerForm.email.$valid" ng-init="clearMessages('email')"></span>

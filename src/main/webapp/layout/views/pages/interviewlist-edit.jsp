@@ -17,7 +17,7 @@
 
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="interview in interviewlist">
-            <a href="/admin/editinterview/{{interview.id}}">{{interview.title}}</a>
+            <a href="/admin/editmodule/{{interview.id}}">{{interview.title}}</a>
 
             <div class="pull-right" ng-click="showConfirmModal(interview.id, interview.title)"
                  style=" cursor: pointer">

@@ -17,8 +17,8 @@
             </ul>
 
             <ul class="nav navbar-nav">
-                <li <c:if test="${pageUrl == '/admin/interviewlist'}">class="active"</c:if>>
-                    <a href="/admin/interviewlist"><spring:message code="menu.interviewlist-editor"/></a>
+                <li <c:if test="${pageUrl == '/admin/modules'}">class="active"</c:if>>
+                    <a href="/admin/modules"><spring:message code="menu.interviewlist"/></a>
                 </li>
             </ul>
 

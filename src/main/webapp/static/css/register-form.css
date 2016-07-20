@@ -33,16 +33,3 @@ body {
 .remove-button {
     margin-left: 3px;
 }
-
-input[type=text].ng-invalid,
-input[type=email].ng-invalid,
-input[type=password].ng-invalid,
-select.ng-invalid,
-textarea.ng-invalid {
-    border-left: solid 3px red;
-}
-
-.module_buttons {
-    font-size: 16px;
-    margin-left: 5px;
-}

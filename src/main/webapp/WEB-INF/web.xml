@@ -24,6 +24,9 @@
         </param-value>
     </context-param>
 
+    <session-config>
+        <session-timeout>86400</session-timeout>
+    </session-config>
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

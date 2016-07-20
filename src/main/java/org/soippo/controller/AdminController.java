@@ -112,10 +112,10 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = "/interviewlist", method = RequestMethod.GET)
+    @RequestMapping(value = "/modules", method = RequestMethod.GET)
     public ModelAndView interviewListPage(ModelAndView model) {
         model.addObject("interviewlist", interviewList());
-        model.setViewName("/interviewlist");
+        model.setViewName("/modules");
         return model;
     }
 
@@ -125,14 +125,10 @@ public class AdminController {
         return new Gson().toJson(interviewService.findAll());
     }
 
-    @RequestMapping(value = "/editinterview/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/editmodule/{id}", method = RequestMethod.GET)
     public ModelAndView editinterviewPage(@PathVariable Long id, ModelAndView model) {
-
-        model.addObject("interviewdata", new GsonBuilder()
-                .create()
-                .toJson(interviewService
-                        .findOne(id)));
-        model.setViewName("/editinterview");
+        model.addObject("interviewdata", new Gson().toJson(interviewService.findOne(id)));
+        model.setViewName("/editmodule");
         return model;
     }
 

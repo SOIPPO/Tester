@@ -32,7 +32,7 @@
             buttons: [
                 {
                     text: '<spring:message code="admin.userlist.create_user"/>',
-                    action: function ( e, dt, node, config ) {
+                    action: function (e, dt, node, config) {
                         $('#deleteButton').hide();
                         $('#editUserModal').modal('show');
                     }
@@ -117,22 +117,23 @@
                                    ng-minlength="3"
                                    ng-maxlength="50"
                                    ng-change="setUserValidation(true)"
-                                   required>
+                                   ng-required="true">
 
-                            <div class="help-block" ng-show="registerForm.$submitted || registerForm.lastName.$touched">
-                                <span ng-show="registerForm.lastName.$error.required">
-                                    <spring:message code="registration.messages.required.last_name"/>
+                            <div ng-if="registerForm.$submitted || registerForm.lastName.$touched">
+                                <span ng-if="registerForm.lastName.$error.required"
+                                      ng-init="displayError('last_name', '<spring:message code="registration.messages.required.last_name"/>')">
                                 </span>
-                                <span ng-show="registerForm.lastName.$error.minlength">
-                                    <spring:message code="registration.messages.minlength.last_name"/>
+                                <span ng-if="registerForm.lastName.$error.minlength"
+                                      ng-init="displayError('last_name', '<spring:message code="registration.messages.minlength.last_name"/>')">
                                 </span>
-                                <span ng-show="registerForm.lastName.$error.maxlength">
-                                    <spring:message code="registration.messages.maxlength.last_name"/>
+                                <span ng-if="registerForm.lastName.$error.maxlength"
+                                      ng-init="displayError('last_name', '<spring:message code="registration.messages.maxlength.last_name"/>')">
                                 </span>
-                                 <span ng-show="(!registerForm.firstName.$touched && registerForm.lastName.$touched || !registerForm.middleName.$touched)&& registerForm.lastName.$error.alreadyexists">
-                                    <spring:message code="registration.messages.user.alreadyexists"/>
+                                <span ng-if="registerForm.lastName.$error.alreadyexists"
+                                      ng-init="displayError('last_name', '<spring:message code="registration.messages.user.alreadyexists"/>')">
                                 </span>
                             </div>
+                            <span ng-if="registerForm.lastName.$valid" ng-init="clearMessages('last_name')"></span>
                         </div>
                     </div>
 
@@ -150,20 +151,24 @@
                                    ng-minlength="3"
                                    ng-maxlength="50"
                                    ng-change="setUserValidation(true)"
-                                   required>
+                                   ng-required="true">
 
-                            <div class="help-block"
-                                 ng-show="registerForm.$submitted || registerForm.firstName.$touched">
-                                <span class="error" ng-show="registerForm.firstName.$error.required">
-                                    <spring:message code="registration.messages.required.first_name"/>
+                            <div ng-if="registerForm.$submitted || registerForm.firstName.$touched">
+                                <span ng-if="registerForm.firstName.$error.required"
+                                      ng-init="displayError('first_name', '<spring:message code="registration.messages.required.first_name"/>')">
                                 </span>
-                                <span ng-show="registerForm.firstName.$error.minlength">
-                                    <spring:message code="registration.messages.minlength.first_name"/>
+                                <span ng-if="registerForm.firstName.$error.minlength"
+                                      ng-init="displayError('first_name', '<spring:message code="registration.messages.minlength.first_name"/>')">
                                 </span>
-                                <span ng-show="registerForm.firstName.$error.maxlength">
-                                    <spring:message code="registration.messages.maxlength.first_name"/>
+
+                                <span ng-if="registerForm.firstName.$error.maxlength"
+                                      ng-init="displayError('first_name', '<spring:message code="registration.messages.maxlength.first_name"/>')">
+                                </span>
+                                 <span ng-if="registerForm.firstName.$error.alreadyexists"
+                                       ng-init="displayError('first_name', '<spring:message code="registration.messages.user.alreadyexists"/>')">
                                 </span>
                             </div>
+                            <span ng-if="registerForm.lastName.$valid" ng-init="clearMessages('first_name')"></span>
                         </div>
                     </div>
 
@@ -181,19 +186,23 @@
                                    ng-minlength="3"
                                    ng-maxlength="50"
                                    ng-change="setUserValidation(true)"
-                                   required>
-                            <div class="help-block"
-                                 ng-show="registerForm.$submitted || registerForm.middleName.$touched">
-                                <span ng-show="registerForm.middleName.$error.required">
-                                    <spring:message code="registration.messages.required.middle_name"/>
+                                   ng-required="true">
+                            <div ng-if="registerForm.$submitted || registerForm.middleName.$touched">
+                                <span ng-if="registerForm.middleName.$error.required"
+                                      ng-init="displayError('middle_name', '<spring:message code="registration.messages.required.middle_name"/>')">
                                 </span>
-                                <span ng-show="registerForm.middleName.$error.minlength">
-                                    <spring:message code="registration.messages.minlength.middle_name"/>
+                                <span ng-if="registerForm.middleName.$error.minlength"
+                                      ng-init="displayError('middle_name', '<spring:message code="registration.messages.minlength.middle_name"/>')">
                                 </span>
-                                <span ng-show="registerForm.middleName.$error.maxlength">
-                                    <spring:message code="registration.messages.maxlength.middle_name"/>
+
+                                <span ng-if="registerForm.middleName.$error.maxlength"
+                                      ng-init="displayError('middle_name', '<spring:message code="registration.messages.maxlength.middle_name"/>')">
+                                </span>
+                                <span ng-if="registerForm.middleName.$error.alreadyexists"
+                                      ng-init="displayError('middle_name', '<spring:message code="registration.messages.user.alreadyexists"/>')">
                                 </span>
                             </div>
+                            <span ng-if="registerForm.middleName.$valid" ng-init="clearMessages('middle_name')"></span>
                         </div>
                     </div>
 
@@ -210,17 +219,21 @@
                                    ng-model-options="{updateOn: 'blur'}"
                                    ng-minlength="3"
                                    ng-maxlength="50"
-                                   ng-change="setEmailValidation(true)"
-                                   required>
+                                   ng-required="true">
 
-                            <div class="help-block" ng-show="registerForm.$submitted || registerForm.email.$touched">
-                                <span ng-show="registerForm.email.$error.required">
-                                    <spring:message code="registration.messages.required.email"/>
+                            <div ng-if="registerForm.$submitted || registerForm.email.$touched">
+                                <span ng-if="registerForm.email.$error.required"
+                                      ng-init="displayError('email', '<spring:message code="registration.messages.required.email"/>')">
                                 </span>
-                                <span ng-show="!registerForm.email.$touched && registerForm.email.$error.alreadyexists">
-                                    <spring:message code="registration.messages.email.alreadyexists"/>
+                                <span ng-if="registerForm.email.$touched && registerForm.email.$error.alreadyexists"
+                                      ng-init="displayError('email', '<spring:message code="registration.messages.email.alreadyexists"/>')">
+                                </span>
+                                <span ng-if="registerForm.email.$touched && registerForm.email.$error.email"
+                                      ng-init="displayError('email', '<spring:message code="registration.messages.email.pattern"/>')">
                                 </span>
                             </div>
+                            <span ng-if="registerForm.email.$valid" ng-init="clearMessages('email')"></span>
+
                         </div>
                     </div>
 
@@ -236,16 +249,17 @@
                                    ng-model="user.password"
                                    ng-model-options="{updateOn: 'blur'}"
                                    ng-minlength="7"
-                                   required>
+                                   ng-required="true">
 
-                            <div class="help-block" ng-show="registerForm.$submitted || registerForm.password.$touched">
-                                <span ng-show="registerForm.password.$error.required">
-                                    <spring:message code="registration.messages.required.password"/>
+                            <div ng-if="registerForm.$submitted || registerForm.password.$touched">
+                                <span ng-if="registerForm.password.$error.required"
+                                      ng-init="displayError('password', '<spring:message code="registration.messages.required.password"/>')">
                                 </span>
-                                <span ng-show="registerForm.password.$error.minlength">
-                                    <spring:message code="registration.messages.minlength.password"/>
+                                <span ng-if="registerForm.password.$error.minlength"
+                                      ng-init="displayError('password', '<spring:message code="registration.messages.minlength.password"/>')">
                                 </span>
                             </div>
+                            <span ng-if="registerForm.password.$valid" ng-init="clearMessages('password')"></span>
                         </div>
                     </div>
 
@@ -260,17 +274,20 @@
                                     ng-options="group.name for group in grouplist track by group.id">
                             </select>
 
-                            <div class="help-block" ng-show="registerForm.$submitted || registerForm.group.$touched">
-                                <span ng-show="registerForm.group.$error.pattern">
-                                    <spring:message code="registration.messages.required.group"/>
+                            <div ng-if="registerForm.$submitted || registerForm.group.$touched">
+                                <span ng-if="registerForm.group.$error.pattern"
+                                      ng-init="displayError('group', '<spring:message code="registration.messages.required.group"/>')">
                                 </span>
                             </div>
+                            <span ng-if="registerForm.repeatPassword.$valid"
+                                  ng-init="clearMessages('group')"></span>
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                        <label for="group" class="col-sm-3 control-label"><spring:message code="admin.userlist.role"/></label>
+                        <label for="group" class="col-sm-3 control-label"><spring:message
+                                code="admin.userlist.role"/></label>
                         <div class="col-sm-9">
                             <select id="role"
                                     name="role"
@@ -278,18 +295,19 @@
                                     ng-model="user.role"
                                     ng-options="role for role in rolelist track by role">
                             </select>
-
-                            <div class="help-block" ng-show="registerForm.$submitted || registerForm.group.$touched">
-                                <span ng-show="registerForm.group.$error.pattern">
-                                    <spring:message code="registration.messages.required.group"/>
+                            <div ng-if="registerForm.$submitted || registerForm.role.$touched">
+                                <span ng-if="registerForm.role.$error.pattern"
+                                      ng-init="displayError('role', '<spring:message code="registration.messages.required.group"/>')">
                                 </span>
                             </div>
+                            <span ng-if="registerForm.role.$valid" ng-init="clearMessages('role')"></span>
                         </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="$('#deleteConfirm').modal('show')" id="deleteButton"><spring:message code="message.delete"/></button>
+                    <button type="button" class="btn btn-danger" onclick="$('#deleteConfirm').modal('show')"
+                            id="deleteButton"><spring:message code="message.delete"/></button>
                     <button type="submit" class="btn btn-success"><spring:message code="message.save"/></button>
                 </div>
             </div>

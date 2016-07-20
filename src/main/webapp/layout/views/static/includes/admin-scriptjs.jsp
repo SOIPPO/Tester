@@ -1,4 +1,5 @@
 <script src="${pageContext.request.contextPath}/plugins/jquery/jquery-2.2.3.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/jqueryui/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angularjs/angular.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angularjs/angular-messages.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angularjs/angular-validation-match.min.js"></script>
@@ -8,4 +9,3 @@
 <script src="${pageContext.request.contextPath}/plugins/alertifyjs/alertify.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angular-xeditable/js/xeditable.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angular-xeditable/js/bootstrap-editable.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/jqueryui/jquery-ui.min.js"></script>

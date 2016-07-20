@@ -61,5 +61,16 @@ angular.module("editUser", []).controller("editUserController",
                     }
                 }
             };
+
+            $scope.displayError = function (element, message) {
+                $scope.clearMessages();
+                $('#' + element).tooltip({'title': message, 'placement' : 'bottom', 'container': '#editUserModal'});
+                $('#' + element).tooltip('show');
+            };
+
+            $scope.clearMessages = function(element) {
+                $('#' + element).tooltip();
+                $('#' + element).tooltip('destroy');
+            };
         }]
 );

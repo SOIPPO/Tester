@@ -6,3 +6,5 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/plugins/blockui/blockui.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/plugins/alertifyjs/alertify.min.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/plugins/labelauty/jquery-labelauty.js"></script>

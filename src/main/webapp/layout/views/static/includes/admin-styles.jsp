@@ -7,3 +7,4 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/angular-xeditable/css/bootstrap-editable.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/angular-xeditable/css/xeditable.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/jqueryui/jquery-ui.theme.min.css"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/select2/css/select2.min.css"/>

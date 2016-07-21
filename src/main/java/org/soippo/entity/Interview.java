@@ -1,5 +1,6 @@
 package org.soippo.entity;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
@@ -12,10 +13,12 @@ public class Interview {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SerializedName("id")
+    @Expose
     private Long id;
 
     @Column(name = "title")
     @SerializedName("title")
+    @Expose
     private String title;
 
     @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, targetEntity = Question.class)
@@ -23,6 +26,7 @@ public class Interview {
     @OrderColumn(name = "question_order")
     @OrderBy("question_order")
     @SerializedName("questions")
+    @Expose
     private List<Question> questions;
 
     public String getTitle() {

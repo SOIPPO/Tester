@@ -1,5 +1,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<style>
+    option:empty
+    {
+        display:none;
+    }
+</style>
 <script>
     var interviewdata = ${interviewdata};
     var localizationMessages = {};
@@ -23,6 +29,9 @@
         });
         $("tr").disableSelection();
     });
+    $(document).ready(function () {
+        $('select').select2();
+    });
 </script>
 
 
@@ -32,7 +41,6 @@
 <div ng-app="editInterview"
      ng-controller="editInterviewController"
      ng-init="fillData('interviewdata')">
-
     <div class="col-md-11 center-block" id="interviewblock">
 
         <div class="panel panel-default">
@@ -92,6 +100,34 @@
                                         ng-click="addAnswer(question.localId)">
                                     <spring:message code="admin.interview.add-answer"/>
                                 </button>
+                            </div>
+                            <div style="margin-top: 10px;" class="col-md-12">
+                                <form class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <label for="correct_answer_{{question.localId}}" class="col-sm-2 control-label">
+                                            <spring:message code="admin.interview.correct_answer"/>
+                                        </label>
+                                        <div class="col-sm-10" ng-if="isMultiple(question.localId)">
+                                            <select multiple
+                                                    class="form-control"
+                                                    ng-model="question.correct_answers"
+                                                    ng-options="answer.text for answer in question.answers track by answer.localId"
+                                                    id="correct_answer_{{question.localId}}">
+                                            </select>
+                                        </div>
+
+                                        <div class="col-sm-10" ng-if="!isMultiple(question.localId)">
+                                            <select
+                                                    class="form-control"
+                                                    ng-model="question.correct_answers"
+                                                    ng-options="answer.text for answer in question.answers track by answer.localId"
+                                                    id="correct_answer_{{question.localId}}">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                         </td>
                     </tr>

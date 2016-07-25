@@ -5,6 +5,7 @@ import org.soippo.utils.UserRoles;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -12,7 +13,10 @@ public class User implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
     @SerializedName("id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "users_id_sequence",
+            allocationSize = 1,
+            sequenceName = "users_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_sequence")
     private Long id;
 
     @SerializedName("firstName")
@@ -42,6 +46,9 @@ public class User implements Serializable {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<UserResults> userResults;
 
     public Long getId() {
         return id;
@@ -106,5 +113,13 @@ public class User implements Serializable {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public List<UserResults> getUserResults() {
+        return userResults;
+    }
+
+    public void setUserResults(List<UserResults> userResults) {
+        this.userResults = userResults;
     }
 }

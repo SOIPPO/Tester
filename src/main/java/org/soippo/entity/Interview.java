@@ -11,7 +11,10 @@ import java.util.List;
 public class Interview {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "interview_id_sequence",
+            allocationSize = 1,
+            sequenceName = "interview_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "interview_id_sequence")
     @SerializedName("id")
     @Expose
     private Long id;

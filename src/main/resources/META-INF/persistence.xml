@@ -3,7 +3,8 @@
     <persistence-unit name="hibernatePersistenceUnit" transaction-type="RESOURCE_LOCAL">
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect" />
+            <property name="hibernate.default_schema" value="public"/>
         </properties>
         <mapping-file>META-INF/orm.xml</mapping-file>
     </persistence-unit>

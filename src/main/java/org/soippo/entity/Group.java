@@ -10,7 +10,10 @@ import java.util.List;
 @Table(name = "groups")
 public class Group {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "groups_id_sequence",
+            allocationSize = 1,
+            sequenceName = "groups_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groups_id_sequence")
     @Column(name = "id")
     @SerializedName("id")
     private Long id;

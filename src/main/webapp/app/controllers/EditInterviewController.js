@@ -23,8 +23,18 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
                         selectedCorrectAnswers[question['localId']] = selected;
                     }
                 }
+
+                if($scope.interviewdata.questions.length == 0 || $scope.interviewdata.questions === null || $scope.interviewdata.questions === undefined) {
+                    $scope.interviewdata.questions.push(null);
+                }
             };
 
+            $scope.initSelect = function(questionId) {
+                $("#correct_answer_" + questionId).ready(function() {
+                    $("#correct_answer_" + questionId).select2();
+                });
+
+            };
             $scope.isMultiple = function(questionId) {
                 return ($scope.interviewdata.questions[questionId].type == "MANY_VARIANTS") ? "multiple" : "";
             };

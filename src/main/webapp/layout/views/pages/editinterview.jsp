@@ -108,7 +108,7 @@
                                         <label for="correct_answer_{{question.localId}}" class="col-sm-2 control-label">
                                             <spring:message code="admin.interview.correct_answer"/>
                                         </label>
-                                        <div class="col-sm-10" ng-if="isMultiple(question.localId)">
+                                        <div class="col-sm-10" ng-if="isMultiple(question.localId)" ng-init = "initSelect(question.localId)">
                                             <select multiple
                                                     class="form-control"
                                                     ng-model="question.correct_answers"
@@ -117,7 +117,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-sm-10" ng-if="!isMultiple(question.localId)">
+                                        <div class="col-sm-10" ng-if="!isMultiple(question.localId)" ng-init = "initSelect(question.localId)">
                                             <select
                                                     class="form-control"
                                                     ng-model="question.correct_answers"

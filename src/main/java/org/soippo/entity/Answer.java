@@ -8,11 +8,14 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "answers")
-public class Answer implements Serializable{
+public class Answer implements Serializable {
     @Id
-    @Column(name = "id")
+    @Column(name = "id", updatable = false)
     @SerializedName("id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "answers_id_sequence",
+            allocationSize = 1,
+            sequenceName = "answers_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answers_id_sequence")
     @Expose
     private Long id;
 

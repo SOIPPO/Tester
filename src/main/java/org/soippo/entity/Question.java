@@ -13,7 +13,10 @@ public class Question {
     @Id
     @Column(name = "id")
     @SerializedName("id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "question_id_sequnce",
+            allocationSize = 1,
+            sequenceName = "question_id_sequnce")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_id_sequnce")
     @Expose
     private Long id;
 

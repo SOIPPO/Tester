@@ -10,7 +10,10 @@ public class UserResults {
     @Id
     @Column(name = "id", nullable = false)
     @SerializedName("id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "userresults_id_sequence",
+            allocationSize = 1,
+            sequenceName = "userresults_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userresults_id_sequence")
     private Long id;
 
     @Column(name = "question_id")
@@ -22,6 +25,14 @@ public class UserResults {
     @Column(name = "result")
     @SerializedName("result")
     private String text;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
+    private Question question;
 
     public Long getQuestionId() {
         return questionId;
@@ -48,5 +59,13 @@ public class UserResults {
     public UserResults setText(String text) {
         this.text = text;
         return this;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

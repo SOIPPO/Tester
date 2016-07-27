@@ -43,11 +43,18 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserRoles role;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_module",
+            joinColumns = {@JoinColumn(name = "user_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "interview_id", nullable = false, updatable = false)}
+    )
+    private List<Module> modules;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userId")
     private List<UserResults> userResults;
 
     public Long getId() {

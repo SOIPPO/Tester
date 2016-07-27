@@ -4,11 +4,12 @@ package org.soippo.entity;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "groups")
-public class Group {
+public class Group implements Serializable {
     @Id
     @SequenceGenerator(name = "groups_id_sequence",
             allocationSize = 1,

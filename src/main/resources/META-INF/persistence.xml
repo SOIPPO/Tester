@@ -5,6 +5,8 @@
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect" />
             <property name="hibernate.default_schema" value="public"/>
+            <property name="current_session_context_class" value="thread"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
         </properties>
         <mapping-file>META-INF/orm.xml</mapping-file>
     </persistence-unit>

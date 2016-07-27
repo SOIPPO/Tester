@@ -1,12 +1,12 @@
 package org.soippo.entity;
 
 import com.google.gson.annotations.SerializedName;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "user_results")
-public class UserResults {
+public class UserResults implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
     @SerializedName("id")
@@ -19,18 +19,20 @@ public class UserResults {
     @Column(name = "question_id")
     @SerializedName("question_id")
     private Long questionId;
+
     @Column(name = "user_id")
     @SerializedName("user_id")
     private Long userId;
+
     @Column(name = "result")
     @SerializedName("result")
     private String text;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
     private Question question;
 

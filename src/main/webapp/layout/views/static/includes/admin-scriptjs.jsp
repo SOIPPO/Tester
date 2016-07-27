@@ -1,4 +1,5 @@
 <script src="${pageContext.request.contextPath}/plugins/jquery/jquery-2.2.3.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/jquery/livequery.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/jqueryui/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angularjs/angular.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angularjs/angular-messages.js"></script>

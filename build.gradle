@@ -15,7 +15,6 @@ dependencies {
     compile 'org.springframework:spring-core:4.2.6.RELEASE'
     compile 'org.springframework:spring-webmvc:4.2.6.RELEASE'
 
-
     compile 'org.springframework.security:spring-security-core:3.1.0.RELEASE'
     compile 'org.springframework.security:spring-security-web:4.0.4.RELEASE'
     compile 'org.springframework.security:spring-security-config:4.0.4.RELEASE'
@@ -30,6 +29,12 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
     compile 'org.hibernate:hibernate-core:5.1.0.Final'
 
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.1'
+
+
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'javax.servlet:jstl:1.2'
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
@@ -42,7 +47,4 @@ dependencies {
     compile group: 'org.apache.tiles', name: 'tiles-jsp', version: '3.0.5'
     compile group: 'org.apache.tiles', name: 'tiles-servlet', version: '3.0.5'
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-tiles2', version: '2.1.1.RELEASE'
-
-
-
 }

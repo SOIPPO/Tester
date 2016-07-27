@@ -1,6 +1,7 @@
 package org.soippo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "groups")
+@JsonFilter("excludeUsers")
 public class Group implements Serializable {
     @Id
     @SequenceGenerator(name = "groups_id_sequence",

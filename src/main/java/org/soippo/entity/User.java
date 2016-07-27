@@ -1,6 +1,8 @@
 package org.soippo.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.annotations.SerializedName;
+import org.soippo.serialization.UserDeserializer;
 import org.soippo.utils.UserRoles;
 
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@JsonDeserialize(using = UserDeserializer.class)
 public class User implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
@@ -32,6 +35,7 @@ public class User implements Serializable {
     private String middleName;
 
     @Column(name = "password", nullable = false)
+
     private String passwordHash;
 
     @SerializedName("email")
@@ -61,56 +65,63 @@ public class User implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public User setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public User setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String secondName) {
+    public User setLastName(String secondName) {
         this.lastName = secondName;
+        return this;
     }
 
     public String getMiddleName() {
         return middleName;
     }
 
-    public void setMiddleName(String middleName) {
+    public User setMiddleName(String middleName) {
         this.middleName = middleName;
+        return this;
     }
 
     public String getPasswordHash() {
         return passwordHash;
     }
 
-    public void setPasswordHash(String passwordHash) {
+    public User setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public UserRoles getRole() {
         return role;
     }
 
-    public void setRole(UserRoles role) {
+    public User setRole(UserRoles role) {
         this.role = role;
+        return this;
     }
 
     @SerializedName("groupId")
@@ -118,15 +129,17 @@ public class User implements Serializable {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public User setGroup(Group group) {
         this.group = group;
+        return this;
     }
 
     public List<UserResults> getUserResults() {
         return userResults;
     }
 
-    public void setUserResults(List<UserResults> userResults) {
+    public User setUserResults(List<UserResults> userResults) {
         this.userResults = userResults;
+        return this;
     }
 }

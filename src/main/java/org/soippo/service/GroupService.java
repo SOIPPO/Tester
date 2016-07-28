@@ -9,11 +9,12 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
+@Transactional
 public class GroupService {
     @Resource
     private GroupRepository groupRepository;
 
-    public List<Group> groupList() {
+    public List<Group> findAll() {
         return groupRepository.findAll();
     }
 
@@ -29,7 +30,6 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-    @Transactional
     public void deleteGroup(Long groupId) {
         groupRepository.delete(groupId);
     }

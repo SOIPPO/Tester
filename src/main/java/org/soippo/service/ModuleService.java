@@ -1,6 +1,6 @@
 package org.soippo.service;
 
-import org.soippo.entity.Interview;
+import org.soippo.entity.Module;
 import org.soippo.repository.InterviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,20 +10,20 @@ import java.util.List;
 
 @Service
 @Transactional
-public class InterviewService {
+public class ModuleService {
     @Resource
     private InterviewRepository interviewRepository;
 
-    public List<Interview> findAll() {
+    public List<Module> findAll() {
         return interviewRepository.findAll();
     }
 
-    public Interview findOne(Long id) {
+    public Module findOne(Long id) {
         return interviewRepository.findOne(id);
     }
 
-    public Interview save(Interview interview) {
-        return interviewRepository.save(interview);
+    public Module save(Module module) {
+        return interviewRepository.save(module);
     }
 
     public void delete(Long interviewId) {

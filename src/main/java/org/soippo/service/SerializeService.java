@@ -18,6 +18,6 @@ public class SerializeService {
                 .registerTypeAdapter(User.class, userSerializer)
                 .registerTypeAdapter(Group.class, groupSerializer)
                 .create()
-                .toJson(groupService.groupList());
+                .toJson(groupService.findAll());
     }
 }

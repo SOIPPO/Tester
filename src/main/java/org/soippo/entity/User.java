@@ -35,7 +35,7 @@ public class User implements Serializable {
     private String middleName;
 
     @Column(name = "password", nullable = false)
-
+    @SerializedName("password")
     private String passwordHash;
 
     @SerializedName("email")
@@ -124,9 +124,19 @@ public class User implements Serializable {
         return this;
     }
 
-    @SerializedName("groupId")
+    @SerializedName("group")
     public Group getGroup() {
         return group;
+    }
+
+    @SerializedName("groupId")
+    public Long getGroupId() {
+        return group.getId();
+    }
+
+    @SerializedName("groupName")
+    public String getGroupName() {
+        return group.getName();
     }
 
     public User setGroup(Group group) {

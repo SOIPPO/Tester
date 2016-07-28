@@ -1,10 +1,13 @@
 package org.soippo.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "interview")
@@ -15,18 +18,20 @@ public class Module implements Serializable {
             allocationSize = 1,
             sequenceName = "module_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "module_id_sequence")
-    @SerializedName("id")
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "title")
-    @SerializedName("title")
+    @JsonProperty("title")
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY,  cascade = CascadeType.ALL, targetEntity = Question.class)
+    @OneToMany(fetch = FetchType.LAZY,
+            targetEntity = Question.class,
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "interview_id")
     @OrderColumn(name = "question_order")
     @OrderBy("question_order")
-    @SerializedName("questions")
+    @JsonProperty("questions")
     private List<Question> questions;
 
     public String getTitle() {

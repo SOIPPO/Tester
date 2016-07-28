@@ -1,5 +1,7 @@
 package org.soippo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,10 +10,11 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "answers")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Answer implements Serializable {
     @Id
     @Column(name = "id", updatable = false)
-    @SerializedName("id")
+    @JsonProperty("id")
     @SequenceGenerator(name = "answers_id_sequence",
             allocationSize = 1,
             sequenceName = "answers_id_sequence")
@@ -19,19 +22,26 @@ public class Answer implements Serializable {
     private Long id;
 
     @Column(name = "text")
-    @SerializedName("text")
+    @JsonProperty("text")
     private String text;
 
     @Column(name = "answer_order")
-    @SerializedName("answer_order")
+    @JsonProperty("answerOrder")
     private Long answer_order;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Question.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_id")
-    @SerializedName("question")
-    private Question question;
+//    @ManyToOne(fetch = FetchType.LAZY,
+//            targetEntity = Question.class,
+//            cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
+//    @JoinColumn(name = "question_id")
+//    @SerializedName("question")
+//    private Question question;
+
+    @Column(name = "question_id", insertable = false, updatable = false)
+    @JsonProperty("questionId")
+    private Long questionId;
 
     @Column(name = "is_correct")
+    @JsonProperty("isCorrect")
     private Boolean isCorrect = Boolean.FALSE;
 
     public Long getOrder() {
@@ -49,12 +59,13 @@ public class Answer implements Serializable {
     public Long getAnswer_order() {
         return answer_order;
     }
-
-    public Question getQuestion() {
-        return question;
+//
+//    public Question getQuestion() {
+//        return question;
+//    }
+//
+    public Long getQuestionId() {
+        return questionId;
     }
 
-    public Boolean getCorrect() {
-        return isCorrect;
-    }
 }

@@ -26,6 +26,7 @@ public class UserDeserializer extends JsonDeserializer<User> {
         JsonNode node = oc.readTree(jsonParser);
 
         return new User()
+                .setId(Optional.ofNullable(node.get("id")).map(JsonNode::asLong).orElse(null))
                 .setFirstName(node.get("firstName").asText())
                 .setMiddleName(node.get("middleName").asText())
                 .setLastName(node.get("lastName").asText())

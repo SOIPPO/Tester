@@ -1,6 +1,7 @@
 package org.soippo.entity;
 
-import com.google.gson.annotations.Expose;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.soippo.utils.QuestionType;
 
@@ -9,43 +10,46 @@ import java.util.List;
 
 @Entity
 @Table(name = "questions")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Question {
     @Id
     @Column(name = "id")
-    @SerializedName("id")
-    @SequenceGenerator(name = "question_id_sequnce",
+    @JsonProperty("id")
+    @SequenceGenerator(name = "question_id_sequence",
             allocationSize = 1,
-            sequenceName = "question_id_sequnce")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_id_sequnce")
+            sequenceName = "question_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_id_sequence")
     private Long id;
 
     @Column(name = "text")
-    @SerializedName("text")
+    @JsonProperty("text")
     private String text;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    @SerializedName("type")
-    private QuestionType questionType;
+    @JsonProperty("type")
+    private QuestionType type;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Answer.class, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,
+            targetEntity = Answer.class,
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "question_id")
     @OrderBy("answer_order")
     @OrderColumn(name = "answer_order")
-    @SerializedName("answers")
+    @JsonProperty("answers")
     private List<Answer> answers;
 
     @Column(name = "question_order")
-    @SerializedName("question_order")
-    private Long question_order;
+    @JsonProperty("questionOrder")
+    private Long questionOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Module.class)
-    @JoinColumn(name = "interview_id")
-    @SerializedName("module")
-    private Module module;
+    @Column(name = "interview_id")
+    @JsonProperty("interviewId")
+    @JoinColumn(name = "questions_interview_FK")
+    private Long interviewId;
 
     public Long getOrder() {
-        return question_order;
+        return questionOrder;
     }
 
     public List<Answer> getAnswers() {
@@ -60,15 +64,11 @@ public class Question {
         return text;
     }
 
-    public QuestionType getQuestionType() {
-        return questionType;
+    public QuestionType getType() {
+        return type;
     }
 
-    public Long getQuestion_order() {
-        return question_order;
-    }
-
-    public Answer getCorrectAnswer() {
-        return answers.stream().filter(Answer::getCorrect).findAny().get();
+    public Long getQuestionOrder() {
+        return questionOrder;
     }
 }

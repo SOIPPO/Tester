@@ -1,14 +1,14 @@
 package org.soippo.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.soippo.entity.User;
 import org.soippo.entity.UserResults;
-import org.soippo.serialization.GroupWithUserlistSerializer;
-import org.soippo.serialization.GroupWithoutUserlistSerializer;
-import org.soippo.serialization.UserSerializer;
-import org.soippo.serialization.UserSimplifiedSerializer;
 import org.soippo.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Type;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,16 +29,18 @@ public class UserController {
     @Resource
     private GroupService groupService;
     @Resource
-    private SerializeService serializeService;
-    @Resource
     private UserResultsService userResultsService;
     @Resource
-    private InterviewService interviewService;
+    private ModuleService moduleService;
     @Resource
     private QuestionService questionService;
 
+    private FilterProvider excludeUsersFilter = new SimpleFilterProvider()
+            .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users"));
+
     @RequestMapping("/")
     public ModelAndView homePage(ModelAndView model) {
+        userResultsService.findAll();
         model.addObject("user_message", "Hello world!");
         model.setViewName("/");
         return model;
@@ -46,25 +48,25 @@ public class UserController {
 
     @RequestMapping("/modules")
     public ModelAndView interviewlistPage(ModelAndView model) {
-        model.addObject("interviewlist", interviewService.findAll());
+        model.addObject("interviewlist", moduleService.findAll());
         model.setViewName("modules");
         return model;
     }
 
     @RequestMapping("/module/{id}")
-    public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) {
-        model.addObject("moduleData", new Gson().toJson(interviewService.findOne(id)));
+    public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) throws JsonProcessingException {
+        model.addObject("moduleData", new ObjectMapper().writeValueAsString(moduleService.findOne(id)));
         model.setViewName("module");
         return model;
     }
 
     @RequestMapping(value = "/module/saveresults", method = RequestMethod.POST)
     @ResponseBody
-    public String saveModuleResults(@RequestBody String moduleData) {
+    public String saveModuleResults(@RequestBody String moduleData) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(auth.getName());
-        Type type = new TypeToken<Map<Long, List<Long>>>() {}.getType();
-        Map<Long, List<Long>> temporalDataMap = new Gson().fromJson(moduleData, type);
+        Map<Long, List<Long>> temporalDataMap = new ObjectMapper()
+                .readValue(moduleData, new TypeReference<Map<Long, List<Long>>>(){});
 
         List<UserResults> userResults = temporalDataMap.entrySet()
                 .stream()
@@ -75,29 +77,16 @@ public class UserController {
                 .collect(Collectors.toList());
         userResultsService.saveAll(userResults);
 
-        return new Gson().toJson(questionService.checkAnswers(temporalDataMap));
-    }
-
-
-    @RequestMapping(value = "/api/simplegrouplist")
-    @ResponseBody
-    public String simpleGroupList() {
-        return serializeService.serializeGroup(new UserSerializer(), new GroupWithoutUserlistSerializer());
-    }
-
-    @RequestMapping(value = "/api/fullgrouplist")
-    @ResponseBody
-    public String extendedGroupList() {
-        return serializeService.serializeGroup(new UserSerializer(), new GroupWithUserlistSerializer());
+        return new ObjectMapper().writeValueAsString(questionService.checkAnswers(temporalDataMap));
     }
 
     @RequestMapping(value = "/api/userlistbygroup", method = RequestMethod.GET)
     @ResponseBody
-    public String userListByGroup(@RequestParam(name = "group_id") Long groupId) {
+    public String userListByGroup(@RequestParam(name = "group_id") Long groupId) throws JsonProcessingException {
         List<User> users = userService.findUsersInGroup(groupService.findGroup(groupId));
-        return new GsonBuilder()
-                .registerTypeAdapter(User.class, new UserSimplifiedSerializer())
-                .create()
-                .toJson(users);
+        return new ObjectMapper()
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .writer(excludeUsersFilter)
+                .writeValueAsString(users);
     }
 }

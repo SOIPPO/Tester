@@ -1,9 +1,8 @@
-angular.module("editInterview", ["xeditable"]).controller("editInterviewController",
+angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).controller("editInterviewController",
     ["$scope", '$window', "$http",
         function ($scope, $window, $http) {
             var localQuestionId = 0;
             var localAnswerId = 0;
-            var selectedCorrectAnswers = {};
             $scope.module = {};
             $scope.fillData = function (paramName) {
                 var data = $window[paramName];
@@ -17,57 +16,47 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
                     if (data.questions.hasOwnProperty(questionPos) && !!data.questions[questionPos]) {
                         var currentQuestion = data.questions[questionPos];
                         var question = populateQuestionObjectByData(currentQuestion);
-                        var selected = [];
-                        for(var answerPos in currentQuestion.answers) {
-                            if(currentQuestion.answers.hasOwnProperty(answerPos) && !!currentQuestion.answers[answerPos]) {
+                        for (var answerPos in currentQuestion.answers) {
+                            if (currentQuestion.answers.hasOwnProperty(answerPos) && !!currentQuestion.answers[answerPos]) {
                                 var answer = populateAnswerObjectByData(currentQuestion.answers[answerPos]);
                                 if (currentQuestion.answers[answerPos].isCorrect) {
-                                    selected.push(answer['localId'] + '');
+                                    question.correctAnswers.push(answer);
                                 }
                                 question.answers.push(answer);
                             }
                         }
-                        selectedCorrectAnswers[question['localId']] = selected;
                         $scope.module['questions'].push(question);
                     }
                 }
             };
 
-            var populateQuestionObjectByData = function(data) {
+            var populateQuestionObjectByData = function (data) {
                 return {
                     'id': data.id,
                     'text': data.text,
                     'type': data.type,
-                    'questionOrder' : data.questionOrder,
-                    'interviewId' : data.interviewId,
-                    'localId' : localQuestionId++,
-                    'answers' : []
+                    'questionOrder': data.questionOrder,
+                    'interviewId': data.interviewId,
+                    'localId': localQuestionId++,
+                    'correctAnswers': [],
+                    'answers': []
                 };
             };
 
-            var populateAnswerObjectByData = function(data) {
+            var populateAnswerObjectByData = function (data) {
                 return {
                     'id': data.id,
                     'text': data.text,
                     'questionId': data.id,
-                    'answerOrder' : data.answerOrder,
-                    'interviewId' : data.interviewId,
-                    'localId' : localAnswerId++,
-                    'correct' : data.isCorrect
+                    'answerOrder': data.answerOrder,
+                    'localId': localAnswerId++,
+                    'isCorrect': data.isCorrect
                 };
             };
 
             $scope.isMultipleQuestionType = function (questionId) {
                 return ($scope.module.questions[questionId].type == "MANY_VARIANTS") ? "multiple" : "";
             };
-
-            angular.element(document).ready(function () {
-                for (var key in selectedCorrectAnswers) {
-                    if (selectedCorrectAnswers.hasOwnProperty(key)) {
-                        $('#correct_answer_' + key).select2().val(selectedCorrectAnswers[key]).trigger("change");
-                    }
-                }
-            });
 
             $scope.emptyOrNull = function (item) {
                 return !(item === null)
@@ -92,10 +81,6 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
                 };
                 $scope.module.questions.push(newQuestion);
                 $('#addNewQuestion').modal('hide');
-
-                $('#correct_answer_' + newQuestion.localId).livequery(function () {
-                    $('select').select2();
-                });
             };
 
             $scope.deleteQuestion = function (questionId) {
@@ -121,32 +106,34 @@ angular.module("editInterview", ["xeditable"]).controller("editInterviewControll
             };
 
             $scope.deleteAnswer = function (questionId, answerId) {
+                var answer = $scope.module.questions[questionId].answers[getAnswerPositionById(questionId, answerId)];
+                for(var key in $scope.module.questions[questionId].correctAnswers) {
+                    if($scope.module.questions[questionId].correctAnswers[key] === answer) {
+                        $scope.module.questions[questionId].correctAnswers.splice(key, 1);
+                    }
+                }
                 delete $scope.module.questions[questionId].answers[getAnswerPositionById(questionId, answerId)];
             };
 
             $scope.interviewSave = function () {
                 for (var id in $scope.module.questions) {
-                    if ($scope.module.questions.hasOwnProperty(id)) {
+                    if ($scope.module.questions.hasOwnProperty(id) && $scope.module.questions[id]) {
                         var question = $scope.module.questions[id];
-                        if (question) {
-
-                            var correctAnswers = $('#correct_answer_' + question.localId).val();
-                            if (!Array.isArray(correctAnswers)) {
-                                var userAnswer = correctAnswers;
-                                correctAnswers = [];
-                                correctAnswers.push(userAnswer);
-                            }
-                            for (var key in correctAnswers) {
-                                if (correctAnswers.hasOwnProperty(key)) {
-                                    var answerLocalId = correctAnswers[key];
-                                    var answerPos = getAnswerPositionById(question.localId, answerLocalId);
-                                    $scope.module.questions[question.localId].answers[answerPos].isCorrect = true;
-                                }
+                        if(!question.correctAnswers || question.correctAnswers.length == 0) {
+                            return;
+                        }
+                        for(var key in question.answers) {
+                            question.answers[key].isCorrect = false;
+                        }
+                        for (var key in question.correctAnswers) {
+                            if (question.correctAnswers.hasOwnProperty(key)) {
+                                var answerLocalId = question.correctAnswers[key].localId;
+                                var answerPos = getAnswerPositionById(question.localId, answerLocalId);
+                                $scope.module.questions[question.localId].answers[answerPos]['isCorrect'] = true;
                             }
                         }
                     }
                 }
-
 
                 $http.post('/admin/interview/save', $scope.module).then(
                     function successCallback(response) {

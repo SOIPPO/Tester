@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.google.gson.Gson;
 import org.soippo.entity.Group;
 import org.soippo.entity.Module;
 import org.soippo.entity.User;
@@ -61,7 +60,7 @@ public class AdminController {
                             .saveUser(new ObjectMapper()
                                     .readValue(userData, User.class))));
         } catch (UserValidationException ex) {
-            return ResponseEntity.badRequest().body(new Gson().toJson(ex.getErrorCode()));
+            return ResponseEntity.badRequest().body(new ObjectMapper().writeValueAsString(ex.getErrorCode()));
         }
     }
 

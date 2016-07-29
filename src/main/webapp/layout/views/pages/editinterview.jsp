@@ -1,9 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <style>
-    option:empty
-    {
-        display:none;
+    option:empty {
+        display: none;
     }
 </style>
 <script>
@@ -30,7 +29,7 @@
         $("tr").disableSelection();
     });
     $(document).ready(function () {
-        $('select').select2();
+//        $('select').select2();
     });
 </script>
 
@@ -50,7 +49,6 @@
                 </h1>
             </div>
             <div class="panel-body">
-                {{module}}
                 <table class="table table-bordered" id="sortable">
                     <tbody>
                     <tr ng-repeat="question in module.questions | filter:emptyOrNull | orderBy:'questionOrder' track by $index"
@@ -102,32 +100,47 @@
                                 </button>
                             </div>
                             <div style="margin-top: 10px;" class="col-md-12">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" name = "correct_answers_{{question.localId}}">
 
                                     <div class="form-group">
-                                        <label for="correct_answer_{{question.localId}}" class="col-sm-2 control-label">
+                                        <label class="col-sm-2 control-label">
                                             <spring:message code="admin.module.correct_answer"/>
                                         </label>
-                                        <div class="col-sm-10" ng-if="isMultipleQuestionType(question.localId)" ng-init = "initSelect(question.localId)">
-                                            <select multiple
-                                                    ng-required
-                                                    class="form-control"
-                                                    ng-model="question.correct_answers"
-                                                    ng-options="answer.text for answer in question.answers track by answer.localId"
-                                                    id="correct_answer_{{question.localId}}">
-                                            </select>
+                                        <div class="col-sm-10" ng-if="isMultipleQuestionType(question.localId)"
+                                             ng-init="initSelect(question.localId)">
+                                            <ui-select multiple
+                                                       ng-required="true"
+                                                       ng-model="question.correctAnswers"
+                                                       theme="bootstrap"
+                                                       class="form-control">
+                                                <ui-select-match allow-clear="true" placeholder="">
+                                                    {{$item.text}}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="answer in question.answers | filter: $select.search">
+                                                    {{answer.text}}
+                                                </ui-select-choices>
+
+                                            </ui-select>
                                         </div>
 
-                                        <div class="col-sm-10" ng-if="!isMultipleQuestionType(question.localId)" ng-init = "initSelect(question.localId)">
-                                            <select ng-required
-                                                    class="form-control"
-                                                    ng-model="question.correct_answers"
-                                                    ng-options="answer.text for answer in question.answers track by answer.localId"
-                                                    id="correct_answer_{{question.localId}}">
-                                            </select>
+                                        <div class="col-sm-10" ng-if="!isMultipleQuestionType(question.localId)">
+
+                                            <ui-select ng-required="true"
+                                                       ng-model="question.correctAnswers[0]"
+                                                       theme="bootstrap"
+                                                       class="form-control">
+                                                <ui-select-match allow-clear="true" placeholder="">
+                                                    {{$select.selected.text}}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="answer in question.answers | filter: $select.search">
+                                                    {{answer.text}}
+                                                </ui-select-choices>
+                                            </ui-select>
+
                                         </div>
                                     </div>
-
                                 </form>
                             </div>
                         </td>

@@ -27,14 +27,7 @@ public class Answer implements Serializable {
 
     @Column(name = "answer_order")
     @JsonProperty("answerOrder")
-    private Long answer_order;
-
-//    @ManyToOne(fetch = FetchType.LAZY,
-//            targetEntity = Question.class,
-//            cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
-//    @JoinColumn(name = "question_id")
-//    @SerializedName("question")
-//    private Question question;
+    private Long answerOrder;
 
     @Column(name = "question_id", insertable = false, updatable = false)
     @JsonProperty("questionId")
@@ -45,7 +38,7 @@ public class Answer implements Serializable {
     private Boolean isCorrect = Boolean.FALSE;
 
     public Long getOrder() {
-        return answer_order;
+        return answerOrder;
     }
 
     public Long getId() {
@@ -56,14 +49,7 @@ public class Answer implements Serializable {
         return text;
     }
 
-    public Long getAnswer_order() {
-        return answer_order;
-    }
-//
-//    public Question getQuestion() {
-//        return question;
-//    }
-//
+
     public Long getQuestionId() {
         return questionId;
     }

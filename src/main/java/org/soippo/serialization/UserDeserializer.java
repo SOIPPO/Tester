@@ -2,21 +2,17 @@ package org.soippo.serialization;
 
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
 import org.soippo.entity.Group;
 import org.soippo.entity.User;
 import org.soippo.utils.UserRoles;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Optional;
 
 public class UserDeserializer extends JsonDeserializer<User> {

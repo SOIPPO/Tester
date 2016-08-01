@@ -25,12 +25,9 @@ dependencies {
     compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.2'
     compile 'org.springframework.data:spring-data-jpa:1.10.1.RELEASE'
     compile 'javax.persistence:persistence-api:1.0.2'
-    compile 'org.postgresql:postgresql:9.4.1208.jre7'
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.4.1209.jre7'
     compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
-
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.1.Final'
-
-
     compile group: 'org.hibernate', name: 'hibernate-search-orm', version: '5.5.4.Final'
 
 

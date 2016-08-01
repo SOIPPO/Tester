@@ -2,11 +2,15 @@ package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.google.gson.annotations.SerializedName;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user_results")
+@Table(name = "user_results",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "question_id"})}
+)
+
 @JsonFilter("excludeUsers")
 public class UserResults implements Serializable {
     @Id

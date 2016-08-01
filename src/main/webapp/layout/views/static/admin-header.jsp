@@ -22,6 +22,12 @@
                 </li>
             </ul>
 
+            <ul class="nav navbar-nav">
+                <li <c:if test="${pageUrl == '/admin/results'}">class="active"</c:if>>
+                    <a href="/admin/results">Results</a>
+                </li>
+            </ul>
+
 
             <div class="nav navbar-nav navbar-right row locallization-panel">
                 <a class="navbar-brand" href="${pageUrl}?lang=ua">

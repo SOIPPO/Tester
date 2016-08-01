@@ -1,6 +1,7 @@
 package org.soippo.entity;
 
-import com.google.gson.annotations.Expose;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.soippo.utils.QuestionType;
 
@@ -9,49 +10,46 @@ import java.util.List;
 
 @Entity
 @Table(name = "questions")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Question {
     @Id
     @Column(name = "id")
-    @SerializedName("id")
-    @SequenceGenerator(name = "question_id_sequnce",
+    @JsonProperty("id")
+    @SequenceGenerator(name = "question_id_sequence",
             allocationSize = 1,
-            sequenceName = "question_id_sequnce")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_id_sequnce")
-    @Expose
+            sequenceName = "question_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_id_sequence")
     private Long id;
 
     @Column(name = "text")
-    @SerializedName("text")
-    @Expose
+    @JsonProperty("text")
     private String text;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    @SerializedName("type")
-    @Expose
-    private QuestionType questionType;
+    @JsonProperty("type")
+    private QuestionType type;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = Answer.class, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,
+            targetEntity = Answer.class,
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "question_id")
     @OrderBy("answer_order")
     @OrderColumn(name = "answer_order")
-    @SerializedName("answers")
-    @Expose
+    @JsonProperty("answers")
     private List<Answer> answers;
 
     @Column(name = "question_order")
-    @SerializedName("question_order")
-    @Expose
-    private Long question_order;
+    @JsonProperty("questionOrder")
+    private Long questionOrder;
 
     @Column(name = "interview_id")
-    @SerializedName("interview_id")
+    @JsonProperty("interviewId")
     @JoinColumn(name = "questions_interview_FK")
-    @Expose
     private Long interviewId;
 
     public Long getOrder() {
-        return question_order;
+        return questionOrder;
     }
 
     public List<Answer> getAnswers() {
@@ -66,15 +64,11 @@ public class Question {
         return text;
     }
 
-    public QuestionType getQuestionType() {
-        return questionType;
+    public QuestionType getType() {
+        return type;
     }
 
-    public Long getQuestion_order() {
-        return question_order;
-    }
-
-    public Long getInterviewId() {
-        return interviewId;
+    public Long getQuestionOrder() {
+        return questionOrder;
     }
 }

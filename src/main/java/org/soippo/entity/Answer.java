@@ -1,5 +1,7 @@
 package org.soippo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,38 +10,35 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "answers")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Answer implements Serializable {
     @Id
     @Column(name = "id", updatable = false)
-    @SerializedName("id")
+    @JsonProperty("id")
     @SequenceGenerator(name = "answers_id_sequence",
             allocationSize = 1,
             sequenceName = "answers_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answers_id_sequence")
-    @Expose
     private Long id;
 
     @Column(name = "text")
-    @SerializedName("text")
-    @Expose
+    @JsonProperty("text")
     private String text;
 
     @Column(name = "answer_order")
-    @SerializedName("answer_order")
-    @Expose
-    private Long answer_order;
+    @JsonProperty("answerOrder")
+    private Long answerOrder;
 
-    @Column(name = "question_id")
-    @SerializedName("question_id")
-    @Expose
+    @Column(name = "question_id", insertable = false, updatable = false)
+    @JsonProperty("questionId")
     private Long questionId;
 
     @Column(name = "is_correct")
-
+    @JsonProperty("isCorrect")
     private Boolean isCorrect = Boolean.FALSE;
 
     public Long getOrder() {
-        return answer_order;
+        return answerOrder;
     }
 
     public Long getId() {
@@ -50,15 +49,9 @@ public class Answer implements Serializable {
         return text;
     }
 
-    public Long getAnswer_order() {
-        return answer_order;
-    }
 
     public Long getQuestionId() {
         return questionId;
     }
 
-    public Boolean getCorrect() {
-        return isCorrect;
-    }
 }

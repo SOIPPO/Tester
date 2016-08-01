@@ -1,4 +1,5 @@
 <script src="${pageContext.request.contextPath}/plugins/jquery/jquery-2.2.3.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/jquery/livequery.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/jqueryui/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angularjs/angular.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angularjs/angular-messages.js"></script>
@@ -10,3 +11,5 @@
 <script src="${pageContext.request.contextPath}/plugins/angular-xeditable/js/xeditable.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angular-xeditable/js/bootstrap-editable.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/select2/js/select2.full.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.18.1/select.js"></script>

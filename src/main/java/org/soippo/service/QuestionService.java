@@ -3,6 +3,7 @@ package org.soippo.service;
 import org.soippo.entity.Answer;
 import org.soippo.repository.AnswerRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class QuestionService {
     @Resource
     private AnswerRepository answerRepository;

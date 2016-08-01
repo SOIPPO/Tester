@@ -1,18 +1,16 @@
 package org.soippo.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.soippo.entity.Group;
-import org.soippo.entity.Interview;
+import org.soippo.entity.Module;
 import org.soippo.entity.User;
 import org.soippo.exceptions.UserValidationException;
-import org.soippo.serialization.GroupWithoutUserlistSerializer;
-import org.soippo.serialization.UserDeserializer;
-import org.soippo.serialization.UserSerializer;
-import org.soippo.service.GroupService;
-import org.soippo.service.InterviewService;
-import org.soippo.service.SerializeService;
-import org.soippo.service.UserService;
+import org.soippo.service.*;
 import org.soippo.utils.UserRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/admin")
@@ -31,41 +29,38 @@ public class AdminController {
     @Resource
     private GroupService groupService;
     @Resource
-    private SerializeService serializeService;
-    @Resource
-    private InterviewService interviewService;
+    private ModuleService moduleService;
+
+    private FilterProvider excludeUsersFilter = new SimpleFilterProvider()
+            .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users", "user"));
 
     @RequestMapping(value = "/userlist", method = RequestMethod.POST)
     @ResponseBody
-    public String userList() {
-        List<User> users = userService.findAll();
-        return new GsonBuilder()
-                .registerTypeAdapter(User.class, new UserSerializer())
-                .create()
-                .toJson(users);
+    public String userList() throws JsonProcessingException {
+        return new ObjectMapper()
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .writer(excludeUsersFilter)
+                .writeValueAsString(userService.findAll());
     }
 
     @RequestMapping(value = "/userlist", method = RequestMethod.GET)
-    public ModelAndView userListPage(ModelAndView model) {
-        model.addObject("grouplist", serializeService.serializeGroup(new UserSerializer(), new GroupWithoutUserlistSerializer()));
-        model.addObject("rolesList", new Gson().toJson(UserRoles.values()));
+    public ModelAndView userListPage(ModelAndView model) throws JsonProcessingException {
+        model.addObject("grouplist", new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll()));
+        model.addObject("rolesList", new ObjectMapper().writeValueAsString(UserRoles.values()));
         model.setViewName("/userlist");
         return model;
     }
 
     @RequestMapping(value = "/saveuser", method = RequestMethod.POST)
-    public ResponseEntity saveUser(@RequestBody String userData) {
-        User user = new GsonBuilder()
-                .registerTypeAdapter(User.class, new UserDeserializer())
-                .create()
-                .fromJson(userData, User.class);
+    public ResponseEntity saveUser(@RequestBody String userData) throws IOException {
         try {
-            return ResponseEntity.ok(new GsonBuilder()
-                    .registerTypeAdapter(User.class, new UserSerializer())
-                    .create()
-                    .toJson(userService.saveUser(user)));
+            return ResponseEntity.ok(new ObjectMapper()
+                    .writer(excludeUsersFilter)
+                    .writeValueAsString(userService
+                            .saveUser(new ObjectMapper()
+                                    .readValue(userData, User.class))));
         } catch (UserValidationException ex) {
-            return ResponseEntity.badRequest().body(new Gson().toJson(ex.getErrorCode()));
+            return ResponseEntity.badRequest().body(new ObjectMapper().writeValueAsString(ex.getErrorCode()));
         }
     }
 
@@ -77,23 +72,20 @@ public class AdminController {
 
     @RequestMapping(value = "/grouplist", method = RequestMethod.POST)
     @ResponseBody
-    public String groupList() {
-        return serializeService.serializeGroup(new UserSerializer(), new GroupWithoutUserlistSerializer());
+    public String groupList() throws JsonProcessingException {
+        return new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll());
     }
 
     @RequestMapping(value = "/grouplist", method = RequestMethod.GET)
-    public ModelAndView groupListPage(ModelAndView model) {
-        model.addObject("grouplist", serializeService.serializeGroup(new UserSerializer(), new GroupWithoutUserlistSerializer()));
+    public ModelAndView groupListPage(ModelAndView model) throws JsonProcessingException {
+        model.addObject("grouplist", new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll()));
         model.setViewName("/grouplist");
         return model;
     }
 
     @RequestMapping(value = "/savegroup", method = RequestMethod.POST)
-    public ResponseEntity saveGroup(@RequestBody String groupData) {
-        Group group = new GsonBuilder()
-                .create()
-                .fromJson(groupData, Group.class);
-        groupService.saveGroup(group);
+    public ResponseEntity saveGroup(@RequestBody String groupData) throws IOException {
+        groupService.saveGroup(new ObjectMapper().readValue(groupData, Group.class));
         return ResponseEntity.ok().build();
     }
 
@@ -114,40 +106,51 @@ public class AdminController {
 
     @RequestMapping(value = "/modules", method = RequestMethod.GET)
     public ModelAndView interviewListPage(ModelAndView model) {
-        model.addObject("interviewlist", interviewList());
+        model.addObject("interviewlist", moduleList());
         model.setViewName("/modules");
         return model;
     }
 
     @RequestMapping(value = "/interview/list", method = RequestMethod.POST)
     @ResponseBody
-    public String interviewList() {
-        return new Gson().toJson(interviewService.findAll());
+    public String moduleList() {
+        try {
+            return new ObjectMapper().writeValueAsString(moduleService.findAll());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @RequestMapping(value = "/editmodule/{id}", method = RequestMethod.GET)
-    public ModelAndView editinterviewPage(@PathVariable Long id, ModelAndView model) {
-        model.addObject("interviewdata", new Gson().toJson(interviewService.findOne(id)));
+    public ModelAndView editinterviewPage(@PathVariable Long id, ModelAndView model) throws JsonProcessingException {
+        model.addObject("interviewdata", new ObjectMapper().writeValueAsString(moduleService.findOne(id)));
         model.setViewName("/editmodule");
         return model;
     }
 
     @RequestMapping(value = "/interview/new", method = RequestMethod.POST)
     public ResponseEntity createNewInterview(@RequestBody String interviewTitle) {
-        Interview interview = new Interview().setTitle(interviewTitle);
-        interviewService.save(interview);
+        Module module = new Module().setTitle(interviewTitle);
+        moduleService.save(module);
         return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/interview/delete", method = RequestMethod.POST)
     public ResponseEntity deleteInterview(@RequestBody Long interviewId) {
-        interviewService.delete(interviewId);
+        moduleService.delete(interviewId);
         return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/interview/save", method = RequestMethod.POST)
-    public ResponseEntity<Interview> saveInterview(@RequestBody String interviewData) {
-        Interview interview = new GsonBuilder().create().fromJson(interviewData, Interview.class);
-        return new ResponseEntity<>(interviewService.save(interview), HttpStatus.OK);
+    public ResponseEntity<Module> saveInterview(@RequestBody String interviewData) throws IOException {
+        Module module = new ObjectMapper().readValue(interviewData, Module.class);
+        return new ResponseEntity<>(moduleService.save(module), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/results", method = RequestMethod.GET)
+    public ModelAndView resultsPage(ModelAndView model) {
+        model.setViewName("/usersresults");
+        return model;
     }
 }

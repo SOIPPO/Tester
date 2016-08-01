@@ -1,42 +1,44 @@
 package org.soippo.entity;
 
-import com.google.gson.annotations.Expose;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "interview")
-public class Interview {
+public class Module implements Serializable {
     @Id
     @Column(name = "id")
-    @SequenceGenerator(name = "interview_id_sequence",
+    @SequenceGenerator(name = "module_id_sequence",
             allocationSize = 1,
-            sequenceName = "interview_id_sequence")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "interview_id_sequence")
-    @SerializedName("id")
-    @Expose
+            sequenceName = "module_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "module_id_sequence")
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "title")
-    @SerializedName("title")
-    @Expose
+    @JsonProperty("title")
     private String title;
 
-    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, targetEntity = Question.class)
+    @OneToMany(fetch = FetchType.LAZY,
+            targetEntity = Question.class,
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "interview_id")
     @OrderColumn(name = "question_order")
     @OrderBy("question_order")
-    @SerializedName("questions")
-    @Expose
+    @JsonProperty("questions")
     private List<Question> questions;
 
     public String getTitle() {
         return title;
     }
 
-    public Interview setTitle(String title) {
+    public Module setTitle(String title) {
         this.title = title;
         return this;
     }

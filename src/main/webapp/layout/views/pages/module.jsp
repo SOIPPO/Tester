@@ -1,9 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/app/controllers/ModuleController.js"></script>
 
 <script>
     var moduleData = ${moduleData};
+    var localizationMessages = {};
+    localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";
+    localizationMessages['fail-save'] = "<spring:message code="popup.messages.module.already-exists"/>";
     $(document).ready(function () {
         $(":checkbox").labelauty({label: false});
         $(":radio").labelauty({label: false});
@@ -53,6 +56,6 @@
         </div>
     </div>
     <div class="pull-right">
-        <button type="submit" class="btn btn-success"><spring:message key="send"/></button>
+        <button type="submit" class="btn btn-success"><spring:message code="send"/></button>
     </div>
 </form>

@@ -16,14 +16,17 @@ angular.module("modulePage", []).controller("moduleController",
                 $.blockUI({message: null});
                 $http.post('/module/saveresults', $scope.result).then(
                     function successCallback(response) {
+                        alertify.notify(localizationMessages['success-save'], 'success', 5, function () {});
                         for (var key in  response.data) {
                             if (response.data.hasOwnProperty(key)) {
                                 $("#question_title_" + key).css("background-color", (response.data[key]) ? "green" : "red");
                             }
                         }
+
                         $.unblockUI();
                     },
                     function errorCallback(response) {
+                        alertify.notify(localizationMessages['fail-save'], 'error', 5, function () {});
                         $.unblockUI();
                     }
                 );

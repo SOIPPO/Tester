@@ -1,9 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <style>
-    option:empty
-    {
-        display:none;
+    option:empty {
+        display: none;
     }
 </style>
 <script>
@@ -30,7 +29,7 @@
         $("tr").disableSelection();
     });
     $(document).ready(function () {
-        $('select').select2();
+//        $('select').select2();
     });
 </script>
 
@@ -46,18 +45,17 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1 class="panel-title">
-                    <b><a href="#" editable-text="interviewdata.title">{{ interviewdata.title || "empty" }}</a></b>
+                    <b><a href="#" editable-text="module.title">{{ module.title || "empty" }}</a></b>
                 </h1>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered" id="sortable">
                     <tbody>
-                    <tr ng-repeat="question in interviewdata.questions | filter:emptyOrNull | orderBy:'question_order' track by $index"
+                    <tr ng-repeat="question in module.questions | filter:emptyOrNull | orderBy:'questionOrder' track by $index"
                         ng-switch on="question.type"
-
                         id="question_{{question.localId}}">
-
                         <td>
+
                             <div>
                                 <b><a href="#" editable-text="question.text">{{ question.text|| "empty" }}</a></b>
                                 <div class="pull-right" ng-click="deleteQuestion(question.localId)"
@@ -67,8 +65,8 @@
                             </div>
 
                             <div ng-switch-when="ONE_VARIANT">
-                                <div ng-repeat="answer in question.answers track by $index">
-                                    <div class="radio disabled" ng-if="answer">
+                                <div ng-repeat="answer in question.answers | filter:emptyOrNull | orderBy:'answerOrder' track by $index">
+                                    <div class="radio disabled">
                                         <label>
                                             <input type="radio" value="" name="radio_option_{{question.localId}}"
                                                    disabled>
@@ -82,8 +80,8 @@
                             </div>
 
                             <div ng-switch-when="MANY_VARIANTS">
-                                <div ng-repeat="answer in question.answers track by $index">
-                                    <div class="checkbox disabled" ng-if="answer">
+                                <div ng-repeat="answer in question.answers | filter:emptyOrNull | orderBy:'answerOrder' track by $index">
+                                    <div class="checkbox disabled">
                                         <label>
                                             <input type="checkbox" value="" disabled>
                                             <a href="#" editable-text="answer.text">{{ answer.text|| "empty" }}</a>
@@ -98,35 +96,51 @@
                             <div style="margin-top: 10px;">
                                 <button type="button" class="btn btn-info btn-xs"
                                         ng-click="addAnswer(question.localId)">
-                                    <spring:message code="admin.interview.add-answer"/>
+                                    <spring:message code="admin.module.add-answer"/>
                                 </button>
                             </div>
                             <div style="margin-top: 10px;" class="col-md-12">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" name = "correct_answers_{{question.localId}}">
 
                                     <div class="form-group">
-                                        <label for="correct_answer_{{question.localId}}" class="col-sm-2 control-label">
-                                            <spring:message code="admin.interview.correct_answer"/>
+                                        <label class="col-sm-2 control-label">
+                                            <spring:message code="admin.module.correct_answer"/>
                                         </label>
-                                        <div class="col-sm-10" ng-if="isMultiple(question.localId)" ng-init = "initSelect(question.localId)">
-                                            <select multiple
-                                                    class="form-control"
-                                                    ng-model="question.correct_answers"
-                                                    ng-options="answer.text for answer in question.answers track by answer.localId"
-                                                    id="correct_answer_{{question.localId}}">
-                                            </select>
+                                        <div class="col-sm-10" ng-if="isMultipleQuestionType(question.localId)"
+                                             ng-init="initSelect(question.localId)">
+                                            <ui-select multiple
+                                                       ng-required="true"
+                                                       ng-model="question.correctAnswers"
+                                                       theme="bootstrap"
+                                                       class="form-control">
+                                                <ui-select-match allow-clear="true" placeholder="">
+                                                    {{$item.text}}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="answer in question.answers | filter: $select.search">
+                                                    {{answer.text}}
+                                                </ui-select-choices>
+
+                                            </ui-select>
                                         </div>
 
-                                        <div class="col-sm-10" ng-if="!isMultiple(question.localId)" ng-init = "initSelect(question.localId)">
-                                            <select
-                                                    class="form-control"
-                                                    ng-model="question.correct_answers"
-                                                    ng-options="answer.text for answer in question.answers track by answer.localId"
-                                                    id="correct_answer_{{question.localId}}">
-                                            </select>
+                                        <div class="col-sm-10" ng-if="!isMultipleQuestionType(question.localId)">
+
+                                            <ui-select ng-required="true"
+                                                       ng-model="question.correctAnswers[0]"
+                                                       theme="bootstrap"
+                                                       class="form-control">
+                                                <ui-select-match allow-clear="true" placeholder="">
+                                                    {{$select.selected.text}}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="answer in question.answers | filter: $select.search">
+                                                    {{answer.text}}
+                                                </ui-select-choices>
+                                            </ui-select>
+
                                         </div>
                                     </div>
-
                                 </form>
                             </div>
                         </td>
@@ -134,7 +148,7 @@
                     </tbody>
                 </table>
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addNewQuestion">
-                    <spring:message code="modal.interview.add-question.title"/>
+                    <spring:message code="modal.module.add-question.title"/>
                 </button>
             </div>
 
@@ -151,21 +165,21 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><spring:message code="modal.interview.add-question.title"/></h4>
+                    <h4 class="modal-title"><spring:message code="modal.module.add-question.title"/></h4>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal">
                         <div class="form-group">
                             <label for="questionType" class="col-sm-2 control-label">
-                                <spring:message code="modal.interview.add-question.type"/>
+                                <spring:message code="modal.module.add-question.type"/>
                             </label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="questionType">
                                     <option value="ONE_VARIANT">
-                                        <spring:message code="modal.interview.add-question.ONE_VARIANT"/>
+                                        <spring:message code="modal.module.add-question.ONE_VARIANT"/>
                                     </option>
                                     <option value="MANY_VARIANTS">
-                                        <spring:message code="modal.interview.add-question.MANY_VARIANTS"/>
+                                        <spring:message code="modal.module.add-question.MANY_VARIANTS"/>
                                     </option>
                                 </select>
                             </div>

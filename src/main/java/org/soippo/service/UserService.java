@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
     @Resource
     private UserRepository userRepository;
@@ -29,7 +30,7 @@ public class UserService {
 
         return userRepository.save(user);
     }
-    @Transactional
+
     public void deleteUser(Long userId) {
         userRepository.delete(userId);
     }

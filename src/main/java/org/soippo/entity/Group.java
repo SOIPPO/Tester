@@ -3,6 +3,8 @@ package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
@@ -11,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "groups")
-@JsonFilter("excludeUsers")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Group implements Serializable {
     @Id
@@ -20,14 +21,15 @@ public class Group implements Serializable {
             sequenceName = "groups_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groups_id_sequence")
     @Column(name = "id")
-    @SerializedName("id")
+    @JsonProperty("id")
     private Long id;
 
     @Column(name = "name")
-    @SerializedName("name")
+    @JsonProperty("name")
     private String name;
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="group")
+    @JsonManagedReference
     private List<User> users;
 
     public Long getId() {

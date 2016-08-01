@@ -30,22 +30,20 @@ public class AdminController {
     private GroupService groupService;
     @Resource
     private ModuleService moduleService;
-
-    private FilterProvider excludeUsersFilter = new SimpleFilterProvider()
-            .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users", "user"));
+    @Resource
+    private UserResultsService userResultsService;
 
     @RequestMapping(value = "/userlist", method = RequestMethod.POST)
     @ResponseBody
     public String userList() throws JsonProcessingException {
         return new ObjectMapper()
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .writer(excludeUsersFilter)
                 .writeValueAsString(userService.findAll());
     }
 
     @RequestMapping(value = "/userlist", method = RequestMethod.GET)
     public ModelAndView userListPage(ModelAndView model) throws JsonProcessingException {
-        model.addObject("grouplist", new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll()));
+        model.addObject("grouplist", new ObjectMapper().writeValueAsString(groupService.findAll()));
         model.addObject("rolesList", new ObjectMapper().writeValueAsString(UserRoles.values()));
         model.setViewName("/userlist");
         return model;
@@ -55,7 +53,6 @@ public class AdminController {
     public ResponseEntity saveUser(@RequestBody String userData) throws IOException {
         try {
             return ResponseEntity.ok(new ObjectMapper()
-                    .writer(excludeUsersFilter)
                     .writeValueAsString(userService
                             .saveUser(new ObjectMapper()
                                     .readValue(userData, User.class))));
@@ -73,12 +70,12 @@ public class AdminController {
     @RequestMapping(value = "/grouplist", method = RequestMethod.POST)
     @ResponseBody
     public String groupList() throws JsonProcessingException {
-        return new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll());
+        return new ObjectMapper().writeValueAsString(groupService.findAll());
     }
 
     @RequestMapping(value = "/grouplist", method = RequestMethod.GET)
     public ModelAndView groupListPage(ModelAndView model) throws JsonProcessingException {
-        model.addObject("grouplist", new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll()));
+        model.addObject("grouplist", new ObjectMapper().writeValueAsString(groupService.findAll()));
         model.setViewName("/grouplist");
         return model;
     }
@@ -149,7 +146,9 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/results", method = RequestMethod.GET)
-    public ModelAndView resultsPage(ModelAndView model) {
+    public ModelAndView resultsPage(ModelAndView model) throws JsonProcessingException {
+        model.addObject("results", new ObjectMapper()
+                .writeValueAsString(userResultsService.collectResults()));
         model.setViewName("/usersresults");
         return model;
     }

@@ -32,9 +32,6 @@ public class LoginController {
     @Resource
     private GroupService groupService;
 
-    private FilterProvider excludeUsersFilter = new SimpleFilterProvider()
-            .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users"));
-
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView registerPage(ModelAndView model) {
         model.addObject("grouplist", groupListInJson());
@@ -46,7 +43,6 @@ public class LoginController {
     public ResponseEntity registerUser(@RequestBody String userData) throws IOException {
         try {
             return ResponseEntity.ok(new ObjectMapper()
-                    .writer(excludeUsersFilter)
                     .writeValueAsString(userService
                             .saveUser(new ObjectMapper()
                                     .readValue(userData, User.class))));
@@ -95,7 +91,7 @@ public class LoginController {
     private String groupListInJson() {
         String groupList = null;
         try {
-            groupList = new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll());
+            groupList = new ObjectMapper().writeValueAsString(groupService.findAll());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

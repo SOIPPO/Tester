@@ -1,6 +1,8 @@
 package org.soippo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
@@ -10,12 +12,10 @@ import java.io.Serializable;
 @Table(name = "user_results",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "question_id"})}
 )
-
-@JsonFilter("excludeUsers")
 public class UserResults implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
-    @SerializedName("id")
+    @JsonProperty("id")
     @SequenceGenerator(name = "userresults_id_sequence",
             allocationSize = 1,
             sequenceName = "userresults_id_sequence")
@@ -23,24 +23,29 @@ public class UserResults implements Serializable {
     private Long id;
 
     @Column(name = "question_id")
-    @SerializedName("question_id")
+    @JsonProperty("question_id")
     private Long questionId;
 
     @Column(name = "user_id")
-    @SerializedName("user_id")
+    @JsonProperty("user_id")
     private Long userId;
 
     @Column(name = "result")
-    @SerializedName("result")
+    @JsonProperty("result")
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
     private Question question;
+
+    @Column(name = "is_correct")
+    @JsonProperty("isCorrect")
+    private Boolean isCorrect;
 
     public Long getQuestionId() {
         return questionId;
@@ -75,5 +80,14 @@ public class UserResults implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getIsCorrect() {
+        return isCorrect;
+    }
+
+    public UserResults setIsCorrect(Boolean correct) {
+        this.isCorrect = correct;
+        return this;
     }
 }

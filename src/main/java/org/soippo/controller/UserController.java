@@ -35,9 +35,6 @@ public class UserController {
     @Resource
     private QuestionService questionService;
 
-    private FilterProvider excludeUsersFilter = new SimpleFilterProvider()
-            .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users"));
-
     @RequestMapping("/")
     public ModelAndView homePage(ModelAndView model) {
         userResultsService.findAll();
@@ -67,17 +64,18 @@ public class UserController {
         Long userId = Long.parseLong(auth.getName());
         Map<Long, List<Long>> temporalDataMap = new ObjectMapper()
                 .readValue(moduleData, new TypeReference<Map<Long, List<Long>>>(){});
-
+        Map<Long, Boolean> result = questionService.checkAnswers(temporalDataMap);
         List<UserResults> userResults = temporalDataMap.entrySet()
                 .stream()
                 .map(item -> new UserResults()
                         .setUserId(userId)
                         .setQuestionId(item.getKey())
+                        .setIsCorrect(result.get(item.getKey()))
                         .setText(String.valueOf(item.getValue())))
                 .collect(Collectors.toList());
         userResultsService.saveAll(userResults);
 
-        return new ObjectMapper().writeValueAsString(questionService.checkAnswers(temporalDataMap));
+        return new ObjectMapper().writeValueAsString(result);
     }
 
     @RequestMapping(value = "/api/userlistbygroup", method = RequestMethod.GET)
@@ -86,7 +84,6 @@ public class UserController {
         List<User> users = userService.findUsersInGroup(groupService.findGroup(groupId));
         return new ObjectMapper()
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .writer(excludeUsersFilter)
                 .writeValueAsString(users);
     }
 }

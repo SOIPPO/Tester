@@ -43,7 +43,9 @@ public class AdminController {
 
     @RequestMapping(value = "/userlist", method = RequestMethod.GET)
     public ModelAndView userListPage(ModelAndView model) throws JsonProcessingException {
-        model.addObject("grouplist", new ObjectMapper().writeValueAsString(groupService.findAll()));
+        model.addObject("grouplist", new ObjectMapper()
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .writeValueAsString(groupService.findAll()));
         model.addObject("rolesList", new ObjectMapper().writeValueAsString(UserRoles.values()));
         model.setViewName("/userlist");
         return model;
@@ -70,12 +72,16 @@ public class AdminController {
     @RequestMapping(value = "/grouplist", method = RequestMethod.POST)
     @ResponseBody
     public String groupList() throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(groupService.findAll());
+        return new ObjectMapper()
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .writeValueAsString(groupService.findAll());
     }
 
     @RequestMapping(value = "/grouplist", method = RequestMethod.GET)
     public ModelAndView groupListPage(ModelAndView model) throws JsonProcessingException {
-        model.addObject("grouplist", new ObjectMapper().writeValueAsString(groupService.findAll()));
+        model.addObject("grouplist", new ObjectMapper()
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .writeValueAsString(groupService.findAll()));
         model.setViewName("/grouplist");
         return model;
     }
@@ -148,6 +154,7 @@ public class AdminController {
     @RequestMapping(value = "/results", method = RequestMethod.GET)
     public ModelAndView resultsPage(ModelAndView model) throws JsonProcessingException {
         model.addObject("results", new ObjectMapper()
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .writeValueAsString(userResultsService.collectResults()));
         model.setViewName("/usersresults");
         return model;

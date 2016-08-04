@@ -23,23 +23,23 @@ public class UserResults implements Serializable {
     private Long id;
 
     @Column(name = "question_id")
-    @JsonProperty("question_id")
+    @JsonProperty("questionId")
     private Long questionId;
 
     @Column(name = "user_id")
-    @JsonProperty("user_id")
+    @JsonProperty("userId")
     private Long userId;
 
     @Column(name = "result")
     @JsonProperty("result")
     private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
     @JsonBackReference
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class)
     @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
     private Question question;
 
@@ -89,5 +89,13 @@ public class UserResults implements Serializable {
     public UserResults setIsCorrect(Boolean correct) {
         this.isCorrect = correct;
         return this;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }

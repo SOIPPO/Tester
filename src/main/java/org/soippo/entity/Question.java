@@ -71,4 +71,12 @@ public class Question {
     public Long getQuestionOrder() {
         return questionOrder;
     }
+
+    public Long getInterviewId() {
+        return interviewId;
+    }
+
+    public void setInterviewId(Long interviewId) {
+        this.interviewId = interviewId;
+    }
 }

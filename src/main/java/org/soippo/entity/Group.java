@@ -1,11 +1,7 @@
 package org.soippo.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "groups")
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class Group implements Serializable {
     @Id
     @SequenceGenerator(name = "groups_id_sequence",
@@ -28,8 +24,7 @@ public class Group implements Serializable {
     @JsonProperty("name")
     private String name;
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="group")
-    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
     private List<User> users;
 
     public Long getId() {
@@ -51,7 +46,7 @@ public class Group implements Serializable {
     public List<User> getUsers() {
         return users;
     }
-
+    @JsonIgnore
     public void setUsers(List<User> users) {
         this.users = users;
     }

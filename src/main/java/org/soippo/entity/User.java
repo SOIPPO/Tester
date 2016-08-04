@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @JsonDeserialize(using = UserDeserializer.class)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class User implements Serializable {
     @Id
     @Column(name = "id", nullable = false)

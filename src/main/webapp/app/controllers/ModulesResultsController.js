@@ -1,4 +1,4 @@
-angular.module("modulesResults", []).controller("modulesResultsController",
+angular.module("modulesResults", ['ngSanitize', 'ui.select']).controller("modulesResultsController",
     ["$scope", '$window', "$http",
         function ($scope, $window, $http) {
             $scope.groups = {};
@@ -40,12 +40,13 @@ angular.module("modulesResults", []).controller("modulesResultsController",
                 );
             };
 
-            $scope.updateUserList = function (groupId) {
+            $scope.updateUserList = function () {
                 $http.post('/admin/userlist').then(
                     function successCallback(response) {
                         for (var key in response.data) {
                             $scope.users[response.data[key].id] = response.data[key];
                         }
+                        $scope.allUsers = angular.copy($scope.users);
                     },
                     function errorCallback(response) {
                         return null;
@@ -53,28 +54,21 @@ angular.module("modulesResults", []).controller("modulesResultsController",
                 );
             };
 
-            $scope.test = function (key, value) {
-                console.log(key);
-                console.log(value);
-            };
-            var isGroupSelected = function (groupId) {
-                if (!$scope.selectedGroups || $scope.selectedGroups.length == 0) return true;
-                for (var key in $scope.selectedGroups) {
-                    if (groupId == $scope.selectedGroups[key].id) return true;
+            $scope.filterGroup = function() {
+                $scope.users = angular.copy({});
+
+                for(var key in $scope.allUsers) {
+                    var user = $scope.allUsers[key];
+                    if(isSelected(user.groupId, $scope.selectedGroups)) {
+                        $scope.users[user.id] = user;
+                    }
                 }
-                return false;
+                $scope.filterData();
             };
-            var isUserSelected = function (userId) {
-                if (!$scope.selectedUsers || $scope.selectedUsers.length == 0) return true;
-                for (var key in $scope.selectedUsers) {
-                    if (userId == $scope.selectedUsers[key].id) return true;
-                }
-                return false;
-            };
-            var isModuleSelected = function (moduleId) {
-                if (!$scope.selectedModules || $scope.selectedModules.length == 0) return true;
-                for (var key in $scope.selectedModules) {
-                    if (moduleId == $scope.selectedModules[key].id) return true;
+            var isSelected = function(id, selectedArray) {
+                if (!selectedArray || selectedArray.length == 0) return true;
+                for (var key in selectedArray) {
+                    if (id == selectedArray[key].id) return true;
                 }
                 return false;
             };
@@ -84,21 +78,21 @@ angular.module("modulesResults", []).controller("modulesResultsController",
 
                 for (var groupId in $scope.results) {
                     var currentGroup = $scope.results[groupId];
-                    if (isGroupSelected(currentGroup.id)) {
+                    if (isSelected(currentGroup.id, $scope.selectedGroups)) {
                         var group = {
                             'id': currentGroup.id,
                             'users': []
                         };
                         for (var userId in currentGroup.users) {
                             var currentUser = currentGroup.users[userId];
-                            if (isUserSelected(currentUser.user.id)) {
+                            if (isSelected(currentUser.user.id, $scope.selectedUsers)) {
                                 var user = {
                                     'id': currentUser.user.id,
                                     'modules': []
                                 };
                                 for (var moduleId in currentUser.moduleResultsList) {
                                     var currentModule = currentUser.moduleResultsList[moduleId];
-                                    if (isModuleSelected(currentModule.id)) {
+                                    if (isSelected(currentModule.id, $scope.selectedModules)) {
                                         var module = {
                                             'id': currentModule.id,
                                             'correct': currentModule.correctAnswersCount,
@@ -107,10 +101,12 @@ angular.module("modulesResults", []).controller("modulesResultsController",
                                         user.modules.push(module);
                                     }
                                 }
-                                group.users.push(user);
+                                if(user.modules.length > 0)
+                                    group.users.push(user);
                             }
                         }
-                        $scope.display.push(group);
+                        if(group.users.length > 0)
+                            $scope.display.push(group);
                     }
                 }
             }

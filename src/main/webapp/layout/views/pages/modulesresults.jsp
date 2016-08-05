@@ -59,17 +59,17 @@
         <div class="panel-heading">
             <h3 class="panel-title">{{groups[group.id].name}}</h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="padding: 3px !important;">
             <div class="list-group">
-                <div class="panel panel-default" ng-repeat="user in group.users track by $index">
+                <div class="panel panel-default" ng-repeat="user in group.users track by $index" style="margin-bottom:10px !important;">
                     <div class="panel-heading">
                         <b>{{users[user.id].lastName}}&nbsp;{{users[user.id].firstName}}&nbsp;{{users[user.id].middleName}}</b>
                     </div>
                     <ul class="list-group">
+
                         <li class="list-group-item" ng-repeat="module in user.modules track by $index">
-                            {{modules[module.id].title}}
-                            <span class="label pull-right"
-                                  ng-class="{true: 'label-success', false: 'label-danger'}[module.correct/module.total>0.6]">
+                            {{modules[module.id].title}}&nbsp;<i>({{module.date}})</i>
+                            <span class="label label-default pull-right">
                                 {{module.correct}} / {{module.total}}
                             </span>
                         </li>

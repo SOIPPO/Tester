@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.soippo.entity.User;
 import org.soippo.entity.UserResults;
 import org.soippo.service.*;
@@ -18,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,13 +62,15 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(auth.getName());
         Map<Long, List<Long>> temporalDataMap = new ObjectMapper()
-                .readValue(moduleData, new TypeReference<Map<Long, List<Long>>>(){});
+                .readValue(moduleData, new TypeReference<Map<Long, List<Long>>>() {
+                });
         Map<Long, Boolean> result = questionService.checkAnswers(temporalDataMap);
         List<UserResults> userResults = temporalDataMap.entrySet()
                 .stream()
                 .map(item -> new UserResults()
                         .setUserId(userId)
                         .setQuestionId(item.getKey())
+                        .setDate(new Date(Calendar.getInstance().getTime().getTime()))
                         .setIsCorrect(result.get(item.getKey()))
                         .setText(String.valueOf(item.getValue())))
                 .collect(Collectors.toList());

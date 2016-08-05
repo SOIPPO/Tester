@@ -3,6 +3,8 @@ package org.soippo.entity.results;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.soippo.entity.Module;
 
+import java.sql.Date;
+
 public class ModuleResults {
     @JsonProperty("id")
     private Long moduleId;
@@ -10,6 +12,8 @@ public class ModuleResults {
     private Long totalQuestions;
     @JsonProperty("correctAnswersCount")
     private Long correctAnswersCount;
+    @JsonProperty("date")
+    private Date date;
 
     public Long getTotalQuestions() {
         return totalQuestions;
@@ -35,6 +39,15 @@ public class ModuleResults {
 
     public ModuleResults setModuleId(Long moduleId) {
         this.moduleId = moduleId;
+        return this;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public ModuleResults setDate(Date date) {
+        this.date = date;
         return this;
     }
 }

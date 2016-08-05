@@ -7,10 +7,11 @@ import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Entity
 @Table(name = "user_results",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "question_id"})}
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "question_id", "date"})}
 )
 public class UserResults implements Serializable {
     @Id
@@ -46,6 +47,10 @@ public class UserResults implements Serializable {
     @Column(name = "is_correct")
     @JsonProperty("isCorrect")
     private Boolean isCorrect;
+
+    @Column(name = "date")
+    @JsonProperty("date")
+    private Date date;
 
     public Long getQuestionId() {
         return questionId;
@@ -97,5 +102,18 @@ public class UserResults implements Serializable {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public UserResults setDate(Date date) {
+        this.date = date;
+        return this;
+    }
+
+    public Long getModuleId() {
+        return question.getInterviewId();
     }
 }

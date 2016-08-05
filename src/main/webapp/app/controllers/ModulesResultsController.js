@@ -96,7 +96,8 @@ angular.module("modulesResults", ['ngSanitize', 'ui.select']).controller("module
                                         var module = {
                                             'id': currentModule.id,
                                             'correct': currentModule.correctAnswersCount,
-                                            'total': currentModule.totalQuestions
+                                            'total': currentModule.totalQuestions,
+                                            'date' : currentModule.date
                                         };
                                         user.modules.push(module);
                                     }

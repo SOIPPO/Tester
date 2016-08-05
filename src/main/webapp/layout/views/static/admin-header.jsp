@@ -24,7 +24,7 @@
 
             <ul class="nav navbar-nav">
                 <li <c:if test="${pageUrl == '/admin/results'}">class="active"</c:if>>
-                    <a href="/admin/results">Results</a>
+                    <a href="/admin/results"><spring:message code="title.usersresults"/></a>
                 </li>
             </ul>
 

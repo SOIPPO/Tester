@@ -236,7 +236,6 @@
 
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="password" class="col-sm-3 control-label"><spring:message
                                 code="registration.fields.password"/></label>
@@ -248,8 +247,8 @@
                                    placeholder='<spring:message code="registration.fields.password"/>'
                                    ng-model="user.password"
                                    ng-model-options="{updateOn: 'blur'}"
-                                   ng-minlength="7"
-                                   ng-required="true">
+                                   ng-change="passwordChanged()"
+                                   ng-minlength="7">
 
                             <div ng-if="registerForm.$submitted || registerForm.password.$touched">
                                 <span ng-if="registerForm.password.$error.required"

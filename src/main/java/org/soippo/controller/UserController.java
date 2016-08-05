@@ -34,6 +34,8 @@ public class UserController {
     @Resource
     private QuestionService questionService;
 
+    private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
     @RequestMapping("/")
     public ModelAndView homePage(ModelAndView model) {
         userResultsService.findAll();
@@ -51,7 +53,7 @@ public class UserController {
 
     @RequestMapping("/module/{id}")
     public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) throws JsonProcessingException {
-        model.addObject("moduleData", new ObjectMapper().writeValueAsString(moduleService.findOne(id)));
+        model.addObject("moduleData", objectMapper.writeValueAsString(moduleService.findOne(id)));
         model.setViewName("module");
         return model;
     }
@@ -61,7 +63,7 @@ public class UserController {
     public String saveModuleResults(@RequestBody String moduleData) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(auth.getName());
-        Map<Long, List<Long>> temporalDataMap = new ObjectMapper()
+        Map<Long, List<Long>> temporalDataMap = objectMapper
                 .readValue(moduleData, new TypeReference<Map<Long, List<Long>>>() {
                 });
         Map<Long, Boolean> result = questionService.checkAnswers(temporalDataMap);
@@ -76,15 +78,13 @@ public class UserController {
                 .collect(Collectors.toList());
         userResultsService.saveAll(userResults);
 
-        return new ObjectMapper().writeValueAsString(result);
+        return objectMapper.writeValueAsString(result);
     }
 
     @RequestMapping(value = "/api/userlistbygroup", method = RequestMethod.GET)
     @ResponseBody
     public String userListByGroup(@RequestParam(name = "group_id") Long groupId) throws JsonProcessingException {
         List<User> users = userService.findUsersInGroup(groupService.findGroup(groupId));
-        return new ObjectMapper()
-                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .writeValueAsString(users);
+        return objectMapper.writeValueAsString(users);
     }
 }

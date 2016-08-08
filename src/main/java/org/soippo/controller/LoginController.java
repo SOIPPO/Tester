@@ -2,13 +2,10 @@ package org.soippo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.soippo.entity.User;
 import org.soippo.exceptions.UserValidationException;
 import org.soippo.service.GroupService;
-import org.soippo.service.SerializeService;
 import org.soippo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,8 +29,7 @@ public class LoginController {
     @Resource
     private GroupService groupService;
 
-    private FilterProvider excludeUsersFilter = new SimpleFilterProvider()
-            .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users"));
+    private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView registerPage(ModelAndView model) {
@@ -45,13 +41,12 @@ public class LoginController {
     @RequestMapping(value = "/api/register", method = RequestMethod.POST)
     public ResponseEntity registerUser(@RequestBody String userData) throws IOException {
         try {
-            return ResponseEntity.ok(new ObjectMapper()
-                    .writer(excludeUsersFilter)
+            return ResponseEntity.ok(objectMapper
                     .writeValueAsString(userService
-                            .saveUser(new ObjectMapper()
+                            .saveUser(objectMapper
                                     .readValue(userData, User.class))));
         } catch (UserValidationException ex) {
-            return ResponseEntity.badRequest().body(new ObjectMapper().writeValueAsString(ex.getErrorCode()));
+            return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(ex.getErrorCode()));
         }
     }
 
@@ -82,20 +77,21 @@ public class LoginController {
     @RequestMapping("/login-success")
     @ResponseBody
     public String loginSuccess() throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString("");
+        return objectMapper.writeValueAsString("");
     }
 
     @RequestMapping("/login-error")
     public ResponseEntity loginError() throws JsonProcessingException {
         return ResponseEntity.badRequest()
-                .body(new ObjectMapper()
+                .body(objectMapper
                         .writeValueAsString(new BadCredentialsException("Incorrect password!").getMessage()));
     }
 
     private String groupListInJson() {
         String groupList = null;
         try {
-            groupList = new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll());
+            groupList = objectMapper
+                    .writeValueAsString(groupService.findAll());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

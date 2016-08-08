@@ -3,13 +3,14 @@ package org.soippo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.soippo.entity.Group;
 import org.soippo.entity.Module;
 import org.soippo.entity.User;
 import org.soippo.exceptions.UserValidationException;
+import org.soippo.service.GroupService;
+import org.soippo.service.ModuleService;
+import org.soippo.service.UserResultsService;
+import org.soippo.service.UserService;
 import org.soippo.service.GroupService;
 import org.soippo.service.ModuleService;
 import org.soippo.service.UserService;
@@ -32,9 +33,10 @@ public class AdminController {
     private GroupService groupService;
     @Resource
     private ModuleService moduleService;
+    @Resource
+    private UserResultsService userResultsService;
 
-    private FilterProvider excludeUsersFilter = new SimpleFilterProvider()
-            .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users", "user"));
+    private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexPage(ModelAndView model) {
@@ -44,16 +46,15 @@ public class AdminController {
     @RequestMapping(value = "/userlist", method = RequestMethod.POST)
     @ResponseBody
     public String userList() throws JsonProcessingException {
-        return new ObjectMapper()
-                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .writer(excludeUsersFilter)
+        return objectMapper
                 .writeValueAsString(userService.findAll());
     }
 
     @RequestMapping(value = "/userlist", method = RequestMethod.GET)
     public ModelAndView userListPage(ModelAndView model) throws JsonProcessingException {
-        model.addObject("grouplist", new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll()));
-        model.addObject("rolesList", new ObjectMapper().writeValueAsString(UserRoles.values()));
+        model.addObject("grouplist", objectMapper
+                .writeValueAsString(groupService.findAll()));
+        model.addObject("rolesList", objectMapper.writeValueAsString(UserRoles.values()));
         model.setViewName("/userlist");
         return model;
     }
@@ -61,13 +62,12 @@ public class AdminController {
     @RequestMapping(value = "/saveuser", method = RequestMethod.POST)
     public ResponseEntity saveUser(@RequestBody String userData) throws IOException {
         try {
-            return ResponseEntity.ok(new ObjectMapper()
-                    .writer(excludeUsersFilter)
+            return ResponseEntity.ok(objectMapper
                     .writeValueAsString(userService
-                            .saveUser(new ObjectMapper()
+                            .saveUser(objectMapper
                                     .readValue(userData, User.class))));
         } catch (UserValidationException ex) {
-            return ResponseEntity.badRequest().body(new ObjectMapper().writeValueAsString(ex.getErrorCode()));
+            return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(ex.getErrorCode()));
         }
     }
 
@@ -80,19 +80,21 @@ public class AdminController {
     @RequestMapping(value = "/grouplist", method = RequestMethod.POST)
     @ResponseBody
     public String groupList() throws JsonProcessingException {
-        return new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll());
+        return objectMapper
+                .writeValueAsString(groupService.findAll());
     }
 
     @RequestMapping(value = "/grouplist", method = RequestMethod.GET)
     public ModelAndView groupListPage(ModelAndView model) throws JsonProcessingException {
-        model.addObject("grouplist", new ObjectMapper().writer(excludeUsersFilter).writeValueAsString(groupService.findAll()));
+        model.addObject("grouplist", objectMapper
+                .writeValueAsString(groupService.findAll()));
         model.setViewName("/grouplist");
         return model;
     }
 
     @RequestMapping(value = "/savegroup", method = RequestMethod.POST)
     public ResponseEntity saveGroup(@RequestBody String groupData) throws IOException {
-        groupService.saveGroup(new ObjectMapper().readValue(groupData, Group.class));
+        groupService.saveGroup(objectMapper.readValue(groupData, Group.class));
         return ResponseEntity.ok().build();
     }
 
@@ -122,7 +124,7 @@ public class AdminController {
     @ResponseBody
     public String moduleList() {
         try {
-            return new ObjectMapper().writeValueAsString(moduleService.findAll());
+            return objectMapper.writeValueAsString(moduleService.findAll());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -131,7 +133,7 @@ public class AdminController {
 
     @RequestMapping(value = "/editmodule/{id}", method = RequestMethod.GET)
     public ModelAndView editinterviewPage(@PathVariable Long id, ModelAndView model) throws JsonProcessingException {
-        model.addObject("interviewdata", new ObjectMapper().writeValueAsString(moduleService.findOne(id)));
+        model.addObject("interviewdata", objectMapper.writeValueAsString(moduleService.findOne(id)));
         model.setViewName("/editmodule");
         return model;
     }
@@ -151,12 +153,14 @@ public class AdminController {
 
     @RequestMapping(value = "/interview/save", method = RequestMethod.POST)
     public ResponseEntity<Module> saveInterview(@RequestBody String interviewData) throws IOException {
-        Module module = new ObjectMapper().readValue(interviewData, Module.class);
+        Module module = objectMapper.readValue(interviewData, Module.class);
         return new ResponseEntity<>(moduleService.save(module), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/results", method = RequestMethod.GET)
-    public ModelAndView resultsPage(ModelAndView model) {
+    public ModelAndView resultsPage(ModelAndView model) throws JsonProcessingException {
+        model.addObject("results", objectMapper
+                .writeValueAsString(userResultsService.collectResults()));
         model.setViewName("/usersresults");
         return model;
     }

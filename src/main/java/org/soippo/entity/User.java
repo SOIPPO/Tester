@@ -1,5 +1,9 @@
 package org.soippo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.annotations.SerializedName;
 import org.soippo.serialization.UserDeserializer;
@@ -12,43 +16,45 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @JsonDeserialize(using = UserDeserializer.class)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class User implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
-    @SerializedName("id")
+    @JsonProperty("id")
     @SequenceGenerator(name = "users_id_sequence",
             allocationSize = 1,
             sequenceName = "users_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_sequence")
     private Long id;
 
-    @SerializedName("firstName")
+    @JsonProperty("firstName")
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @SerializedName("lastName")
+    @JsonProperty("lastName")
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @SerializedName("middleName")
+    @JsonProperty("middleName")
     @Column(name = "middle_name", nullable = false)
     private String middleName;
 
     @Column(name = "password", nullable = false)
-    @SerializedName("password")
+    @JsonProperty("password")
     private String passwordHash;
 
-    @SerializedName("email")
+    @JsonProperty("email")
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @SerializedName("role")
+    @JsonProperty("role")
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRoles role;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
+    @JsonBackReference
     private Group group;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -59,6 +65,7 @@ public class User implements Serializable {
     private List<Module> modules;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userId")
+    @JsonManagedReference
     private List<UserResults> userResults;
 
     public Long getId() {
@@ -124,17 +131,17 @@ public class User implements Serializable {
         return this;
     }
 
-    @SerializedName("group")
+    @JsonProperty("group")
     public Group getGroup() {
         return group;
     }
 
-    @SerializedName("groupId")
+    @JsonProperty("groupId")
     public Long getGroupId() {
         return group.getId();
     }
 
-    @SerializedName("groupName")
+    @JsonProperty("groupName")
     public String getGroupName() {
         return group.getName();
     }

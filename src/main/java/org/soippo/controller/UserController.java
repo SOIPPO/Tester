@@ -39,11 +39,12 @@ public class UserController {
             .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users"));
 
     @RequestMapping("/")
-    public ModelAndView homePage(ModelAndView model) {
-        userResultsService.findAll();
-        model.addObject("user_message", "Hello world!");
-        model.setViewName("/");
-        return model;
+    public String homePage(ModelAndView model) {
+        return "redirect:modules";
+//        userResultsService.findAll();
+//        model.addObject("user_message", "Hello world!");
+//        model.setViewName("/");
+//        return model;
     }
 
     @RequestMapping("/modules")

@@ -10,7 +10,9 @@ import org.soippo.entity.Group;
 import org.soippo.entity.Module;
 import org.soippo.entity.User;
 import org.soippo.exceptions.UserValidationException;
-import org.soippo.service.*;
+import org.soippo.service.GroupService;
+import org.soippo.service.ModuleService;
+import org.soippo.service.UserService;
 import org.soippo.utils.UserRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,11 @@ public class AdminController {
 
     private FilterProvider excludeUsersFilter = new SimpleFilterProvider()
             .addFilter("excludeUsers", SimpleBeanPropertyFilter.serializeAllExcept("users", "user"));
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String indexPage(ModelAndView model) {
+        return "redirect:modules";
+    }
 
     @RequestMapping(value = "/userlist", method = RequestMethod.POST)
     @ResponseBody

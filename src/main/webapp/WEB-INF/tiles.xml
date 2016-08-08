@@ -95,4 +95,15 @@
         <put-attribute name="body" value="/layout/views/pages/editinterview.jsp"/>
     </definition>
 
+
+    <definition name="/usersresults" template="/layout/views/admin-layout.jsp">
+        <put-attribute name="title" value="title.usersresults"/>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
+        <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
+
+        <put-attribute name="header" value="/layout/views/static/admin-header.jsp"/>
+        <put-attribute name="footer" value="/layout/views/static/admin-footer.jsp"/>
+
+        <put-attribute name="body" value="/layout/views/pages/modulesresults.jsp"/>
+    </definition>
 </tiles-definitions>

@@ -21,15 +21,20 @@ public class UserDeserializer extends JsonDeserializer<User> {
         ObjectCodec oc = jsonParser.getCodec();
         JsonNode node = oc.readTree(jsonParser);
 
-        return new User()
+        User user = new User()
                 .setId(Optional.ofNullable(node.get("id")).map(JsonNode::asLong).orElse(null))
                 .setFirstName(node.get("firstName").asText())
                 .setMiddleName(node.get("middleName").asText())
                 .setLastName(node.get("lastName").asText())
                 .setEmail(node.get("email").asText())
-                .setPasswordHash(new BCryptPasswordEncoder(11).encode(node.get("password").asText()))
                 .setRole(UserRoles.valueOf(Optional.ofNullable(node.get("role")).map(JsonNode::asText).orElse("USER")))
                 .setGroup(new ObjectMapper().treeToValue(node.get("group"), Group.class));
 
+        if (Optional.ofNullable(node.get("isPasswordChanged")).map(JsonNode::asBoolean).orElse(Boolean.FALSE).equals(Boolean.TRUE)) {
+            user.setPasswordHash(new BCryptPasswordEncoder(11).encode(node.get("password").asText()));
+        } else {
+            user.setPasswordHash(node.get("password").asText());
+        }
+        return user;
     }
 }

@@ -15,6 +15,7 @@ angular.module("editUser", []).controller("editUserController",
             $scope.fillUserData = function(data) {
                 $scope.$apply(function() {
                     $scope.user = data;
+                    $scope.user.isPasswordChanged = false;
                     $scope.user.group = getFirstElement($scope.grouplist);
 
                     for(var key in $scope.grouplist) {
@@ -26,6 +27,9 @@ angular.module("editUser", []).controller("editUserController",
                 });
             };
 
+            $scope.passwordChanged = function () {
+                $scope.user.isPasswordChanged = true;
+            };
             $scope.submitForm = function (isValid) {
                 if (isValid) {
                     $http.post('/admin/saveuser', $scope.user).then(

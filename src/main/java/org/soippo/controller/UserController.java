@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.soippo.entity.User;
+import org.soippo.entity.UserDetails;
 import org.soippo.entity.UserResults;
 import org.soippo.service.*;
 import org.springframework.security.core.Authentication;
@@ -39,10 +40,6 @@ public class UserController {
     @RequestMapping("/")
     public String homePage(ModelAndView model) {
         return "redirect:modules";
-//        userResultsService.findAll();
-//        model.addObject("user_message", "Hello world!");
-//        model.setViewName("/");
-//        return model;
     }
 
     @RequestMapping("/modules")
@@ -87,5 +84,16 @@ public class UserController {
     public String userListByGroup(@RequestParam(name = "group_id") Long groupId) throws JsonProcessingException {
         List<User> users = userService.findUsersInGroup(groupService.findGroup(groupId));
         return objectMapper.writeValueAsString(users);
+    }
+
+    @RequestMapping("/profile")
+    public ModelAndView profilePage(ModelAndView model) throws JsonProcessingException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails currentUser = (UserDetails) auth.getPrincipal();
+        Long userId = currentUser.getId();
+        model.addObject("userData", objectMapper.writeValueAsString(userService.findOne(userId)));
+        model.addObject("grouplist", objectMapper.writeValueAsString(groupService.findAll()));
+        model.setViewName("profile");
+        return model;
     }
 }

@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.soippo.entity.User;
 import org.soippo.entity.UserDetails;
 import org.soippo.entity.UserResults;
+import org.soippo.exceptions.UserValidationException;
 import org.soippo.service.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -95,5 +97,16 @@ public class UserController {
         model.addObject("grouplist", objectMapper.writeValueAsString(groupService.findAll()));
         model.setViewName("profile");
         return model;
+    }
+
+    @RequestMapping(value = "/saveuser", method = RequestMethod.POST)
+    public ResponseEntity saveUser(@RequestBody String userData) throws IOException {
+        try {
+            User user = objectMapper.readValue(userData, User.class);
+            user.setRole(userService.findOne(user.getId()).getRole());
+            return ResponseEntity.ok(objectMapper.writeValueAsString(userService.saveUser(user)));
+        } catch (UserValidationException ex) {
+            return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(ex.getErrorCode()));
+        }
     }
 }

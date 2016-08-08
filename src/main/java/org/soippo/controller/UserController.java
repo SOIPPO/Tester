@@ -37,11 +37,12 @@ public class UserController {
     private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
     @RequestMapping("/")
-    public ModelAndView homePage(ModelAndView model) {
-        userResultsService.findAll();
-        model.addObject("user_message", "Hello world!");
-        model.setViewName("/");
-        return model;
+    public String homePage(ModelAndView model) {
+        return "redirect:modules";
+//        userResultsService.findAll();
+//        model.addObject("user_message", "Hello world!");
+//        model.setViewName("/");
+//        return model;
     }
 
     @RequestMapping("/modules")

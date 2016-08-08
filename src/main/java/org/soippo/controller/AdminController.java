@@ -11,6 +11,9 @@ import org.soippo.service.GroupService;
 import org.soippo.service.ModuleService;
 import org.soippo.service.UserResultsService;
 import org.soippo.service.UserService;
+import org.soippo.service.GroupService;
+import org.soippo.service.ModuleService;
+import org.soippo.service.UserService;
 import org.soippo.utils.UserRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,11 @@ public class AdminController {
     private UserResultsService userResultsService;
 
     private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String indexPage(ModelAndView model) {
+        return "redirect:modules";
+    }
 
     @RequestMapping(value = "/userlist", method = RequestMethod.POST)
     @ResponseBody

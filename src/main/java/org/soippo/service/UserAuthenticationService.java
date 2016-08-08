@@ -22,6 +22,14 @@ public class UserAuthenticationService implements UserDetailsService {
     @Resource
     private UserRepository userRepository;
 
+    public static List<GrantedAuthority> getGrantedAuthorities(List<UserRoles> roles) {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        for (UserRoles role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.name()));
+        }
+        return authorities;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
@@ -33,7 +41,7 @@ public class UserAuthenticationService implements UserDetailsService {
             boolean accountNonExpired = true;
             boolean credentialsNonExpired = true;
             boolean accountNonLocked = true;
-            return new User(username,
+            return new User(String.format("%s %s %s", user.getLastName(), user.getFirstName(), user.getMiddleName()),
                     user.getPasswordHash(),
                     enabled,
                     accountNonExpired,
@@ -67,14 +75,6 @@ public class UserAuthenticationService implements UserDetailsService {
         }
 
         return roles;
-    }
-
-    public static List<GrantedAuthority> getGrantedAuthorities(List<UserRoles> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (UserRoles role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.name()));
-        }
-        return authorities;
     }
 
 

@@ -24,12 +24,17 @@ angular.module("profile", []).controller("profileController",
 
             $scope.submitForm = function (isValid) {
                 if (isValid) {
+                    $.blockUI({
+                        message: null
+                    });
                     $http.post('/saveuser', $scope.user).then(
                         function successCallback(response) {
-                            var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                            alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
                             });
+                            $.unblockUI();
                         },
                         function errorCallback(response) {
+                            $.unblockUI();
                         }
                     );
                 }

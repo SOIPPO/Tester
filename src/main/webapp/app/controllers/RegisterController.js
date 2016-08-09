@@ -3,14 +3,6 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
         function ($scope, $window, $http) {
             $scope.user = {};
 
-            var getFirstElement = function (obj) {
-                for (var key in obj) {
-                    if (obj.hasOwnProperty(key)) {
-                        return obj[key];
-                    }
-                }
-            };
-
             $scope.fillGroupData = function (paramName) {
                 $scope.grouplist = $window[paramName];
                 $scope.user.group = getFirstElement($scope.grouplist);
@@ -22,12 +14,13 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
             };
 
             $scope.submitForm = function (isValid) {
+                $scope.user.isPasswordChanged = true;
                 if (isValid) {
                     $.blockUI({
                         message: null
                     });
                     $http.post('/api/register', $scope.user).then(
-                        function successCallback(response) {
+                        function successCallback() {
                             $window.location.href = '/login?ref=1';
                             $.unblockUI();
                         },
@@ -56,14 +49,11 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
             };
 
             $scope.displayError = function (element, message) {
-                $scope.clearMessages();
-                $('#' + element).tooltip({'title': message, 'placement' : 'bottom'});
-                $('#' + element).tooltip('show');
+                displayError(element, message);
             };
 
             $scope.clearMessages = function(element) {
-                $('#' + element).tooltip();
-                $('#' + element).tooltip('destroy');
+                clearMessages(element);
             };
         }]
 );

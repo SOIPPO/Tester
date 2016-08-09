@@ -13,11 +13,11 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
                 };
 
                 for (var questionPos in data.questions) {
-                    if (data.questions.hasOwnProperty(questionPos) && !!data.questions[questionPos]) {
+                    if (!!data.questions[questionPos]) {
                         var currentQuestion = data.questions[questionPos];
                         var question = populateQuestionObjectByData(currentQuestion);
                         for (var answerPos in currentQuestion.answers) {
-                            if (currentQuestion.answers.hasOwnProperty(answerPos) && !!currentQuestion.answers[answerPos]) {
+                            if (!!currentQuestion.answers[answerPos]) {
                                 var answer = populateAnswerObjectByData(currentQuestion.answers[answerPos]);
                                 if (currentQuestion.answers[answerPos].isCorrect) {
                                     question.correctAnswers.push(answer);
@@ -90,8 +90,7 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
             var getAnswerPositionById = function (questionId, answerId) {
                 var question = $scope.module.questions[questionId];
                 for (var pos in question.answers) {
-                    if (question.answers.hasOwnProperty(pos) && !!question.answers[pos] &&
-                        question.answers[pos].localId == answerId) {
+                    if (!!question.answers[pos] && question.answers[pos].localId == answerId) {
                         return pos;
                     }
                 }
@@ -107,8 +106,8 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
 
             $scope.deleteAnswer = function (questionId, answerId) {
                 var answer = $scope.module.questions[questionId].answers[getAnswerPositionById(questionId, answerId)];
-                for(var key in $scope.module.questions[questionId].correctAnswers) {
-                    if($scope.module.questions[questionId].correctAnswers[key] === answer) {
+                for (var key in $scope.module.questions[questionId].correctAnswers) {
+                    if ($scope.module.questions[questionId].correctAnswers[key] === answer) {
                         $scope.module.questions[questionId].correctAnswers.splice(key, 1);
                     }
                 }
@@ -119,28 +118,26 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
                 for (var id in $scope.module.questions) {
                     if ($scope.module.questions.hasOwnProperty(id) && $scope.module.questions[id]) {
                         var question = $scope.module.questions[id];
-                        if(!question.correctAnswers || question.correctAnswers.length == 0) {
+                        if (!question.correctAnswers || question.correctAnswers.length == 0) {
                             return;
                         }
-                        for(var key in question.answers) {
+                        for (var key in question.answers) {
                             question.answers[key].isCorrect = false;
                         }
                         for (var key in question.correctAnswers) {
-                            if (question.correctAnswers.hasOwnProperty(key)) {
-                                var answerLocalId = question.correctAnswers[key].localId;
-                                var answerPos = getAnswerPositionById(question.localId, answerLocalId);
-                                $scope.module.questions[question.localId].answers[answerPos]['isCorrect'] = true;
-                            }
+                            var answerLocalId = question.correctAnswers[key].localId;
+                            var answerPos = getAnswerPositionById(question.localId, answerLocalId);
+                            $scope.module.questions[question.localId].answers[answerPos]['isCorrect'] = true;
                         }
                     }
                 }
 
                 $http.post('/admin/interview/save', $scope.module).then(
-                    function successCallback(response) {
-                        var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                    function successCallback() {
+                        alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
                         });
                     },
-                    function errorCallback(response) {
+                    function errorCallback() {
                     }
                 );
             }

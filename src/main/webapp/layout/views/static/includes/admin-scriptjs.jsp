@@ -13,3 +13,4 @@
 <script src="${pageContext.request.contextPath}/plugins/select2/js/select2.full.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.18.1/select.js"></script>
+<script src="${pageContext.request.contextPath}/static/utility.js"></script>

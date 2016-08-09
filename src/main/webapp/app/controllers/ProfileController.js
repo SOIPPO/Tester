@@ -28,35 +28,24 @@ angular.module("profile", []).controller("profileController",
                         message: null
                     });
                     $http.post('/saveuser', $scope.user).then(
-                        function successCallback(response) {
+                        function successCallback() {
                             alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
                             });
                             $.unblockUI();
                         },
-                        function errorCallback(response) {
+                        function errorCallback() {
                             $.unblockUI();
                         }
                     );
                 }
             };
 
-            var getFirstElement = function (obj) {
-                for (var key in obj) {
-                    if (obj.hasOwnProperty(key)) {
-                        return obj[key];
-                    }
-                }
-            };
-
             $scope.displayError = function (element, message) {
-                $scope.clearMessages();
-                $('#' + element).tooltip({'title': message, 'placement': 'bottom', 'container': '#editUserModal'});
-                $('#' + element).tooltip('show');
+                displayError(element, message);
             };
 
             $scope.clearMessages = function (element) {
-                $('#' + element).tooltip();
-                $('#' + element).tooltip('destroy');
+                clearMessages(element);
             };
         }]
 );

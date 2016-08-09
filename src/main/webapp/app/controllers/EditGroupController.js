@@ -2,12 +2,12 @@ angular.module("editGroup", []).controller("editGroupController",
     ["$scope", '$window', "$http",
         function ($scope, $window, $http) {
             $scope.checkGroupAvailability = function (groupName) {
-                    return $http.post('/admin/checkgroup', $scope.data.name).then(
-                        function successCallback(response) {
+                return $http.post('/admin/checkgroup', groupName).then(
+                    function successCallback() {
                             $scope.registerForm.lastName.$setValidity("alreadyexists", true);
                             return true;
                         },
-                        function errorCallback(response) {
+                    function errorCallback() {
                             $scope.registerForm.lastName.$setValidity("alreadyexists", false);
                             return false;
                         }
@@ -17,13 +17,13 @@ angular.module("editGroup", []).controller("editGroupController",
             $scope.submitForm = function (isValid) {
                 if (isValid) {
                     $http.post('/admin/savegroup', $scope.data).then(
-                        function successCallback(response) {
+                        function successCallback() {
                             $('#editGroupModal').modal('hide');
-                            var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function(){  console.log('dismissed'); });
+                            alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                            });
                             $('#grouplist').DataTable().ajax.reload();
                         },
-                        function errorCallback(response) {
-
+                        function errorCallback() {
                         }
                     );
                 }
@@ -37,13 +37,14 @@ angular.module("editGroup", []).controller("editGroupController",
 
             $scope.deleteGroup = function (groupId) {
                 $http.post('/admin/deletegroup', groupId).then(
-                    function successCallback(response) {
+                    function successCallback() {
                         $('#editGroupModal').modal('hide');
                         $('#deleteConfirm').modal('hide');
-                        var notification = alertify.notify(localizationMessages['success-delete'], 'success', 5, function(){  console.log('dismissed'); });
+                        alertify.notify(localizationMessages['success-delete'], 'success', 5, function () {
+                        });
                         $('#grouplist').DataTable().ajax.reload();
                     },
-                    function errorCallback(response) {
+                    function errorCallback() {
                     }
                 );
             };

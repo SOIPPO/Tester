@@ -52,6 +52,12 @@ public class UserController {
         return model;
     }
 
+    @RequestMapping("/results")
+    public ModelAndView resultsPage(ModelAndView model) {
+        model.setViewName("results");
+        return model;
+    }
+
     @RequestMapping("/module/{id}")
     public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) throws JsonProcessingException {
         model.addObject("moduleData", objectMapper.writeValueAsString(moduleService.findOne(id)));

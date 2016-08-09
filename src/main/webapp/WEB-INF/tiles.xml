@@ -28,6 +28,15 @@
         <put-attribute name="body" value="/layout/views/pages/interviewlist.jsp"/>
     </definition>
 
+    <definition name="profile" template="/layout/views/user-layout.jsp">
+        <put-attribute name="title" value="menu.myprofile"/>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
+        <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
+        <put-attribute name="header" value="/layout/views/static/user-header.jsp"/>
+        <put-attribute name="body" value="/layout/views/pages/profile.jsp"/>
+    </definition>
+
+
     <definition name="module" template="/layout/views/user-layout.jsp">
         <put-attribute name="title" value="title.module"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>

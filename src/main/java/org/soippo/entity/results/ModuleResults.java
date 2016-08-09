@@ -1,18 +1,23 @@
 package org.soippo.entity.results;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.soippo.entity.Module;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.soippo.utils.View;
 
 import java.sql.Date;
 
 public class ModuleResults {
     @JsonProperty("id")
+    @JsonView(View.Simplified.class)
     private Long moduleId;
     @JsonProperty("totalQuestions")
+    @JsonView(View.Simplified.class)
     private Long totalQuestions;
     @JsonProperty("correctAnswersCount")
+    @JsonView(View.Simplified.class)
     private Long correctAnswersCount;
     @JsonProperty("date")
+    @JsonView(View.Simplified.class)
     private Date date;
 
     public Long getTotalQuestions() {

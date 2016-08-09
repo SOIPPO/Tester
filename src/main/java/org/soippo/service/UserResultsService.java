@@ -27,9 +27,15 @@ public class UserResultsService {
         userResults.forEach(item -> userResultsRepository.save(item));
     }
 
-    public List<GroupModuleResults> collectResults() {
-        List<UserResults> results = userResultsRepository.findAll();
+    public List<GroupModuleResults> collectResultsByUser(Long userId) {
+        return collectResults(userResultsRepository.findAllByUserId(userId));
+    }
 
+    public List<GroupModuleResults> collectResults() {
+        return collectResults(userResultsRepository.findAll());
+    }
+
+    private List<GroupModuleResults> collectResults(List<UserResults> results) {
         List<Long> groups = results
                 .stream()
                 .map(item -> item.getUser().getGroupId())

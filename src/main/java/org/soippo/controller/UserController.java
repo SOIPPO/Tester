@@ -2,6 +2,7 @@ package org.soippo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.soippo.entity.User;
@@ -9,6 +10,7 @@ import org.soippo.entity.UserDetails;
 import org.soippo.entity.UserResults;
 import org.soippo.exceptions.UserValidationException;
 import org.soippo.service.*;
+import org.soippo.utils.View;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +39,9 @@ public class UserController {
     @Resource
     private QuestionService questionService;
 
-    private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    private ObjectMapper objectMapper = new ObjectMapper()
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
 
     @RequestMapping("/")
     public String homePage(ModelAndView model) {
@@ -51,8 +55,25 @@ public class UserController {
         return model;
     }
 
+    @RequestMapping(value = "/interview/list", method = RequestMethod.POST)
+    @ResponseBody
+    public String moduleList() {
+        try {
+            return objectMapper
+                    .writerWithView(View.Simplified.class)
+                    .writeValueAsString(moduleService.findAll());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @RequestMapping("/results")
-    public ModelAndView resultsPage(ModelAndView model) {
+    public ModelAndView resultsPage(ModelAndView model) throws JsonProcessingException {
+        Long userId = getCurrentUser().getId();
+        model.addObject("results", objectMapper
+                .writerWithView(View.Simplified.class)
+                .writeValueAsString(userResultsService.collectResultsByUser(userId)));
         model.setViewName("results");
         return model;
     }
@@ -67,8 +88,7 @@ public class UserController {
     @RequestMapping(value = "/module/saveresults", method = RequestMethod.POST)
     @ResponseBody
     public String saveModuleResults(@RequestBody String moduleData) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = Long.parseLong(auth.getName());
+        Long userId = getCurrentUser().getId();
         Map<Long, List<Long>> temporalDataMap = objectMapper
                 .readValue(moduleData, new TypeReference<Map<Long, List<Long>>>() {
                 });
@@ -91,15 +111,17 @@ public class UserController {
     @ResponseBody
     public String userListByGroup(@RequestParam(name = "group_id") Long groupId) throws JsonProcessingException {
         List<User> users = userService.findUsersInGroup(groupService.findGroup(groupId));
-        return objectMapper.writeValueAsString(users);
+        return objectMapper
+                .writerWithView(View.Simplified.class)
+                .writeValueAsString(users);
     }
 
     @RequestMapping("/profile")
     public ModelAndView profilePage(ModelAndView model) throws JsonProcessingException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails currentUser = (UserDetails) auth.getPrincipal();
-        Long userId = currentUser.getId();
-        model.addObject("userData", objectMapper.writeValueAsString(userService.findOne(userId)));
+        Long userId = getCurrentUser().getId();
+        model.addObject("userData", objectMapper
+                .writerWithView(View.Simplified.class)
+                .writeValueAsString(userService.findOne(userId)));
         model.addObject("grouplist", objectMapper.writeValueAsString(groupService.findAll()));
         model.setViewName("profile");
         return model;
@@ -114,5 +136,10 @@ public class UserController {
         } catch (UserValidationException ex) {
             return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(ex.getErrorCode()));
         }
+    }
+
+    private UserDetails getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (UserDetails) auth.getPrincipal();
     }
 }

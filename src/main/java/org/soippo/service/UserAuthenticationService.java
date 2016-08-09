@@ -4,7 +4,6 @@ import org.soippo.repository.UserRepository;
 import org.soippo.utils.UserRoles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,21 +33,23 @@ public class UserAuthenticationService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
             org.soippo.entity.User user = userRepository.findOne(Long.decode(username));
-            if(user == null) {
+            if (user == null) {
                 throw new UsernameNotFoundException("User not found!");
             }
+            user.setUserResults(new ArrayList<>());
             boolean enabled = true;
             boolean accountNonExpired = true;
             boolean credentialsNonExpired = true;
             boolean accountNonLocked = true;
-            return new User(String.format("%s %s %s", user.getLastName(), user.getFirstName(), user.getMiddleName()),
+            return new org.soippo.entity.UserDetails(String.format("%s %s %s", user.getLastName(), user.getFirstName(), user.getMiddleName()),
                     user.getPasswordHash(),
                     enabled,
                     accountNonExpired,
                     credentialsNonExpired,
                     accountNonLocked,
                     getAuthorities(user.getRole())
-            );
+            ).setUserData(user);
+
         } catch (UsernameNotFoundException ex) {
             throw ex;
         }

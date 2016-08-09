@@ -6,5 +6,5 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/plugins/blockui/blockui.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/plugins/alertifyjs/alertify.min.js"></script>
-
+<script src="${pageContext.request.contextPath}/plugins/select2/js/select2.full.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/plugins/labelauty/jquery-labelauty.js"></script>

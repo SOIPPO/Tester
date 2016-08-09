@@ -16,11 +16,7 @@ public class QuestionService {
     @Resource
     private AnswerRepository answerRepository;
 
-    public List<Answer> getCorrectAnswers(Long questionId) {
-        return answerRepository.findByQuestionIdAndIsCorrect(questionId, Boolean.TRUE);
-    }
-
-    public Map<Long, List<Answer>> getCorrectAnswers(List<Long> questionIds) {
+    private Map<Long, List<Answer>> getCorrectAnswers(List<Long> questionIds) {
         return answerRepository
                 .findByQuestionIdInAndIsCorrect(questionIds, Boolean.TRUE)
                 .stream()

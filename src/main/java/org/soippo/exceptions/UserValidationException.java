@@ -4,7 +4,8 @@ import org.soippo.utils.ErrorCode;
 
 public class UserValidationException extends  Exception {
     private ErrorCode errorCode;
-    public UserValidationException(String message) {
+
+    UserValidationException(String message) {
         super(message);
     }
 
@@ -12,7 +13,7 @@ public class UserValidationException extends  Exception {
         return errorCode;
     }
 
-    public void setErrorCode(ErrorCode errorCode) {
+    void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 }

@@ -1,7 +1,9 @@
 package org.soippo.entity;
 
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -43,11 +45,9 @@ public class Group implements Serializable {
         this.name = name;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
     @JsonIgnore
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
 }

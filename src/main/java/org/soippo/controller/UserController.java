@@ -40,7 +40,7 @@ public class UserController {
     private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
     @RequestMapping("/")
-    public String homePage(ModelAndView model) {
+    public String homePage() {
         return "redirect:modules";
     }
 

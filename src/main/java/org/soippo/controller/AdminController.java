@@ -11,9 +11,6 @@ import org.soippo.service.GroupService;
 import org.soippo.service.ModuleService;
 import org.soippo.service.UserResultsService;
 import org.soippo.service.UserService;
-import org.soippo.service.GroupService;
-import org.soippo.service.ModuleService;
-import org.soippo.service.UserService;
 import org.soippo.utils.UserRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +36,7 @@ public class AdminController {
     private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String indexPage(ModelAndView model) {
+    public String indexPage() {
         return "redirect:modules";
     }
 
@@ -55,7 +52,7 @@ public class AdminController {
         model.addObject("grouplist", objectMapper
                 .writeValueAsString(groupService.findAll()));
         model.addObject("rolesList", objectMapper.writeValueAsString(UserRoles.values()));
-        model.setViewName("/userlist");
+        model.setViewName("userlist");
         return model;
     }
 
@@ -88,7 +85,7 @@ public class AdminController {
     public ModelAndView groupListPage(ModelAndView model) throws JsonProcessingException {
         model.addObject("grouplist", objectMapper
                 .writeValueAsString(groupService.findAll()));
-        model.setViewName("/grouplist");
+        model.setViewName("grouplist");
         return model;
     }
 
@@ -116,7 +113,7 @@ public class AdminController {
     @RequestMapping(value = "/modules", method = RequestMethod.GET)
     public ModelAndView interviewListPage(ModelAndView model) {
         model.addObject("interviewlist", moduleList());
-        model.setViewName("/modules");
+        model.setViewName("admin-modules");
         return model;
     }
 
@@ -134,7 +131,7 @@ public class AdminController {
     @RequestMapping(value = "/editmodule/{id}", method = RequestMethod.GET)
     public ModelAndView editinterviewPage(@PathVariable Long id, ModelAndView model) throws JsonProcessingException {
         model.addObject("interviewdata", objectMapper.writeValueAsString(moduleService.findOne(id)));
-        model.setViewName("/editmodule");
+        model.setViewName("editmodule");
         return model;
     }
 
@@ -161,7 +158,7 @@ public class AdminController {
     public ModelAndView resultsPage(ModelAndView model) throws JsonProcessingException {
         model.addObject("results", objectMapper
                 .writeValueAsString(userResultsService.collectResults()));
-        model.setViewName("/usersresults");
+        model.setViewName("usersresults");
         return model;
     }
 }

@@ -14,3 +14,4 @@
 <script src="${pageContext.request.contextPath}/plugins/angular-ui/angular-sanitize.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/angular-ui/select.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/utility.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/plugins/blockui/blockui.js"></script>

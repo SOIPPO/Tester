@@ -115,6 +115,7 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
             };
 
             $scope.interviewSave = function () {
+                $.blockUI({message: null});
                 for (var id in $scope.module.questions) {
                     if ($scope.module.questions.hasOwnProperty(id) && $scope.module.questions[id]) {
                         var question = $scope.module.questions[id];
@@ -136,8 +137,10 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
                     function successCallback() {
                         alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
                         });
+                        $.unblockUI();
                     },
                     function errorCallback() {
+                        $.unblockUI();
                     }
                 );
             }

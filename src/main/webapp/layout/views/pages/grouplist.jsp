@@ -29,6 +29,7 @@
                 {
                     text: '<spring:message code="admin.grouplist.create_group"/>',
                     action: function (e, dt, node, config) {
+                        angular.element($('#editGroupModal')).scope().fillGroupData({});
                         $('#deleteButton').hide();
                         $('#editGroupModal').modal('show');
                     }
@@ -88,28 +89,30 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="last_name" class="col-sm-3 control-label"><spring:message
+                        <label for="groupName" class="col-sm-3 control-label"><spring:message
                                 code="registration.fields.group"/></label>
 
                         <div class="col-sm-9">
                             <input type="text"
                                    class="form-control"
-                                   id="last_name"
-                                   name="lastName"
+                                   id="groupName"
+                                   name="groupName"
                                    placeholder='<spring:message code="registration.fields.group"/>'
                                    ng-model="data.name"
                                    ng-model-options="{updateOn: 'blur'}"
-                                   ng-change="checkGroupAvailability(data.group)"
-                                   required>
+                                   ng-change="clearValidationMessages()"
+                                   required/>
 
-                            <div class="help-block" ng-show="registerForm.$submitted || registerForm.lastName.$touched">
-                                <span ng-show="registerForm.lastName.$error.required">
-                                    <spring:message code="registration.messages.required.last_name"/>
+
+                            <div ng-if="registerForm.$submitted || registerForm.groupName.$touched">
+                                <span ng-if="registerForm.groupName.$touched && registerForm.groupName.$error.required"
+                                      ng-init="displayError('groupName', '<spring:message code="registration.messages.required.last_name"/>')">
                                 </span>
-                                <span ng-show="registerForm.lastName.$error.alreadyexists">
-                                    <spring:message code="admin.grouplist.messages.alreadyexists"/>
+                                <span ng-if="registerForm.groupName.$error.alreadyexists"
+                                      ng-init="displayError('groupName', '<spring:message code="admin.grouplist.messages.alreadyexists"/>')">
                                 </span>
                             </div>
+                            <span ng-if="registerForm.groupName.$valid" ng-init="clearMessages('groupName')"></span>
                         </div>
                     </div>
 

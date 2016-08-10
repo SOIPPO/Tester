@@ -8,8 +8,8 @@
     localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";
     localizationMessages['fail-save'] = "<spring:message code="popup.messages.module.already-exists"/>";
     $(document).ready(function () {
-        $(":checkbox").labelauty({label: false});
-        $(":radio").labelauty({label: false});
+        $(":checkbox").styler();
+        $(":radio").styler();
     });
 </script>
 
@@ -22,34 +22,36 @@
 
     <div class="panel panel-default"
          ng-repeat="question in data.questions | filter:emptyOrNull | orderBy:'question_order' track by $index">
-        <div class="panel-heading" id = "question_title_{{question.id}}">
+        <div class="panel-heading" id="question_title_{{question.id}}">
             <b>{{question.text}}</b>
         </div>
         <div class="panel-body"
              ng-switch on="question.type">
             <div ng-switch-when="MANY_VARIANTS">
                 <div class="checkbox" ng-repeat="answer in question.answers track by $index">
-                    <label>
+                    <label for="question_title_{{question.id}}">
                         <input type="checkbox"
                                data-ng-value="{{answer.id}}"
+                               id="question_{{question.id}}"
                                name="question_{{question.id}}"
                                ng-change="switchSelection({{question.id}}, {{answer.id}})"
-                               ng-model="checkboxes[answer.id]">
-                        <span class="module_buttons">{{answer.text}}</span>
+                               ng-model="checkboxes[answer.id]"/>
+                        {{answer.text}}
                     </label>
                 </div>
             </div>
 
             <div ng-switch-when="ONE_VARIANT">
                 <div class="radio" ng-repeat="answer in question.answers track by $index">
-                    <label>
+                    <label for="question_title_{{question.id}}">
                         <input type="radio"
                                data-ng-value="{{answer.id}}"
                                ng-value="{{answer.id}}"
+                               id="question_{{question.id}}"
                                name="question_{{question.id}}"
                                ng-change="addRadioSelect({{question.id}}, {{answer.id}})"
-                               ng-model="result[question.id]">
-                        <span class="module_buttons">{{answer.text}}</span>
+                               ng-model="result[question.id]"/>
+                        {{answer.text}}
                     </label>
                 </div>
             </div>

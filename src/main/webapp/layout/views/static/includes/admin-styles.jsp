@@ -1,1 +1,1 @@
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin-styles.css"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin-styles.min.css"/>

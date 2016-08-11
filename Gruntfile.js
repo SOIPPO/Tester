@@ -71,6 +71,16 @@ module.exports = function (grunt) {
                 dest: "src/main/webapp/static/admin-styles.css"
             }
         },
+        cssmin: {
+            admin: {
+                src: 'src/main/webapp/static/admin-styles.css',
+                dest: 'src/main/webapp/static/admin-styles.min.css'
+            },
+            user: {
+                src: 'src/main/webapp/static/user-styles.css',
+                dest: 'src/main/webapp/static/user-styles.min.css'
+            }
+        },
         uglify: {
             user: {
                 src: 'src/main/webapp/plugins/user-scripts.js',
@@ -87,6 +97,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-    grunt.registerTask('default', ['concat', 'uglify']);
+    grunt.registerTask('default', ['concat', 'uglify', 'cssmin']);
 
 };

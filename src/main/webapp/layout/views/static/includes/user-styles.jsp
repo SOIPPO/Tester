@@ -1,1 +1,1 @@
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/user-styles.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/user-styles.min.css">

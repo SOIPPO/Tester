@@ -36,7 +36,7 @@
                 }
             ],
             "language": {
-                "url": "<%= String.format("%s/plugins/bower/datatables-i18n/i18n/%s.json", request.getContextPath(), response.getLocale().getLanguage())%>"
+                "url": "<%= String.format("%s/plugins/bower/datatables-i18n/i18n/%s.json", request.getContextPath(), (response.getLocale().getLanguage() == "ua" ? "uk" : response.getLocale().getLanguage()))%>"
             }
         });
 

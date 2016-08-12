@@ -1,9 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <ul class="list-group">
-    <c:forEach items="${interviewlist}" var="interview">
+    <jsp:useBean id="modulelist" scope="request" type="java.util.List"/>
+    <c:forEach items="${modulelist}" var="module">
         <li class="list-group-item">
-            <a href="/module/${interview.getId()}">${interview.getTitle() }</a>
+            <a href="/module/${module.getId()}">${module.getTitle() }</a>
         </li>
     </c:forEach>
 </ul>

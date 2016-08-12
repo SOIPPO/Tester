@@ -46,7 +46,10 @@ public class UserController {
 
     @RequestMapping("/modules")
     public ModelAndView interviewlistPage(ModelAndView model) {
-        model.addObject("interviewlist", moduleService.findAll());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails currentUser = (UserDetails) auth.getPrincipal();
+        Long userId = currentUser.getId();
+        model.addObject("modulelist", moduleService.availableModulesForUser(userId));
         model.setViewName("modules");
         return model;
     }
@@ -62,7 +65,8 @@ public class UserController {
     @ResponseBody
     public String saveModuleResults(@RequestBody String moduleData) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = Long.parseLong(auth.getName());
+        UserDetails currentUser = (UserDetails) auth.getPrincipal();
+        Long userId = currentUser.getId();
         Map<Long, List<Long>> temporalDataMap = objectMapper
                 .readValue(moduleData, new TypeReference<Map<Long, List<Long>>>() {
                 });

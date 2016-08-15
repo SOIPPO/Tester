@@ -1,14 +1,6 @@
 angular.module("loginPage", []).controller("loginController",
     ["$scope", '$window', "$http",
         function ($scope, $window, $http) {
-            var getFirstElement = function (obj) {
-                for (var key in obj) {
-                    if (obj.hasOwnProperty(key)) {
-                        return obj[key];
-                    }
-                }
-            };
-
             $scope.user = {};
             $scope.fillGroupData = function (paramName) {
                 $scope.grouplist = $window[paramName];
@@ -51,11 +43,11 @@ angular.module("loginPage", []).controller("loginController",
                             password: $scope.user.password
                         }
                     }).then(
-                        function successCallback(response) {
+                        function successCallback() {
                             $window.location.href = '/';
                             $.unblockUI();
                         },
-                        function errorCallback(response) {
+                        function errorCallback() {
                             $scope.setPasswordValidation(false);
                             $.unblockUI();
                         }
@@ -68,14 +60,11 @@ angular.module("loginPage", []).controller("loginController",
             };
 
             $scope.displayError = function (element, message) {
-                $scope.clearMessages();
-                $('#' + element).tooltip({'title': message, 'placement' : 'bottom'});
-                $('#' + element).tooltip('show');
+                displayError(element, message);
             };
 
             $scope.clearMessages = function(element) {
-                $('#' + element).tooltip();
-                $('#' + element).tooltip('destroy');
+                clearMessages(element);
             };
         }]
 );

@@ -1,14 +1,1 @@
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/register-form.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/alertifyjs/css/alertify.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/alertifyjs/css/themes/bootstrap.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/datatables/datatables.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/datatables/buttons/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/angular-xeditable/css/bootstrap-editable.css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/angular-xeditable/css/xeditable.min.css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/jqueryui/jquery-ui.theme.min.css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/plugins/select2/css/select2.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.18.1/select.min.css"/>
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/admin-styles.min.css"/>

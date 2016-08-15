@@ -20,10 +20,6 @@ public class UserResultsService {
     @Resource
     private UserResultsRepository userResultsRepository;
 
-    public List<UserResults> findAll() {
-        return userResultsRepository.findAll();
-    }
-
     public void saveAll(List<UserResults> userResults) {
         userResults.forEach(item -> userResultsRepository.save(item));
     }

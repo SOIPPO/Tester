@@ -40,7 +40,7 @@ public class AdminController {
             .disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String indexPage(ModelAndView model) {
+    public String indexPage() {
         return "redirect:modules";
     }
 
@@ -57,7 +57,7 @@ public class AdminController {
         model.addObject("grouplist", objectMapper
                 .writeValueAsString(groupService.findAll()));
         model.addObject("rolesList", objectMapper.writeValueAsString(UserRoles.values()));
-        model.setViewName("/userlist");
+        model.setViewName("userlist");
         return model;
     }
 
@@ -90,7 +90,7 @@ public class AdminController {
     public ModelAndView groupListPage(ModelAndView model) throws JsonProcessingException {
         model.addObject("grouplist", objectMapper
                 .writeValueAsString(groupService.findAll()));
-        model.setViewName("/grouplist");
+        model.setViewName("grouplist");
         return model;
     }
 
@@ -118,7 +118,7 @@ public class AdminController {
     @RequestMapping(value = "/modules", method = RequestMethod.GET)
     public ModelAndView interviewListPage(ModelAndView model) {
         model.addObject("interviewlist", moduleList());
-        model.setViewName("/modules");
+        model.setViewName("admin-modules");
         return model;
     }
 
@@ -138,7 +138,7 @@ public class AdminController {
     @RequestMapping(value = "/editmodule/{id}", method = RequestMethod.GET)
     public ModelAndView editinterviewPage(@PathVariable Long id, ModelAndView model) throws JsonProcessingException {
         model.addObject("interviewdata", objectMapper.writeValueAsString(moduleService.findOne(id)));
-        model.setViewName("/editmodule");
+        model.setViewName("editmodule");
         return model;
     }
 
@@ -166,7 +166,7 @@ public class AdminController {
         model.addObject("results", objectMapper
                 .writerWithView(View.Simplified.class)
                 .writeValueAsString(userResultsService.collectResults()));
-        model.setViewName("/usersresults");
+        model.setViewName("usersresults");
         return model;
     }
 }

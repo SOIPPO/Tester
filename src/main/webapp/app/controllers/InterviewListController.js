@@ -4,32 +4,30 @@ angular.module("interviewList", []).controller("interviewListController",
             $scope.fillInterviewData = function (paramName) {
                 $scope.interviewlist = $window[paramName];
             };
+
             $scope.showConfirmModal = function (interviewId, interviewTitle) {
                 $('#interviewIdField').val(interviewId);
                 $('#deleteConfirm').modal('show');
                 $('#interviewToDeleteTitle').empty();
                 $('#interviewToDeleteTitle').append(interviewTitle);
             };
+
             $scope.submitForm = function (isValid) {
                 if (isValid) {
                     $http.post('/admin/interview/new', $scope.data.name).then(
-                        function successCallback(response) {
-
+                        function successCallback() {
                             $http.post('/admin/interview/list').then(
                                 function successCallback(response) {
                                     $scope.interviewlist = response.data;
                                 },
-                                function errorCallback(response) {
+                                function errorCallback() {
                                 }
                             );
-
                             $('#newInterviewModal').modal('hide');
-                            var notification = alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                            alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
                             });
-
                         },
-                        function errorCallback(response) {
-
+                        function errorCallback() {
                         }
                     );
                 }
@@ -38,19 +36,19 @@ angular.module("interviewList", []).controller("interviewListController",
             $scope.deleteInterview = function () {
                 var interviewId = $('#interviewIdField').val();
                 $http.post('/admin/interview/delete', interviewId).then(
-                    function successCallback(response) {
+                    function successCallback() {
                         $http.post('/admin/interview/list').then(
                             function successCallback(response) {
                                 $scope.interviewlist = response.data;
                             },
-                            function errorCallback(response) {
+                            function errorCallback() {
                             }
                         );
                         $('#deleteConfirm').modal('hide');
-                        var notification = alertify.notify(localizationMessages['success-delete'], 'success', 5, function () {
+                        alertify.notify(localizationMessages['success-delete'], 'success', 5, function () {
                         });
                     },
-                    function errorCallback(response) {
+                    function errorCallback() {
                     }
                 );
             };

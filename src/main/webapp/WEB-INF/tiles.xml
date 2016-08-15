@@ -45,7 +45,7 @@
         <put-attribute name="body" value="/layout/views/pages/module.jsp"/>
     </definition>
 
-    <definition name="/register" template="/layout/views/login-layout.jsp">
+    <definition name="register" template="/layout/views/login-layout.jsp">
         <put-attribute name="title" value="title.register"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
@@ -56,7 +56,7 @@
     </definition>
 
 
-    <definition name="/login" template="/layout/views/login-layout.jsp">
+    <definition name="login" template="/layout/views/login-layout.jsp">
         <put-attribute name="title" value="title.login"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/user-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/user-styles.jsp"/>
@@ -68,7 +68,7 @@
     </definition>
 
 
-    <definition name="/userlist" template="/layout/views/admin-layout.jsp">
+    <definition name="userlist" template="/layout/views/admin-layout.jsp">
         <put-attribute name="title" value="title.userlist"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
@@ -79,7 +79,7 @@
         <put-attribute name="body" value="/layout/views/pages/userlist.jsp"/>
     </definition>
 
-    <definition name="/grouplist" template="/layout/views/admin-layout.jsp">
+    <definition name="grouplist" template="/layout/views/admin-layout.jsp">
         <put-attribute name="title" value="title.grouplist"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
@@ -90,7 +90,7 @@
         <put-attribute name="body" value="/layout/views/pages/grouplist.jsp"/>
     </definition>
 
-    <definition name="/modules" template="/layout/views/admin-layout.jsp">
+    <definition name="admin-modules" template="/layout/views/admin-layout.jsp">
         <put-attribute name="title" value="title.interviewlist"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
@@ -101,7 +101,7 @@
         <put-attribute name="body" value="/layout/views/pages/interviewlist-edit.jsp"/>
     </definition>
 
-    <definition name="/editmodule" template="/layout/views/admin-layout.jsp">
+    <definition name="editmodule" template="/layout/views/admin-layout.jsp">
         <put-attribute name="title" value="title.editinterview"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
@@ -113,7 +113,7 @@
     </definition>
 
 
-    <definition name="/usersresults" template="/layout/views/admin-layout.jsp">
+    <definition name="usersresults" template="/layout/views/admin-layout.jsp">
         <put-attribute name="title" value="title.usersresults"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>

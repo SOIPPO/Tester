@@ -1,7 +1,6 @@
 package org.soippo.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import org.soippo.utils.View;
 
 import javax.persistence.*;

@@ -44,7 +44,7 @@ public class UserController {
             .disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
 
     @RequestMapping("/")
-    public String homePage(ModelAndView model) {
+    public String homePage() {
         return "redirect:modules";
     }
 

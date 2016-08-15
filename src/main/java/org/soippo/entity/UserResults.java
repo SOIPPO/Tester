@@ -2,6 +2,7 @@ package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import org.soippo.utils.View;
 

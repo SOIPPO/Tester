@@ -12,16 +12,17 @@
                 </li>
             </ul>
             <div class="nav navbar-nav navbar-right row locallization-panel">
-                <a class="navbar-brand" href="${pageUrl}?lang=ua">
+                <a class="navbar-brand" href="${pageUrl}?lang=ua" style="padding:15px 10px !important;">
                     <img src="${pageContext.request.contextPath}/static/images/flags/ua.gif">
                 </a>
-                <a class="navbar-brand" href="${pageUrl}?lang=ru">
+                <a class="navbar-brand" href="${pageUrl}?lang=ru" style="padding:15px 10px !important;">
                     <img src="${pageContext.request.contextPath}/static/images/flags/ru.gif">
                 </a>
-                <a class="navbar-brand" href="${pageUrl}?lang=en">
+                <a class="navbar-brand" href="${pageUrl}?lang=en" style="padding:15px 10px !important;">
                     <img src="${pageContext.request.contextPath}/static/images/flags/us.gif">
                 </a>
             </div>
+
         </div>
     </div>
 </nav>

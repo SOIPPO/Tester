@@ -13,8 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -34,7 +36,7 @@ public class LoginController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView registerPage(ModelAndView model) {
         model.addObject("grouplist", groupListInJson());
-        model.setViewName("/register");
+        model.setViewName("register");
         return model;
     }
 
@@ -53,16 +55,8 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginPage(ModelAndView model) {
         model.addObject("grouplist", groupListInJson());
-        model.setViewName("/login");
+        model.setViewName("login");
         return model;
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    String login(Model model, @RequestParam(required = false) String message) {
-        model.addAttribute("message", message);
-        return "messages";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)

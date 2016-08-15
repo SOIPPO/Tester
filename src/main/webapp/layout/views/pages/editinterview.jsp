@@ -28,9 +28,6 @@
         });
         $("tr").disableSelection();
     });
-    $(document).ready(function () {
-//        $('select').select2();
-    });
 </script>
 
 
@@ -40,7 +37,7 @@
 <div ng-app="editInterview"
      ng-controller="editInterviewController"
      ng-init="fillData('interviewdata')">
-    <div class="col-md-11 center-block" id="interviewblock">
+    <div class="center-block" id="interviewblock">
 
         <div class="panel panel-default">
             <div class="panel-heading">

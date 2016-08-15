@@ -29,7 +29,7 @@
 
     <div class="pull-right">
         <button type="button" class="btn btn-success" onclick="$('#newInterviewModal').modal('show');">
-            <spring:message code="admin.interviewlist.new-interview"/>
+            <spring:message code="admin.interviewlist.new-module"/>
         </button>
     </div>
 
@@ -50,7 +50,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel"><spring:message
-                                code="admin.interviewlist.new-interview"/></h4>
+                                code="admin.interviewlist.new-module"/></h4>
                     </div>
                     <div class="modal-body">
 
@@ -92,10 +92,10 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><spring:message code="modal.interview.delete.title"/></h4>
+                        <h4 class="modal-title"><spring:message code="modal.module.delete.title"/></h4>
                     </div>
                     <div class="modal-body">
-                        <p><spring:message code="modal.interview.delete.message"/></p>
+                        <p><spring:message code="modal.module.delete.message"/></p>
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" id="interviewIdField"/>

@@ -11,9 +11,6 @@ import org.soippo.service.GroupService;
 import org.soippo.service.ModuleService;
 import org.soippo.service.UserResultsService;
 import org.soippo.service.UserService;
-import org.soippo.service.GroupService;
-import org.soippo.service.ModuleService;
-import org.soippo.service.UserService;
 import org.soippo.utils.UserRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +52,7 @@ public class AdminController {
         model.addObject("grouplist", objectMapper
                 .writeValueAsString(groupService.findAll()));
         model.addObject("rolesList", objectMapper.writeValueAsString(UserRoles.values()));
+        model.addObject("moduleList", moduleList());
         model.setViewName("/userlist");
         return model;
     }

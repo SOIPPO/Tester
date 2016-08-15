@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.google.gson.annotations.SerializedName;
 import org.soippo.serialization.UserDeserializer;
 import org.soippo.utils.UserRoles;
 
@@ -57,11 +56,7 @@ public class User implements Serializable {
     @JsonBackReference
     private Group group;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_module",
-            joinColumns = {@JoinColumn(name = "user_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "interview_id", nullable = false, updatable = false)}
-    )
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Module.class)
     private List<Module> modules;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userId")
@@ -157,6 +152,15 @@ public class User implements Serializable {
 
     public User setUserResults(List<UserResults> userResults) {
         this.userResults = userResults;
+        return this;
+    }
+
+    public List<Module> getModules() {
+        return modules;
+    }
+
+    public User setModules(List<Module> modules) {
+        this.modules = modules;
         return this;
     }
 }

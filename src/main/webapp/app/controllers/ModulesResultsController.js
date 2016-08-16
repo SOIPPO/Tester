@@ -17,11 +17,11 @@ angular.module("modulesResults", ['ngSanitize', 'ui.select']).controller("module
             $scope.updateModulelist = function () {
                 $http.post('/admin/interview/list').then(
                     function successCallback(response) {
-                        for (var key in response.data) {
-                            $scope.modules[response.data[key].id] = response.data[key];
-                        }
+                        response.data.forEach(function (element) {
+                            $scope.modules[element.id] = element;
+                        });
                     },
-                    function errorCallback(response) {
+                    function errorCallback() {
                         return null;
                     }
                 );
@@ -30,11 +30,11 @@ angular.module("modulesResults", ['ngSanitize', 'ui.select']).controller("module
             $scope.updateGroupList = function () {
                 $http.post('/admin/grouplist').then(
                     function successCallback(response) {
-                        for (var key in response.data) {
-                            $scope.groups[response.data[key].id] = response.data[key];
-                        }
+                        response.data.forEach(function (element) {
+                            $scope.groups[element.id] = element;
+                        });
                     },
-                    function errorCallback(response) {
+                    function errorCallback() {
                         return null;
                     }
                 );
@@ -43,12 +43,12 @@ angular.module("modulesResults", ['ngSanitize', 'ui.select']).controller("module
             $scope.updateUserList = function () {
                 $http.post('/admin/userlist').then(
                     function successCallback(response) {
-                        for (var key in response.data) {
-                            $scope.users[response.data[key].id] = response.data[key];
-                        }
+                        response.data.forEach(function (element) {
+                            $scope.users[element.id] = element;
+                        });
                         $scope.allUsers = angular.copy($scope.users);
                     },
-                    function errorCallback(response) {
+                    function errorCallback() {
                         return null;
                     }
                 );
@@ -112,13 +112,4 @@ angular.module("modulesResults", ['ngSanitize', 'ui.select']).controller("module
                 }
             }
         }]
-).filter('groupFilter', function () {
-    return function (groupId) {
-        console.log(groupId);
-        // console.log(selectedGroups);
-        // for(var key in selectedGroups) {
-        //     if(groupId == selectedGroups[key]) return true;
-        // }
-        return true;
-    };
-});
+);

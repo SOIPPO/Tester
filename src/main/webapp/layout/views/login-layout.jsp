@@ -6,6 +6,8 @@
 
 <html>
 <head>
+    <link rel="icon" type="image/vnd.microsoft.icon"
+          href="${pageContext.request.contextPath}/static/images/favicon.ico"/>
     <c:set var="titleKey">
         <tiles:insertAttribute name="title" ignore="true" />
     </c:set>

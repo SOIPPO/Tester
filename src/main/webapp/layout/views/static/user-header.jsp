@@ -5,11 +5,11 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="collapse navbar-collapse">
-            <%--<ul class="nav navbar-nav">--%>
-            <%--<li <c:if test="${pageUrl == '/modules'}">class="active"</c:if>>--%>
-            <%--<a href="/modules"><spring:message code="menu.interviewlist"/></a>--%>
-            <%--</li>--%>
-            <%--</ul>--%>
+            <ul class="nav navbar-nav">
+                <li <c:if test="${pageUrl == '/modules'}">class="active"</c:if>>
+                    <a href="/modules"><spring:message code="menu.interviewlist"/></a>
+                </li>
+            </ul>
 
             <div class="nav navbar-nav navbar-right row locallization-panel">
                 <a class="navbar-brand" href="${pageUrl}?lang=ua" style="padding:15px 10px !important;">

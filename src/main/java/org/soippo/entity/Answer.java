@@ -2,8 +2,6 @@ package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -49,9 +47,19 @@ public class Answer implements Serializable {
         return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
 
     public Long getQuestionId() {
         return questionId;
     }
 
+    public Boolean getCorrect() {
+        return isCorrect;
+    }
+
+    public void setCorrect(Boolean correct) {
+        isCorrect = correct;
+    }
 }

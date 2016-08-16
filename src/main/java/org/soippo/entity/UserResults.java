@@ -1,9 +1,10 @@
 package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.SerializedName;
+
+import com.fasterxml.jackson.annotation.JsonView;
+import org.soippo.utils.View;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,6 +34,7 @@ public class UserResults implements Serializable {
 
     @Column(name = "result")
     @JsonProperty("result")
+    @JsonView(View.Normal.class)
     private String text;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)

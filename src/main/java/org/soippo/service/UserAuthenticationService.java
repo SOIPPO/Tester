@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,47 +22,35 @@ public class UserAuthenticationService implements UserDetailsService {
     @Resource
     private UserRepository userRepository;
 
-    public static List<GrantedAuthority> getGrantedAuthorities(List<UserRoles> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (UserRoles role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.name()));
-        }
-        return authorities;
+    private static List<GrantedAuthority> getGrantedAuthorities(List<UserRoles> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList());
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            org.soippo.entity.User user = userRepository.findOne(Long.decode(username));
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found!");
-            }
-            user.setUserResults(new ArrayList<>());
-            boolean enabled = true;
-            boolean accountNonExpired = true;
-            boolean credentialsNonExpired = true;
-            boolean accountNonLocked = true;
-            return new org.soippo.entity.UserDetails(String.format("%s %s %s", user.getLastName(), user.getFirstName(), user.getMiddleName()),
-                    user.getPasswordHash(),
-                    enabled,
-                    accountNonExpired,
-                    credentialsNonExpired,
-                    accountNonLocked,
-                    getAuthorities(user.getRole())
-            ).setUserData(user);
-
-        } catch (UsernameNotFoundException ex) {
-            throw ex;
+        org.soippo.entity.User user = userRepository.findOne(Long.decode(username));
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found!");
         }
+        user.setUserResults(new ArrayList<>());
+
+        return new org.soippo.entity.UserDetails(String.format("%s %s %s", user.getLastName(), user.getFirstName(), user.getMiddleName()),
+                user.getPasswordHash(),
+                true,
+                true,
+                true,
+                true,
+                getAuthorities(user.getRole())
+        ).setUserData(user);
+
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities(UserRoles role) {
-        List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(role));
-        return authList;
+    private Collection<? extends GrantedAuthority> getAuthorities(UserRoles role) {
+        return getGrantedAuthorities(getRoles(role));
     }
 
-    public List<UserRoles> getRoles(UserRoles role) {
-        List<UserRoles> roles = new ArrayList<UserRoles>();
+    private List<UserRoles> getRoles(UserRoles role) {
+        List<UserRoles> roles = new ArrayList<>();
 
         if (role.equals(UserRoles.ADMINISTRATOR)) {
             roles.add(UserRoles.USER);

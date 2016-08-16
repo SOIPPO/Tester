@@ -16,10 +16,10 @@
      ng-controller="interviewListController">
 
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat="interview in interviewlist">
-            <a href="/admin/editmodule/{{interview.id}}">{{interview.title}}</a>
+        <li class="list-group-item" ng-repeat="module in interviewlist">
+            <a href="/admin/editmodule/{{module.id}}">{{module.title}}</a>
 
-            <div class="pull-right" ng-click="showConfirmModal(interview.id, interview.title)"
+            <div class="pull-right" ng-click="showConfirmModal(module.id, module.title)"
                  style=" cursor: pointer">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </div>

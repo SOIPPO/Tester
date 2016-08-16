@@ -69,6 +69,20 @@ public class UserController {
         return null;
     }
 
+
+    @RequestMapping(value = "/user-modules/list", method = RequestMethod.POST)
+    @ResponseBody
+    public String userModuleList() {
+        try {
+            return objectMapper
+                    .writerWithView(View.Simplified.class)
+                    .writeValueAsString(userService.findOne(getCurrentUser().getId()).getModules());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @RequestMapping("/results")
     public ModelAndView resultsPage(ModelAndView model) throws JsonProcessingException {
         Long userId = getCurrentUser().getId();

@@ -17,7 +17,7 @@ angular.module("editUser", ['ngSanitize', 'ui.select']).controller("editUserCont
             $scope.fillUserData = function (data) {
                 $scope.$apply(function () {
                     $scope.user = data;
-                    $scope.user.isPasswordChanged = false;
+                    $scope.user['isPasswordChanged'] = false;
                     $scope.user.group = getFirstElement($scope.grouplist);
 
                     for(var key in $scope.grouplist) {

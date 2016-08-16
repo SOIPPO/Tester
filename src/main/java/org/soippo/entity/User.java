@@ -61,7 +61,11 @@ public class User implements Serializable {
     @JsonBackReference
     private Group group;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Module.class)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH}, targetEntity = Module.class)
+    @JoinTable(name = "user_module",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "modules_id")})
+    @JsonView(View.Extended.class)
     private List<Module> modules;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userId")

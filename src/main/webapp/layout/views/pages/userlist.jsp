@@ -37,6 +37,7 @@
                 {
                     text: '<spring:message code="admin.userlist.create_user"/>',
                     action: function (e, dt, node, config) {
+                        angular.element($('#editUserModal')).scope().fillUserData({});
                         $('#deleteButton').hide();
                         $('#editUserModal').modal('show');
                     }
@@ -331,7 +332,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="modules" class="col-sm-3 control-label">Modules</label>
+                        <label for="modules" class="col-sm-3 control-label">
+                            <spring:message code="menu.interviewlist"/>
+                        </label>
                         <div class="col-sm-9">
                             <ui-select multiple
                                        ng-model="user.modules"

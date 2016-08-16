@@ -68,7 +68,7 @@ public class User implements Serializable {
     @JsonView(View.Extended.class)
     private List<Module> modules;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userId")
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "userId")
     @JsonManagedReference
     private List<UserResults> userResults;
 

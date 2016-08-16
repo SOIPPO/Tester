@@ -146,7 +146,10 @@ public class UserController {
     public ResponseEntity saveUser(@RequestBody String userData) throws IOException {
         try {
             User user = objectMapper.readValue(userData, User.class);
-            user.setRole(userService.findOne(user.getId()).getRole());
+            User savedUser = userService.findOne(user.getId());
+            user.setRole(savedUser.getRole());
+//            user.setModules(Optional.ofNullable(user.getModules()).orElse(savedUser.getModules()));
+
             return ResponseEntity.ok(objectMapper.writeValueAsString(userService.saveUser(user)));
         } catch (UserValidationException ex) {
             return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(ex.getErrorCode()));

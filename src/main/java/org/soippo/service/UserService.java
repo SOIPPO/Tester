@@ -5,6 +5,7 @@ import org.soippo.entity.User;
 import org.soippo.exceptions.NotUniqueEmailException;
 import org.soippo.exceptions.NotUniqueUserException;
 import org.soippo.exceptions.UserValidationException;
+import org.soippo.repository.UserModuleRepository;
 import org.soippo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,10 @@ public class UserService {
     @Resource
     private UserRepository userRepository;
 
+
+    @Resource
+    private UserModuleRepository userModuleRepository;
+
     public User saveUser(User user) throws UserValidationException {
         if (user.getId() == null) {
             if (!checkUniqueEmail(user.getEmail())) {
@@ -27,8 +32,11 @@ public class UserService {
                 throw new NotUniqueUserException();
             }
         }
-
-        return userRepository.save(user);
+        if(user.getId() != null) {
+            userModuleRepository.deleteByUserId(user.getId());
+        }
+        User saved = userRepository.save(user);
+        return userRepository.findOne(saved.getId());
     }
 
     public void deleteUser(Long userId) {

@@ -40,7 +40,7 @@ public class UserDeserializer extends JsonDeserializer<User> {
             user.setPasswordHash(node.get("password").asText());
         }
 
-        if(Optional.ofNullable(node.get("isPasswordChanged")).isPresent()) {
+        if(Optional.ofNullable(node.get("modules")).isPresent()) {
             List<Module> modules = new ArrayList<>();
             node.get("modules").forEach(
                     module -> {
@@ -51,8 +51,10 @@ public class UserDeserializer extends JsonDeserializer<User> {
                         }
                     }
             );
+
             user.setModules(modules);
         }
+
         return user;
     }
 }

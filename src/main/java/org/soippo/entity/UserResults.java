@@ -2,7 +2,6 @@ package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import org.soippo.utils.View;
 
@@ -24,9 +23,6 @@ public class UserResults implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userresults_id_sequence")
     private Long id;
 
-    @Column(name = "question_id")
-    @JsonProperty("questionId")
-    private Long questionId;
 
     @Column(name = "user_id")
     @JsonProperty("userId")
@@ -42,8 +38,7 @@ public class UserResults implements Serializable {
     @JsonBackReference
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class)
-    @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class, cascade = CascadeType.REFRESH)
     private Question question;
 
     @Column(name = "is_correct")
@@ -55,11 +50,11 @@ public class UserResults implements Serializable {
     private Date date;
 
     public Long getQuestionId() {
-        return questionId;
+        return question.getId();
     }
 
     public UserResults setQuestionId(Long questionId) {
-        this.questionId = questionId;
+        this.question.setId(questionId);
         return this;
     }
 

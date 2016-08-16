@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '2.5'
     compile 'org.springframework:spring-core:4.2.6.RELEASE'
     compile 'org.springframework:spring-webmvc:4.2.6.RELEASE'
 
@@ -45,4 +46,7 @@ dependencies {
     compile group: 'org.apache.tiles', name: 'tiles-jsp', version: '3.0.5'
     compile group: 'org.apache.tiles', name: 'tiles-servlet', version: '3.0.5'
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-tiles2', version: '2.1.1.RELEASE'
+
+
+
 }

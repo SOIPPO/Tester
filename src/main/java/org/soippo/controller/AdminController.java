@@ -1,6 +1,7 @@
 package org.soippo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.soippo.entity.Group;
@@ -12,6 +13,7 @@ import org.soippo.service.ModuleService;
 import org.soippo.service.UserResultsService;
 import org.soippo.service.UserService;
 import org.soippo.utils.UserRoles;
+import org.soippo.utils.View;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,9 @@ public class AdminController {
     @Resource
     private UserResultsService userResultsService;
 
-    private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    private ObjectMapper objectMapper = new ObjectMapper()
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexPage() {
@@ -44,6 +48,7 @@ public class AdminController {
     @ResponseBody
     public String userList() throws JsonProcessingException {
         return objectMapper
+                .writerWithView(View.Normal.class)
                 .writeValueAsString(userService.findAll());
     }
 
@@ -121,7 +126,9 @@ public class AdminController {
     @ResponseBody
     public String moduleList() {
         try {
-            return objectMapper.writeValueAsString(moduleService.findAll());
+            return objectMapper
+                    .writerWithView(View.Normal.class)
+                    .writeValueAsString(moduleService.findAll());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -157,6 +164,7 @@ public class AdminController {
     @RequestMapping(value = "/results", method = RequestMethod.GET)
     public ModelAndView resultsPage(ModelAndView model) throws JsonProcessingException {
         model.addObject("results", objectMapper
+                .writerWithView(View.Simplified.class)
                 .writeValueAsString(userResultsService.collectResults()));
         model.setViewName("usersresults");
         return model;

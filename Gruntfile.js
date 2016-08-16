@@ -13,6 +13,7 @@ module.exports = function (grunt) {
                     'src/main/webapp/plugins/bower/blockUI/jquery.blockUI.js',
                     'src/main/webapp/plugins/bower/angular-validation-match/dist/angular-validation-match.js',
                     'src/main/webapp/plugins/jquery.formstyler/jquery.formstyler.min.js',
+                    'src/main/webapp/plugins/bower/select2/dist/js/select2.full.js',
                     'src/main/webapp/static/utility.js'
                 ],
                 dest: "src/main/webapp/plugins/user-scripts.js"
@@ -48,6 +49,7 @@ module.exports = function (grunt) {
                     'src/main/webapp/plugins/bower/alertify-js/build/css/alertify.css',
                     'src/main/webapp/plugins/bower/alertify-js/build/css/themes/bootstrap.css',
                     'src/main/webapp/static/css/register-form.css',
+                    'src/main/webapp/plugins/bower/select2/dist/css/select2.css',
                     'src/main/webapp/plugins/jquery.formstyler/jquery.formstyler.css'
                 ],
                 dest: "src/main/webapp/static/user-styles.css"

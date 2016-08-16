@@ -12,7 +12,7 @@
 
             <ul class="nav navbar-nav">
                 <li <c:if test="${pageUrl == '/admin/modules'}">class="active"</c:if>>
-                    <a href=${pageContext.request.contextPath}/admin/modules">
+                    <a href="${pageContext.request.contextPath}/admin/modules">
                         <spring:message code="menu.interviewlist"/>
                     </a>
                 </li>
@@ -68,6 +68,10 @@
                             <li>
                                 <a href="${pageContext.request.contextPath}/profile"><spring:message
                                         code="menu.myprofile"/></a>
+                            </li>
+                            <li>
+                                <a href="${pageContext.request.contextPath}/results"><spring:message
+                                        code="menu.myresults"/></a>
                             </li>
                             <li role="separator" class="divider"></li>
                             <li>

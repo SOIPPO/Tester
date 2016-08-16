@@ -1,13 +1,10 @@
 package org.soippo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.google.gson.annotations.SerializedName;
 import org.soippo.serialization.UserDeserializer;
 import org.soippo.utils.UserRoles;
+import org.soippo.utils.View;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,31 +22,38 @@ public class User implements Serializable {
             allocationSize = 1,
             sequenceName = "users_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_sequence")
+    @JsonView(View.Simplified.class)
     private Long id;
 
     @JsonProperty("firstName")
     @Column(name = "first_name", nullable = false)
+    @JsonView(View.Simplified.class)
     private String firstName;
 
     @JsonProperty("lastName")
     @Column(name = "last_name", nullable = false)
+    @JsonView(View.Simplified.class)
     private String lastName;
 
     @JsonProperty("middleName")
     @Column(name = "middle_name", nullable = false)
+    @JsonView(View.Simplified.class)
     private String middleName;
 
     @Column(name = "password", nullable = false)
     @JsonProperty("password")
+    @JsonView(View.Simplified.class)
     private String passwordHash;
 
     @JsonProperty("email")
     @Column(name = "email", unique = true, nullable = false)
+    @JsonView(View.Simplified.class)
     private String email;
 
     @JsonProperty("role")
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
+    @JsonView(View.Normal.class)
     private UserRoles role;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
@@ -132,18 +136,9 @@ public class User implements Serializable {
     }
 
     @JsonProperty("group")
+    @JsonView(View.Simplified.class)
     public Group getGroup() {
         return group;
-    }
-
-    @JsonProperty("groupId")
-    public Long getGroupId() {
-        return group.getId();
-    }
-
-    @JsonProperty("groupName")
-    public String getGroupName() {
-        return group.getName();
     }
 
     public User setGroup(Group group) {
@@ -151,6 +146,19 @@ public class User implements Serializable {
         return this;
     }
 
+    @JsonProperty("groupId")
+    @JsonView(View.Simplified.class)
+    public Long getGroupId() {
+        return group.getId();
+    }
+
+    @JsonProperty("groupName")
+    @JsonView(View.Simplified.class)
+    public String getGroupName() {
+        return group.getName();
+    }
+
+    @JsonView(View.Normal.class)
     public List<UserResults> getUserResults() {
         return userResults;
     }

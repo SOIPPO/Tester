@@ -13,6 +13,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 @Service
 public class UserResultsService {
@@ -23,14 +24,19 @@ public class UserResultsService {
         userResults.forEach(item -> userResultsRepository.save(item));
     }
 
-    public List<GroupModuleResults> collectResults() {
-        List<UserResults> results = userResultsRepository.findAll();
+    public List<GroupModuleResults> collectResultsByUser(Long userId) {
+        return collectResults(userResultsRepository.findAllByUserId(userId));
+    }
 
-        List<Long> groups = results
+    public List<GroupModuleResults> collectResults() {
+        return collectResults(userResultsRepository.findAll());
+    }
+
+    private List<GroupModuleResults> collectResults(List<UserResults> results) {
+        LongStream groups = results
                 .stream()
-                .map(item -> item.getUser().getGroupId())
-                .distinct()
-                .collect(Collectors.toList());
+                .mapToLong(item -> item.getUser().getGroupId())
+                .distinct();
 
         Map<User, Map<Date, Map<Long, List<UserResults>>>> userResultsByDateAndModuleId = results.stream()
                 .collect(Collectors.groupingBy(UserResults::getUser,
@@ -57,7 +63,7 @@ public class UserResultsService {
                         )
         ).collect(Collectors.toList());
 
-        return groups.stream().map(item -> new GroupModuleResults()
+        return groups.mapToObj(item -> new GroupModuleResults()
                 .setGroupId(item)
                 .setUserModuleResults(modulesResults
                         .stream()

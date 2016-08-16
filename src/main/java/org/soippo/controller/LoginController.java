@@ -1,6 +1,7 @@
 package org.soippo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.soippo.entity.User;
@@ -31,7 +32,9 @@ public class LoginController {
     @Resource
     private GroupService groupService;
 
-    private ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    private ObjectMapper objectMapper = new ObjectMapper()
+            .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView registerPage(ModelAndView model) {

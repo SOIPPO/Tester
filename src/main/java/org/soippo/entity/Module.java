@@ -1,6 +1,7 @@
 package org.soippo.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+import org.soippo.utils.View;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,10 +17,12 @@ public class Module implements Serializable {
             sequenceName = "module_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "module_id_sequence")
     @JsonProperty("id")
+    @JsonView(View.Simplified.class)
     private Long id;
 
     @Column(name = "title")
     @JsonProperty("title")
+    @JsonView(View.Simplified.class)
     private String title;
 
     @OneToMany(fetch = FetchType.LAZY,

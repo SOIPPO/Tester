@@ -1,14 +1,17 @@
 package org.soippo.entity.results;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.soippo.entity.Group;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.soippo.utils.View;
 
 import java.util.List;
 
 public class GroupModuleResults {
     @JsonProperty("id")
+    @JsonView(View.Simplified.class)
     private Long groupId;
     @JsonProperty("users")
+    @JsonView(View.Simplified.class)
     private List<UserModuleResults> userModuleResults;
 
     public Long getGroupId() {

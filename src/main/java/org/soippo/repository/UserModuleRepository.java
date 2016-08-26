@@ -9,4 +9,6 @@ public interface UserModuleRepository extends JpaRepository<UserModules, Long>{
     List<UserModules> findByModuleId(Long moduleId);
     void deleteByModuleId(Long interviewId);
     void deleteByUserId(Long userId);
+
+    List<UserModules> findByUserId(Long userId);
 }

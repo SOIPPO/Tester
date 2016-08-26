@@ -95,9 +95,13 @@ public class UserController {
 
     @RequestMapping("/module/{id}")
     public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) throws JsonProcessingException {
-        model.addObject("moduleData", objectMapper.writeValueAsString(moduleService.findOne(id)));
-        model.setViewName("module");
-        return model;
+        if(userService.isModuleAvailableForUser(getCurrentUser().getId(), id)) {
+            model.addObject("moduleData", objectMapper.writeValueAsString(moduleService.findOne(id)));
+            model.setViewName("module");
+            return model;
+        } else {
+            return new ModelAndView("redirect:/modules");
+        }
     }
 
     @RequestMapping(value = "/module/saveresults", method = RequestMethod.POST)

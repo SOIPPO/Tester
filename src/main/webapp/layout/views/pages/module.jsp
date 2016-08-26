@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div class="pull-right">
+    <div class="pull-right" ng-if="data.questions.length">
         <button type="submit" class="btn btn-success"><spring:message code="send"/></button>
     </div>
 </form>

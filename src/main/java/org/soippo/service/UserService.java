@@ -2,6 +2,7 @@ package org.soippo.service;
 
 import org.soippo.entity.Group;
 import org.soippo.entity.User;
+import org.soippo.entity.UserModules;
 import org.soippo.exceptions.NotUniqueEmailException;
 import org.soippo.exceptions.NotUniqueUserException;
 import org.soippo.exceptions.UserValidationException;
@@ -66,5 +67,10 @@ public class UserService {
 
     public User findOne(Long userId) {
         return userRepository.findOne(userId);
+    }
+
+    public boolean isModuleAvailableForUser(Long userId, Long moduleId) {
+        List<UserModules> modules = userModuleRepository.findByUserId(userId);
+        return modules.stream().anyMatch((item) -> item.getModule().getId().equals(moduleId));
     }
 }

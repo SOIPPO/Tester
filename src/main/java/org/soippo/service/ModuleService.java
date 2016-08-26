@@ -34,9 +34,10 @@ public class ModuleService {
         return interviewRepository.save(module);
     }
 
-    public void delete(Long interviewId) {
-        userModuleRepository.deleteByModuleId(interviewId);
-        interviewRepository.delete(interviewId);
+    public void delete(Long moduleId) {
+        userModuleRepository.deleteByModuleId(moduleId);
+        userModuleRepository.flush();
+        interviewRepository.delete(moduleId);
     }
 
     public List<Module> availableModulesForUser(Long userId) {

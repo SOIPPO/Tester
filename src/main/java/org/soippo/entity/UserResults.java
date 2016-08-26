@@ -1,6 +1,7 @@
 package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.soippo.utils.View;
@@ -13,6 +14,7 @@ import java.sql.Date;
 @Table(name = "user_results",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "question_id", "date"})}
 )
+@JsonIgnoreProperties(value = {"user", "question"})
 public class UserResults implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
@@ -39,7 +41,7 @@ public class UserResults implements Serializable {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class, cascade = CascadeType.REFRESH)
-    private Question question;
+    private Question question = new Question();
 
     @Column(name = "is_correct")
     @JsonProperty("isCorrect")

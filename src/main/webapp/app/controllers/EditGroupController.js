@@ -1,12 +1,16 @@
-angular.module("editGroup", []).controller("editGroupController",
+angular.module("editGroup", ['ngSanitize', 'ui.select']).controller("editGroupController",
     ["$scope", '$window', "$http",
         function ($scope, $window, $http) {
             var initialGroupName = "";
 
+            $scope.init = function() {
+                $scope.modulelist = $window['moduleListData'];
+            };
+
             $scope.submitForm = function (isValid) {
-                var groupName = $scope.data.name;
+                console.log($scope.data);
                 if (isValid && groupName != initialGroupName && groupName) {
-                    return $http.post('/admin/checkgroup', groupName).then(
+                    return $http.post('/admin/checkgroup', $scope.data).then(
                         function successCallback() {
                             $scope.registerForm.groupName.$setValidity("alreadyexists", true);
                             $http.post('/admin/savegroup', $scope.data).then(

@@ -9,7 +9,7 @@ angular.module("results", []).controller("resultsController",
             };
 
             $scope.updateModulelist = function () {
-                $http.post('/interview/list').then(
+                $http.post('/user-modules/list').then(
                     function successCallback(response) {
                         for (var key in response.data) {
                             $scope.modules[response.data[key].id] = response.data[key];

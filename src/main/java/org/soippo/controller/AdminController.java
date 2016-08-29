@@ -48,7 +48,7 @@ public class AdminController {
     @ResponseBody
     public String userList() throws JsonProcessingException {
         return objectMapper
-                .writerWithView(View.Normal.class)
+                .writerWithView(View.Extended.class)
                 .writeValueAsString(userService.findAll());
     }
 
@@ -57,7 +57,9 @@ public class AdminController {
         model.addObject("grouplist", objectMapper
                 .writeValueAsString(groupService.findAll()));
         model.addObject("rolesList", objectMapper.writeValueAsString(UserRoles.values()));
+        model.addObject("moduleList", moduleList());
         model.setViewName("userlist");
+
         return model;
     }
 

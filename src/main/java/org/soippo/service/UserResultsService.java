@@ -21,7 +21,7 @@ public class UserResultsService {
     private UserResultsRepository userResultsRepository;
 
     public void saveAll(List<UserResults> userResults) {
-        userResults.forEach(item -> userResultsRepository.save(item));
+        userResultsRepository.save(userResults);
     }
 
     public List<GroupModuleResults> collectResultsByUser(Long userId) {

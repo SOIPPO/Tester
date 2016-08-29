@@ -2,6 +2,8 @@ package org.soippo.service;
 
 import org.soippo.entity.Module;
 import org.soippo.repository.InterviewRepository;
+import org.soippo.repository.UserModuleRepository;
+import org.soippo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,12 @@ import java.util.List;
 public class ModuleService {
     @Resource
     private InterviewRepository interviewRepository;
+    @Resource
+    private UserRepository userRepository;
+
+    @Resource
+    private UserModuleRepository userModuleRepository;
+
 
     public List<Module> findAll() {
         return interviewRepository.findAll();
@@ -26,7 +34,13 @@ public class ModuleService {
         return interviewRepository.save(module);
     }
 
-    public void delete(Long interviewId) {
-        interviewRepository.delete(interviewId);
+    public void delete(Long moduleId) {
+        userModuleRepository.deleteByModuleId(moduleId);
+        userModuleRepository.flush();
+        interviewRepository.delete(moduleId);
+    }
+
+    public List<Module> availableModulesForUser(Long userId) {
+        return userRepository.findOne(userId).getModules();
     }
 }

@@ -2,9 +2,11 @@ package org.soippo.service;
 
 import org.soippo.entity.Group;
 import org.soippo.entity.User;
+import org.soippo.entity.UserModules;
 import org.soippo.exceptions.NotUniqueEmailException;
 import org.soippo.exceptions.NotUniqueUserException;
 import org.soippo.exceptions.UserValidationException;
+import org.soippo.repository.UserModuleRepository;
 import org.soippo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,10 @@ public class UserService {
     @Resource
     private UserRepository userRepository;
 
+
+    @Resource
+    private UserModuleRepository userModuleRepository;
+
     public User saveUser(User user) throws UserValidationException {
         if (user.getId() == null) {
             if (!checkUniqueEmail(user.getEmail())) {
@@ -27,8 +33,11 @@ public class UserService {
                 throw new NotUniqueUserException();
             }
         }
-
-        return userRepository.save(user);
+        if(user.getId() != null) {
+            userModuleRepository.deleteByUserId(user.getId());
+        }
+        User saved = userRepository.save(user);
+        return userRepository.findOne(saved.getId());
     }
 
     public void deleteUser(Long userId) {
@@ -58,5 +67,10 @@ public class UserService {
 
     public User findOne(Long userId) {
         return userRepository.findOne(userId);
+    }
+
+    public boolean isModuleAvailableForUser(Long userId, Long moduleId) {
+        List<UserModules> modules = userModuleRepository.findByUserId(userId);
+        return modules.stream().anyMatch((item) -> item.getModule().getId().equals(moduleId));
     }
 }

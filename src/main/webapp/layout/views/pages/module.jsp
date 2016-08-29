@@ -8,8 +8,8 @@
     localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";
     localizationMessages['fail-save'] = "<spring:message code="popup.messages.module.already-exists"/>";
     $(document).ready(function () {
-        $(":checkbox").styler();
-        $(":radio").styler();
+//        $(":checkbox").styler();
+//        $(":radio").styler();
     });
 </script>
 
@@ -19,7 +19,6 @@
       ng-submit="sendResults(moduleForm.$valid)"
       name="moduleForm"
       class="col-md-10 col-md-offset-1">
-
     <div class="panel panel-default"
          ng-repeat="question in data.questions | filter:emptyOrNull | orderBy:'question_order' track by $index">
         <div class="panel-heading" id="question_title_{{question.id}}">
@@ -32,7 +31,6 @@
                     <label for="question_title_{{question.id}}">
                         <input type="checkbox"
                                data-ng-value="{{answer.id}}"
-                               id="question_{{question.id}}"
                                name="question_{{question.id}}"
                                ng-change="switchSelection({{question.id}}, {{answer.id}})"
                                ng-model="checkboxes[answer.id]"/>
@@ -47,7 +45,6 @@
                         <input type="radio"
                                data-ng-value="{{answer.id}}"
                                ng-value="{{answer.id}}"
-                               id="question_{{question.id}}"
                                name="question_{{question.id}}"
                                ng-change="addRadioSelect({{question.id}}, {{answer.id}})"
                                ng-model="result[question.id]"/>
@@ -57,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div class="pull-right">
+    <div class="pull-right" ng-if="data.questions.length">
         <button type="submit" class="btn btn-success"><spring:message code="send"/></button>
     </div>
 </form>

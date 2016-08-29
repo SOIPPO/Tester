@@ -108,8 +108,7 @@
                                             <ui-select multiple
                                                        ng-required="true"
                                                        ng-model="question.correctAnswers"
-                                                       theme="bootstrap"
-                                                       class="form-control">
+                                                       theme="bootstrap">
                                                 <ui-select-match allow-clear="true" placeholder="">
                                                     {{$item.text}}
                                                 </ui-select-match>
@@ -125,8 +124,7 @@
 
                                             <ui-select ng-required="true"
                                                        ng-model="question.correctAnswers[0]"
-                                                       theme="bootstrap"
-                                                       class="form-control">
+                                                       theme="bootstrap">
                                                 <ui-select-match allow-clear="true" placeholder="">
                                                     {{$select.selected.text}}
                                                 </ui-select-match>

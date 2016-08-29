@@ -1,6 +1,8 @@
 package org.soippo.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.soippo.utils.View;
 
 import javax.persistence.*;
@@ -8,7 +10,8 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "interview")
+@Table(name = "module")
+@JsonIgnoreProperties(value = {"users", "userModules"})
 public class Module implements Serializable {
     @Id
     @Column(name = "id")
@@ -27,7 +30,7 @@ public class Module implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY,
             targetEntity = Question.class,
-            cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "interview_id")
     @OrderColumn(name = "question_order")
     @OrderBy("question_order")
@@ -49,5 +52,15 @@ public class Module implements Serializable {
 
     public List<Question> getQuestions() {
         return questions;
+    }
+
+    public Module setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Module setQuestions(List<Question> questions) {
+        this.questions = questions;
+        return this;
     }
 }

@@ -47,6 +47,10 @@ public class Question {
     @JoinColumn(name = "questions_interview_FK")
     private Long interviewId;
 
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id", referencedColumnName = "id")
+    private List<UserResults> userResultses;
+
     public Long getOrder() {
         return questionOrder;
     }
@@ -77,5 +81,38 @@ public class Question {
 
     public void setInterviewId(Long interviewId) {
         this.interviewId = interviewId;
+    }
+
+    public Question setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Question setText(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public Question setType(QuestionType type) {
+        this.type = type;
+        return this;
+    }
+
+    public Question setAnswers(List<Answer> answers) {
+        this.answers = answers;
+        return this;
+    }
+
+    public Question setQuestionOrder(Long questionOrder) {
+        this.questionOrder = questionOrder;
+        return this;
+    }
+
+    public List<UserResults> getUserResultses() {
+        return userResultses;
+    }
+
+    public void setUserResultses(List<UserResults> userResultses) {
+        this.userResultses = userResultses;
     }
 }

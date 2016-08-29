@@ -23,9 +23,9 @@ module.exports = function (grunt) {
                 src: [
                     'src/main/webapp/plugins/bower/jquery/dist/jquery.js',
                     'src/main/webapp/plugins/bower/angular/angular.js',
+                    'src/main/webapp/plugins/bower/jquery-ui/jquery-ui.min.js',
                     'src/main/webapp/plugins/bower/bootstrap/dist/js/bootstrap.js',
                     'src/main/webapp/plugins/bower/angular-messages/angular-messages.js',
-                    'src/main/webapp/plugins/bower/jquery-ui/jquery-ui.min.js',
                     'src/main/webapp/plugins/bower/alertify-js/build/alertify.js',
                     'src/main/webapp/plugins/bower/blockUI/jquery.blockUI.js',
                     'src/main/webapp/plugins/bower/angular-validation-match/dist/angular-validation-match.js',

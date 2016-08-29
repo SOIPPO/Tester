@@ -47,8 +47,9 @@ public class Answer implements Serializable {
         return text;
     }
 
-    public void setText(String text) {
+    public Answer setText(String text) {
         this.text = text;
+        return this;
     }
 
     public Long getQuestionId() {
@@ -59,7 +60,27 @@ public class Answer implements Serializable {
         return isCorrect;
     }
 
-    public void setCorrect(Boolean correct) {
+    public Answer setCorrect(Boolean correct) {
         isCorrect = correct;
+        return this;
+    }
+
+    public Answer setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Long getAnswerOrder() {
+        return answerOrder;
+    }
+
+    public Answer setAnswerOrder(Long answerOrder) {
+        this.answerOrder = answerOrder;
+        return this;
+    }
+
+    public Answer setQuestionId(Long questionId) {
+        this.questionId = questionId;
+        return this;
     }
 }

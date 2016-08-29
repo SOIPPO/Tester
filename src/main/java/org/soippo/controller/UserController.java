@@ -50,7 +50,8 @@ public class UserController {
 
     @RequestMapping("/modules")
     public ModelAndView interviewlistPage(ModelAndView model) {
-        model.addObject("interviewlist", moduleService.findAll());
+        Long userId = getCurrentUser().getId();
+        model.addObject("modulelist", moduleService.availableModulesForUser(userId));
         model.setViewName("modules");
         return model;
     }
@@ -62,6 +63,20 @@ public class UserController {
             return objectMapper
                     .writerWithView(View.Simplified.class)
                     .writeValueAsString(moduleService.findAll());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    @RequestMapping(value = "/user-modules/list", method = RequestMethod.POST)
+    @ResponseBody
+    public String userModuleList() {
+        try {
+            return objectMapper
+                    .writerWithView(View.Simplified.class)
+                    .writeValueAsString(userService.findOne(getCurrentUser().getId()).getModules());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -80,9 +95,13 @@ public class UserController {
 
     @RequestMapping("/module/{id}")
     public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) throws JsonProcessingException {
-        model.addObject("moduleData", objectMapper.writeValueAsString(moduleService.findOne(id)));
-        model.setViewName("module");
-        return model;
+        if(userService.isModuleAvailableForUser(getCurrentUser().getId(), id)) {
+            model.addObject("moduleData", objectMapper.writeValueAsString(moduleService.findOne(id)));
+            model.setViewName("module");
+            return model;
+        } else {
+            return new ModelAndView("redirect:/modules");
+        }
     }
 
     @RequestMapping(value = "/module/saveresults", method = RequestMethod.POST)
@@ -131,7 +150,10 @@ public class UserController {
     public ResponseEntity saveUser(@RequestBody String userData) throws IOException {
         try {
             User user = objectMapper.readValue(userData, User.class);
-            user.setRole(userService.findOne(user.getId()).getRole());
+            User savedUser = userService.findOne(user.getId());
+            user.setRole(savedUser.getRole());
+//            user.setModules(Optional.ofNullable(user.getModules()).orElse(savedUser.getModules()));
+
             return ResponseEntity.ok(objectMapper.writeValueAsString(userService.saveUser(user)));
         } catch (UserValidationException ex) {
             return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(ex.getErrorCode()));

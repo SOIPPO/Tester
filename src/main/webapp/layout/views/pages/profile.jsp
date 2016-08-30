@@ -128,36 +128,6 @@
         </div>
 
         <div class="form-group">
-            <label for="email" class="col-sm-3 control-label"><spring:message
-                    code="registration.fields.email"/></label>
-            <div class="col-sm-9">
-                <input type="email"
-                       class="form-control"
-                       id="email"
-                       name="email"
-                       placeholder='<spring:message code="registration.fields.email"/>'
-                       ng-model="user.email"
-                       ng-model-options="{updateOn: 'blur'}"
-                       ng-minlength="3"
-                       ng-maxlength="50"
-                       ng-required="true">
-
-                <div ng-if="userdata.$submitted || userdata.email.$touched">
-                                <span ng-if="userdata.email.$error.required"
-                                      ng-init="displayError('email', '<spring:message code="registration.messages.required.email"/>')">
-                                </span>
-                    <span ng-if="userdata.email.$touched && userdata.email.$error.alreadyexists"
-                          ng-init="displayError('email', '<spring:message code="registration.messages.email.alreadyexists"/>')">
-                                </span>
-                    <span ng-if="userdata.email.$touched && userdata.email.$error.email"
-                          ng-init="displayError('email', '<spring:message code="registration.messages.email.pattern"/>')">
-                                </span>
-                </div>
-                <span ng-if="userdata.email.$valid" ng-init="clearMessages('email')"></span>
-
-            </div>
-        </div>
-        <div class="form-group">
             <label for="password" class="col-sm-3 control-label"><spring:message
                     code="registration.fields.password"/></label>
             <div class="col-sm-9">

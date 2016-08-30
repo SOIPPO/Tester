@@ -8,10 +8,10 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                 $scope.user.group = getFirstElement($scope.grouplist);
             };
 
-            $scope.resetForm = function () {
-                $scope.user = angular.copy({});
-                $scope.user.group = getFirstElement($scope.grouplist);
-            };
+            // $scope.resetForm = function () {
+            //     $scope.user = angular.copy({});
+            //     $scope.user.group = getFirstElement($scope.grouplist);
+            // };
 
             $scope.submitForm = function (isValid) {
                 $scope.user.isPasswordChanged = true;
@@ -25,9 +25,9 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                             $.unblockUI();
                         },
                         function errorCallback(response) {
-                            if (response.data == emailInUseErrorCode) {
-                                $scope.setEmailValidation(false);
-                            }
+                            // if (response.data == emailInUseErrorCode) {
+                            //     $scope.setEmailValidation(false);
+                            // }
 
                             if (response.data == userExistsErrorCode) {
                                 $scope.setUserValidation(false);
@@ -38,9 +38,9 @@ angular.module("registerForm", ['validation.match']).controller("registerFormCon
                 }
             };
 
-            $scope.setEmailValidation = function (value) {
-                $scope.registerForm.email.$setValidity("alreadyexists", value);
-            };
+            // $scope.setEmailValidation = function (value) {
+            //     $scope.registerForm.email.$setValidity("alreadyexists", value);
+            // };
 
             $scope.setUserValidation = function (value) {
                 $scope.registerForm.lastName.$setValidity("alreadyexists", value);

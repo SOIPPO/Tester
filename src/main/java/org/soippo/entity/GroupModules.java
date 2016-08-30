@@ -1,7 +1,6 @@
 package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.soippo.utils.View;
 
@@ -19,12 +18,6 @@ public class GroupModules {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "group_modules_id_sequence")
     private Long id;
 
-//    @Column(name = "group_id")
-//    private Long groupId;
-//
-//    @Column(name = "module_id")
-//    private Long moduleId;
-
     @Column(name = "begin_date")
     @JsonView(View.Normal.class)
     private LocalDate incomingDate;
@@ -41,7 +34,6 @@ public class GroupModules {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "module_id")
-    @JsonManagedReference(value = "group-module")
     private Module module;
 
     public Long getId() {

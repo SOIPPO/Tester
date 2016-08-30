@@ -34,11 +34,8 @@ public class Group implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "group")
     @JsonView(View.Extended.class)
+    @JsonBackReference(value = "module-group")
     private List<GroupModules> groupModules;
-
-//    private transient List<Module> availableModules;
-//    private transient LocalDate incomingInspectionDate;
-//    private transient LocalDate finalInspectionDate;
 
     public Long getId() {
         return id;

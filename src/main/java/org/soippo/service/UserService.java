@@ -3,7 +3,6 @@ package org.soippo.service;
 import org.soippo.entity.Group;
 import org.soippo.entity.GroupModules;
 import org.soippo.entity.User;
-import org.soippo.exceptions.NotUniqueEmailException;
 import org.soippo.exceptions.NotUniqueUserException;
 import org.soippo.exceptions.UserValidationException;
 import org.soippo.repository.GroupModuleRepository;
@@ -24,9 +23,6 @@ public class UserService {
 
     public User saveUser(User user) throws UserValidationException {
         if (user.getId() == null) {
-            if (!checkUniqueEmail(user.getEmail())) {
-                throw new NotUniqueEmailException();
-            }
             if (!checkUniqueUser(user)) {
                 throw new NotUniqueUserException();
             }
@@ -41,10 +37,6 @@ public class UserService {
 
     public List<User> findUsersInGroup(Group group) {
         return userRepository.findByGroup_Id(group.getId());
-    }
-
-    private boolean checkUniqueEmail(String email) {
-        return userRepository.findByEmail(email) == null;
     }
 
     private boolean checkUniqueUser(User user) {

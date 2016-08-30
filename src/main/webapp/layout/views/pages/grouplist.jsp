@@ -2,8 +2,6 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/app/controllers/EditGroupController.js"></script>
 <script>
-    <%--var grouplistData = ${grouplist};--%>
-//    console.log(grouplistData);
     var moduleListData = ${moduleList};
     var localizationMessages = {};
     localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";

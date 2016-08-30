@@ -45,11 +45,6 @@ public class User implements Serializable {
     @JsonView(View.Simplified.class)
     private String passwordHash;
 
-    @JsonProperty("email")
-    @Column(name = "email", unique = true, nullable = false)
-    @JsonView(View.Simplified.class)
-    private String email;
-
     @JsonProperty("role")
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
@@ -107,15 +102,6 @@ public class User implements Serializable {
 
     public User setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public User setEmail(String email) {
-        this.email = email;
         return this;
     }
 

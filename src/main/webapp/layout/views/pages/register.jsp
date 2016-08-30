@@ -8,7 +8,7 @@
 
 <script>
     var grouplistData = ${grouplist};
-    var emailInUseErrorCode = "<%= ErrorCode.EMAIL_ALREADY_IN_USE %>";
+    <%--var emailInUseErrorCode = "<%= ErrorCode.EMAIL_ALREADY_IN_USE %>";--%>
     var userExistsErrorCode = "<%= ErrorCode.USER_ALREADY_EXISTS %>";
 </script>
 
@@ -133,39 +133,6 @@
 
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="email" class="col-sm-3 control-label"><spring:message
-                        code="registration.fields.email"/></label>
-                <div class="col-sm-9">
-                    <input type="email"
-                           class="form-control"
-                           id="email"
-                           name="email"
-                           placeholder='<spring:message code="registration.fields.email"/>'
-                           ng-model="user.email"
-                           ng-model-options="{updateOn: 'blur'}"
-                           ng-minlength="3"
-                           ng-maxlength="50"
-                           ng-change="setEmailValidation(true)"
-                           ng-required="true">
-
-                    <div ng-if="registerForm.$submitted || registerForm.email.$touched">
-                        <span ng-if="registerForm.email.$error.required"
-                              ng-init="displayError('email', '<spring:message code="registration.messages.required.email"/>')">
-                        </span>
-                        <span ng-if="registerForm.email.$touched && registerForm.email.$error.alreadyexists"
-                              ng-init="displayError('email', '<spring:message code="registration.messages.email.alreadyexists"/>')">
-                        </span>
-                        <span ng-if="registerForm.email.$touched && registerForm.email.$error.email"
-                              ng-init="displayError('email', '<spring:message code="registration.messages.email.pattern"/>')">
-                        </span>
-                    </div>
-                    <span ng-if="registerForm.email.$valid" ng-init="clearMessages('email')"></span>
-
-                </div>
-            </div>
-
             <div class="form-group">
                 <label for="password" class="col-sm-3 control-label"><spring:message
                         code="registration.fields.password"/></label>
@@ -246,9 +213,6 @@
                 <div class="pull-right">
                     <button type="submit" class="btn btn-primary">
                         <spring:message code="registration.buttons.register"/>
-                    </button>
-                    <button type="button" class="btn btn-warning" ng-click="resetForm()">
-                        <spring:message code="registration.buttons.reset_form"/>
                     </button>
                 </div>
             </div>

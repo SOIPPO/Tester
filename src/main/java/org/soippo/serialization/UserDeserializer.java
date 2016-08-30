@@ -26,7 +26,6 @@ public class UserDeserializer extends JsonDeserializer<User> {
                 .setFirstName(node.get("firstName").asText())
                 .setMiddleName(node.get("middleName").asText())
                 .setLastName(node.get("lastName").asText())
-                .setEmail(node.get("email").asText())
                 .setRole(UserRoles.valueOf(Optional.ofNullable(node.get("role")).map(JsonNode::asText).orElse("USER")))
                 .setGroup(new ObjectMapper().treeToValue(node.get("group"), Group.class));
 
@@ -35,21 +34,6 @@ public class UserDeserializer extends JsonDeserializer<User> {
         } else {
             user.setPasswordHash(node.get("password").asText());
         }
-
-//        if(Optional.ofNullable(node.get("modules")).isPresent()) {
-//            List<Module> modules = new ArrayList<>();
-//            node.get("modules").forEach(
-//                    module -> {
-//                        try {
-//                            modules.add(new ObjectMapper().treeToValue(module, Module.class));
-//                        } catch (JsonProcessingException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//            );
-//
-//            user.setModules(modules);
-//        }
 
         return user;
     }

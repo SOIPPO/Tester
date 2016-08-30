@@ -141,7 +141,9 @@ public class UserController {
         model.addObject("userData", objectMapper
                 .writerWithView(View.Simplified.class)
                 .writeValueAsString(userService.findOne(userId)));
-        model.addObject("grouplist", objectMapper.writeValueAsString(groupService.findAll()));
+        model.addObject("grouplist", objectMapper
+                .writerWithView(View.Simplified.class)
+                .writeValueAsString(groupService.findAll()));
         model.setViewName("profile");
         return model;
     }

@@ -65,6 +65,7 @@ public class AdminController {
     @RequestMapping(value = "/userlist", method = RequestMethod.GET)
     public ModelAndView userListPage(ModelAndView model) throws JsonProcessingException {
         model.addObject("grouplist", objectMapper
+                .writerWithView(View.Simplified.class)
                 .writeValueAsString(groupService.findAll()));
         model.addObject("rolesList", objectMapper.writeValueAsString(UserRoles.values()));
         model.setViewName("userlist");

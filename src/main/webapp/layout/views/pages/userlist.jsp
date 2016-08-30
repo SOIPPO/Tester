@@ -4,7 +4,7 @@
 <script>
     var grouplistData = ${grouplist};
     var rolelistData = ${rolesList};
-    var moduleListData = ${moduleList};
+    <%--var moduleListData = ${moduleList};--%>
 
     var localizationMessages = {};
     localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";
@@ -331,26 +331,26 @@
                             <span ng-if="registerForm.role.$valid" ng-init="clearMessages('role')"></span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="modules" class="col-sm-3 control-label">
-                            <spring:message code="menu.interviewlist"/>
-                        </label>
-                        <div class="col-sm-9">
-                            <ui-select multiple
-                                       ng-model="user.modules"
-                                       id="modules"
-                                       name="modules"
-                                       theme="bootstrap">
-                                <ui-select-match allow-clear="true" placeholder="">
-                                    {{$item.title}}
-                                </ui-select-match>
-                                <ui-select-choices
-                                        repeat="module in modulelist | filter: $select.search">
-                                    {{module.title}}
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label for="modules" class="col-sm-3 control-label">--%>
+                            <%--<spring:message code="menu.interviewlist"/>--%>
+                        <%--</label>--%>
+                        <%--<div class="col-sm-9">--%>
+                            <%--<ui-select multiple--%>
+                                       <%--ng-model="user.modules"--%>
+                                       <%--id="modules"--%>
+                                       <%--name="modules"--%>
+                                       <%--theme="bootstrap">--%>
+                                <%--<ui-select-match allow-clear="true" placeholder="">--%>
+                                    <%--{{$item.title}}--%>
+                                <%--</ui-select-match>--%>
+                                <%--<ui-select-choices--%>
+                                        <%--repeat="module in modulelist | filter: $select.search">--%>
+                                    <%--{{module.title}}--%>
+                                <%--</ui-select-choices>--%>
+                            <%--</ui-select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
                 </div>
                 <div class="modal-footer">

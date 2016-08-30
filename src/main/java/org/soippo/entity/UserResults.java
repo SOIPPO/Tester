@@ -37,7 +37,7 @@ public class UserResults implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "user-results")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class, cascade = CascadeType.REFRESH)

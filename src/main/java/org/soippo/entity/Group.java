@@ -1,15 +1,14 @@
 package org.soippo.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import org.soippo.utils.View;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "groups")
@@ -33,20 +32,30 @@ public class Group implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
     private List<User> users;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "group")
+    @JsonView(View.Extended.class)
+    private List<GroupModules> groupModules;
+
+//    private transient List<Module> availableModules;
+//    private transient LocalDate incomingInspectionDate;
+//    private transient LocalDate finalInspectionDate;
+
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Group setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Group setName(String name) {
         this.name = name;
+        return this;
     }
 
     @JsonIgnore
@@ -54,4 +63,31 @@ public class Group implements Serializable {
         this.users = users;
     }
 
+    public List<GroupModules> getGroupModules() {
+        return groupModules;
+    }
+
+    public void setGroupModules(List<GroupModules> groupModules) {
+        this.groupModules = groupModules;
+    }
+
+    @JsonProperty("modules")
+    @JsonView(View.Normal.class)
+    public List<Module> getAvailableModules() {
+        return groupModules.stream().map(GroupModules::getModule).collect(Collectors.toList());
+    }
+
+    @JsonProperty("incoming_inspection_date")
+    @JsonView(View.Normal.class)
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    public LocalDate getIncomingInspectionDate() {
+        return groupModules.stream().findAny().orElse(new GroupModules().setIncomingDate(LocalDate.now())).getIncomingDate();
+    }
+
+    @JsonProperty("final_inspection_date")
+    @JsonView(View.Normal.class)
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    public LocalDate getFinalInspectionDate() {
+        return groupModules.stream().findAny().orElse(new GroupModules().setFinalDate(LocalDate.now())).getFinalDate();
+    }
 }

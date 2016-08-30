@@ -8,9 +8,7 @@ import org.soippo.utils.View;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -60,19 +58,12 @@ public class User implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
-    @JsonBackReference
+    @JsonBackReference(value = "group")
     private Group group;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JsonManagedReference
-    private List<UserModules> userModules = new ArrayList<>();
-
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "userId")
-    @JsonManagedReference
+    @JsonManagedReference(value = "user-results")
     private List<UserResults> userResults;
-    private transient List<Module> modules = new ArrayList<>();
-
 
     public Long getId() {
         return id;
@@ -167,32 +158,6 @@ public class User implements Serializable {
 
     public User setUserResults(List<UserResults> userResults) {
         this.userResults = userResults;
-        return this;
-    }
-
-    @JsonProperty("modules")
-    @JsonView(View.Normal.class)
-    public List<Module> getModules() {
-        if (modules.isEmpty() && !userModules.isEmpty()) {
-            modules = userModules.stream().map(UserModules::getModule).collect(Collectors.toList());
-        }
-        return modules;
-    }
-
-    public User setModules(List<Module> modules) {
-        this.modules = modules;
-        this.userModules = modules.stream()
-                .map(item -> new UserModules().setModule(item).setUser(this))
-                .collect(Collectors.toList());
-        return this;
-    }
-
-    public List<UserModules> getUserModules() {
-        return userModules;
-    }
-
-    public User setUserModules(List<UserModules> userModules) {
-        this.userModules = userModules;
         return this;
     }
 }

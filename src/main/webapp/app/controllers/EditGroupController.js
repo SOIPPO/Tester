@@ -37,7 +37,10 @@ angular.module("editGroup", ['ngSanitize', 'ui.select']).controller("editGroupCo
 
             $scope.fillGroupData = function (data) {
                 $scope.registerForm.$setUntouched();
+                console.log(data);
                 initialGroupName = data.name;
+                data.incoming_date = data.incoming_inspection_date;
+                data.final_date = data.final_inspection_date;
                 $scope.$apply(function () {
                     $scope.data = data;
                 });

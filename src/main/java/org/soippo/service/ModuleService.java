@@ -1,14 +1,18 @@
 package org.soippo.service;
 
+import org.soippo.entity.GroupModules;
 import org.soippo.entity.Module;
+import org.soippo.repository.GroupModuleRepository;
 import org.soippo.repository.InterviewRepository;
-import org.soippo.repository.UserModuleRepository;
 import org.soippo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -17,10 +21,8 @@ public class ModuleService {
     private InterviewRepository interviewRepository;
     @Resource
     private UserRepository userRepository;
-
     @Resource
-    private UserModuleRepository userModuleRepository;
-
+    private GroupModuleRepository groupModuleRepository;
 
     public List<Module> findAll() {
         return interviewRepository.findAll();
@@ -35,12 +37,17 @@ public class ModuleService {
     }
 
     public void delete(Long moduleId) {
-        userModuleRepository.deleteByModuleId(moduleId);
-        userModuleRepository.flush();
+        groupModuleRepository.deleteByModuleId(moduleId);
+        groupModuleRepository.flush();
         interviewRepository.delete(moduleId);
     }
 
     public List<Module> availableModulesForUser(Long userId) {
-        return userRepository.findOne(userId).getModules();
+        Predicate<LocalDate> isToday = date -> date.getYear() == LocalDate.now().getYear() && date.getDayOfYear() == LocalDate.now().getDayOfYear();
+        return groupModuleRepository.findByGroupId(userRepository.findOne(userId).getGroupId())
+                .stream()
+                .filter(item -> isToday.test(item.getFinalDate()) || isToday.test(item.getIncomingDate()))
+                .map(GroupModules::getModule)
+                .collect(Collectors.toList());
     }
 }

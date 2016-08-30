@@ -2,7 +2,8 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/app/controllers/EditGroupController.js"></script>
 <script>
-    var grouplistData = ${grouplist};
+    <%--var grouplistData = ${grouplist};--%>
+//    console.log(grouplistData);
     var moduleListData = ${moduleList};
     var localizationMessages = {};
     localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";
@@ -158,7 +159,7 @@
                     <div class="col-sm-9">
                         <input type="text"
                                class="form-control"
-                               ng-model="data.from"
+                               ng-model="data.incoming_date"
                                required
                                id="datepicker_from"/>
                     </div>
@@ -168,7 +169,7 @@
                     <div class="col-sm-9">
                         <input type="text"
                                class="form-control"
-                               ng-model="data.to"
+                               ng-model="data.final_date"
                                required
                                id="datepicker_to"/>
                     </div>

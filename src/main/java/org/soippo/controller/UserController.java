@@ -73,14 +73,7 @@ public class UserController {
     @RequestMapping(value = "/user-modules/list", method = RequestMethod.POST)
     @ResponseBody
     public String userModuleList() {
-        try {
-            return objectMapper
-                    .writerWithView(View.Simplified.class)
-                    .writeValueAsString(moduleList());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return moduleList();
     }
 
     @RequestMapping("/results")

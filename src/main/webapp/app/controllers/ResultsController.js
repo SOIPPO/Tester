@@ -43,6 +43,7 @@ angular.module("results", []).controller("resultsController",
                                     if (isSelected(currentModule.id, $scope.selectedModules)) {
                                         var module = {
                                             'id': currentModule.id,
+                                            'title' : currentModule.moduleTitle,
                                             'correct': currentModule.correctAnswersCount,
                                             'total': currentModule.totalQuestions,
                                             'date': currentModule.date

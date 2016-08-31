@@ -31,7 +31,7 @@ public class Module implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY,
             targetEntity = Question.class,
-            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    cascade = {CascadeType.ALL})
     @JoinColumn(name = "interview_id")
     @OrderColumn(name = "question_order")
     @OrderBy("question_order")

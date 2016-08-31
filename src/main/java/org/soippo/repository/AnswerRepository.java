@@ -12,4 +12,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     List<Answer> findByQuestionIdAndIsCorrect(Long questionId, Boolean isCorrect);
 
     List<Answer> findByQuestionIdInAndIsCorrect(Collection<Long> questionId, Boolean isCorrect);
+
+    void deleteByQuestionId(Long item);
 }

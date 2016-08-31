@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface UserResultsRepository extends JpaRepository<UserResults, Long>{
     List<UserResults> findAllByUserId(Long userId);
+
+    void deleteByQuestionId(Long ids);
 }

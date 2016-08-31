@@ -6,11 +6,12 @@
     var localizationMessages = {};
     localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>";
     localizationMessages['success-delete'] = "<spring:message code="popup.messages.success-deletion"/>";
+    localizationMessages['fail-delete'] = "<spring:message code="modal.can-not-delete-group"/>";
 
     $(document).ready(function () {
         $(function () {
             $("[id ^= datepicker_]").datepicker({
-                "dateFormat" : "dd.mm.yy"
+                "dateFormat": "dd.mm.yy"
             });
         });
         var grouplistTable = $('#grouplist').DataTable({
@@ -128,51 +129,52 @@
                         </div>
                     </div>
 
-                </div>
 
-                <div class="form-group">
-                    <label for="modules" class="col-sm-3 control-label">
-                        <spring:message code="menu.interviewlist"/>
-                    </label>
-                    <div class="col-sm-9">
-                        <ui-select multiple
-                                   ng-model="data.modules"
-                                   id="modules"
-                                   name="modules"
+                    <div class="form-group">
+                        <label for="modules" class="col-sm-3 control-label">
+                            <spring:message code="menu.interviewlist"/>
+                        </label>
+                        <div class="col-sm-9">
+                            <ui-select multiple
+                                       ng-model="data.modules"
+                                       id="modules"
+                                       name="modules"
+                                       required
+                                       theme="bootstrap">
+                                <ui-select-match allow-clear="true" placeholder="">
+                                    {{$item.title}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="module in modulelist | filter: $select.search">
+                                    {{module.title}}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="groupName" class="col-sm-3 control-label"><spring:message
+                                code="group.incoming-test"/></label>
+                        <div class="col-sm-9">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="data.incoming_date"
                                    required
-                                   theme="bootstrap">
-                            <ui-select-match allow-clear="true" placeholder="">
-                                {{$item.title}}
-                            </ui-select-match>
-                            <ui-select-choices
-                                    repeat="module in modulelist | filter: $select.search">
-                                {{module.title}}
-                            </ui-select-choices>
-                        </ui-select>
+                                   id="datepicker_from"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="groupName" class="col-sm-3 control-label"><spring:message
+                                code="group.final-test"/></label>
+                        <div class="col-sm-9">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="data.final_date"
+                                   required
+                                   id="datepicker_to"/>
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="groupName" class="col-sm-3 control-label">From</label>
-                    <div class="col-sm-9">
-                        <input type="text"
-                               class="form-control"
-                               ng-model="data.incoming_date"
-                               required
-                               id="datepicker_from"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="groupName" class="col-sm-3 control-label">To</label>
-                    <div class="col-sm-9">
-                        <input type="text"
-                               class="form-control"
-                               ng-model="data.final_date"
-                               required
-                               id="datepicker_to"/>
-                    </div>
-                </div>
-
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" onclick="$('#deleteConfirm').modal('show')"

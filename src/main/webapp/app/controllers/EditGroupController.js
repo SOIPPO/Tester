@@ -57,7 +57,7 @@ angular.module("editGroup", ['ngSanitize', 'ui.select']).controller("editGroupCo
                     function errorCallback() {
                         $('#editGroupModal').modal('hide');
                         $('#deleteConfirm').modal('hide');
-                        alertify.notify("can not delete group", 'error', 5, function () {
+                        alertify.notify(localizationMessages['fail-delete'], 'error', 5, function () {
                         });
                     }
                 );

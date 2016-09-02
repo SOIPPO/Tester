@@ -1,5 +1,6 @@
 package org.soippo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -30,12 +31,18 @@ public class Module implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY,
             targetEntity = Question.class,
-            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    cascade = {CascadeType.ALL})
     @JoinColumn(name = "interview_id")
     @OrderColumn(name = "question_order")
     @OrderBy("question_order")
     @JsonProperty("questions")
+    @JsonView(View.Normal.class)
     private List<Question> questions;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "module")
+    @JsonIgnore
+    @JsonView(View.Extended.class)
+    private List<GroupModules> groupModules;
 
     public String getTitle() {
         return title;

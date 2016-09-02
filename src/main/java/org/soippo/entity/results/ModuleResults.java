@@ -10,6 +10,9 @@ public class ModuleResults {
     @JsonProperty("id")
     @JsonView(View.Simplified.class)
     private Long moduleId;
+    @JsonProperty("moduleTitle")
+    @JsonView(View.Simplified.class)
+    private String moduleTitle;
     @JsonProperty("totalQuestions")
     @JsonView(View.Simplified.class)
     private Long totalQuestions;
@@ -53,6 +56,15 @@ public class ModuleResults {
 
     public ModuleResults setDate(Date date) {
         this.date = date;
+        return this;
+    }
+
+    public String getModuleTitle() {
+        return moduleTitle;
+    }
+
+    public ModuleResults setModuleTitle(String moduleTitle) {
+        this.moduleTitle = moduleTitle;
         return this;
     }
 }

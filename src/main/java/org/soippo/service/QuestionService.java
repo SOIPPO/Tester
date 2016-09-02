@@ -1,7 +1,10 @@
 package org.soippo.service;
 
 import org.soippo.entity.Answer;
+import org.soippo.entity.Question;
 import org.soippo.repository.AnswerRepository;
+import org.soippo.repository.QuestionRepository;
+import org.soippo.repository.UserResultsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +18,19 @@ import java.util.stream.Collectors;
 public class QuestionService {
     @Resource
     private AnswerRepository answerRepository;
+    @Resource
+    private QuestionRepository questionRepository;
+    @Resource
+    private UserResultsRepository userResultsRepository;
+
+    public void deleteByModuleId(Long moduleId) {
+        List<Question> questions = questionRepository.findByModuleId(moduleId);
+        questions.stream().map(Question::getId).forEach(item -> {
+            userResultsRepository.deleteByQuestionId(item);
+            answerRepository.deleteByQuestionId(item);
+        });
+        questionRepository.deleteByModuleId(moduleId);
+    }
 
     private Map<Long, List<Answer>> getCorrectAnswers(List<Long> questionIds) {
         return answerRepository
@@ -49,4 +65,6 @@ public class QuestionService {
                                         .collect(Collectors.toList())
                                         .equals(correctAnswers.get(item.getKey()))));
     }
+
+
 }

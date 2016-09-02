@@ -8,6 +8,7 @@ import org.soippo.entity.User;
 import org.soippo.exceptions.UserValidationException;
 import org.soippo.service.GroupService;
 import org.soippo.service.UserService;
+import org.soippo.utils.View;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -88,6 +89,7 @@ public class LoginController {
         String groupList = null;
         try {
             groupList = objectMapper
+                    .writerWithView(View.Simplified.class)
                     .writeValueAsString(groupService.findAll());
         } catch (JsonProcessingException e) {
             e.printStackTrace();

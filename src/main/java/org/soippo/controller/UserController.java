@@ -73,14 +73,7 @@ public class UserController {
     @RequestMapping(value = "/user-modules/list", method = RequestMethod.POST)
     @ResponseBody
     public String userModuleList() {
-        try {
-            return objectMapper
-                    .writerWithView(View.Simplified.class)
-                    .writeValueAsString(userService.findOne(getCurrentUser().getId()).getModules());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return moduleList();
     }
 
     @RequestMapping("/results")
@@ -141,7 +134,9 @@ public class UserController {
         model.addObject("userData", objectMapper
                 .writerWithView(View.Simplified.class)
                 .writeValueAsString(userService.findOne(userId)));
-        model.addObject("grouplist", objectMapper.writeValueAsString(groupService.findAll()));
+        model.addObject("grouplist", objectMapper
+                .writerWithView(View.Simplified.class)
+                .writeValueAsString(groupService.findAll()));
         model.setViewName("profile");
         return model;
     }
@@ -152,8 +147,6 @@ public class UserController {
             User user = objectMapper.readValue(userData, User.class);
             User savedUser = userService.findOne(user.getId());
             user.setRole(savedUser.getRole());
-//            user.setModules(Optional.ofNullable(user.getModules()).orElse(savedUser.getModules()));
-
             return ResponseEntity.ok(objectMapper.writeValueAsString(userService.saveUser(user)));
         } catch (UserValidationException ex) {
             return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(ex.getErrorCode()));

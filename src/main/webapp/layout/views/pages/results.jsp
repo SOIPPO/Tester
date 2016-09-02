@@ -32,7 +32,7 @@
         <li class="list-group-item"
             ng-repeat="result in display">
             <span class="badge">{{result.correct}} / {{result.total}}</span>
-            {{modules[result.id].title}} <i>({{result.date}})</i>
+            {{result.title}} <i>({{result.date}})</i>
         </li>
     </ul>
 </div>

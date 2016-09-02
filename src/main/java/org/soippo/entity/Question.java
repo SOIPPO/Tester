@@ -45,11 +45,7 @@ public class Question {
     @Column(name = "interview_id")
     @JsonProperty("interviewId")
     @JoinColumn(name = "questions_interview_FK")
-    private Long interviewId;
-
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", referencedColumnName = "id")
-    private List<UserResults> userResultses;
+    private Long moduleId;
 
     public Long getOrder() {
         return questionOrder;
@@ -75,12 +71,12 @@ public class Question {
         return questionOrder;
     }
 
-    public Long getInterviewId() {
-        return interviewId;
+    public Long getModuleId() {
+        return moduleId;
     }
 
-    public void setInterviewId(Long interviewId) {
-        this.interviewId = interviewId;
+    public void setModuleId(Long interviewId) {
+        this.moduleId = interviewId;
     }
 
     public Question setId(Long id) {
@@ -106,13 +102,5 @@ public class Question {
     public Question setQuestionOrder(Long questionOrder) {
         this.questionOrder = questionOrder;
         return this;
-    }
-
-    public List<UserResults> getUserResultses() {
-        return userResultses;
-    }
-
-    public void setUserResultses(List<UserResults> userResultses) {
-        this.userResultses = userResultses;
     }
 }

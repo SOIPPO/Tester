@@ -1,10 +1,12 @@
 package org.soippo.service;
 
+import org.soippo.entity.Module;
 import org.soippo.entity.User;
 import org.soippo.entity.UserResults;
 import org.soippo.entity.results.GroupModuleResults;
 import org.soippo.entity.results.ModuleResults;
 import org.soippo.entity.results.UserModuleResults;
+import org.soippo.repository.InterviewRepository;
 import org.soippo.repository.UserResultsRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ import java.util.stream.LongStream;
 public class UserResultsService {
     @Resource
     private UserResultsRepository userResultsRepository;
+    @Resource
+    private InterviewRepository interviewRepository;
+
 
     public void saveAll(List<UserResults> userResults) {
         userResultsRepository.save(userResults);
@@ -38,10 +43,12 @@ public class UserResultsService {
                 .mapToLong(item -> item.getUser().getGroupId())
                 .distinct();
 
+        Map<Long, Module> modules = interviewRepository.findAll().stream().collect(Collectors.toMap(Module::getId, item -> item));
+
         Map<User, Map<Date, Map<Long, List<UserResults>>>> userResultsByDateAndModuleId = results.stream()
                 .collect(Collectors.groupingBy(UserResults::getUser,
                         Collectors.groupingBy(UserResults::getDate,
-                                Collectors.groupingBy(item -> item.getQuestion().getInterviewId()))));
+                                Collectors.groupingBy(item -> item.getQuestion().getModuleId()))));
 
         List<UserModuleResults> modulesResults = userResultsByDateAndModuleId.entrySet().stream().map(
                 userResult -> new UserModuleResults()
@@ -52,6 +59,7 @@ public class UserResultsService {
                                                 moduleResult -> new ModuleResults()
                                                         .setDate(dayResult.getKey())
                                                         .setModuleId(moduleResult.getKey())
+                                                        .setModuleTitle(modules.get(moduleResult.getKey()).getTitle())
                                                         .setTotalQuestions((long) moduleResult.getValue().size())
                                                         .setCorrectAnswersCount(moduleResult
                                                                 .getValue()

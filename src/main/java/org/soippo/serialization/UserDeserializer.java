@@ -2,21 +2,17 @@ package org.soippo.serialization;
 
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.soippo.entity.Group;
-import org.soippo.entity.Module;
 import org.soippo.entity.User;
 import org.soippo.utils.UserRoles;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class UserDeserializer extends JsonDeserializer<User> {
@@ -30,7 +26,6 @@ public class UserDeserializer extends JsonDeserializer<User> {
                 .setFirstName(node.get("firstName").asText())
                 .setMiddleName(node.get("middleName").asText())
                 .setLastName(node.get("lastName").asText())
-                .setEmail(node.get("email").asText())
                 .setRole(UserRoles.valueOf(Optional.ofNullable(node.get("role")).map(JsonNode::asText).orElse("USER")))
                 .setGroup(new ObjectMapper().treeToValue(node.get("group"), Group.class));
 
@@ -38,21 +33,6 @@ public class UserDeserializer extends JsonDeserializer<User> {
             user.setPasswordHash(new BCryptPasswordEncoder(11).encode(node.get("password").asText()));
         } else {
             user.setPasswordHash(node.get("password").asText());
-        }
-
-        if(Optional.ofNullable(node.get("modules")).isPresent()) {
-            List<Module> modules = new ArrayList<>();
-            node.get("modules").forEach(
-                    module -> {
-                        try {
-                            modules.add(new ObjectMapper().treeToValue(module, Module.class));
-                        } catch (JsonProcessingException e) {
-                            e.printStackTrace();
-                        }
-                    }
-            );
-
-            user.setModules(modules);
         }
 
         return user;

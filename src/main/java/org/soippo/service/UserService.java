@@ -1,12 +1,11 @@
 package org.soippo.service;
 
 import org.soippo.entity.Group;
+import org.soippo.entity.GroupModules;
 import org.soippo.entity.User;
-import org.soippo.entity.UserModules;
-import org.soippo.exceptions.NotUniqueEmailException;
 import org.soippo.exceptions.NotUniqueUserException;
 import org.soippo.exceptions.UserValidationException;
-import org.soippo.repository.UserModuleRepository;
+import org.soippo.repository.GroupModuleRepository;
 import org.soippo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,22 +18,14 @@ import java.util.List;
 public class UserService {
     @Resource
     private UserRepository userRepository;
-
-
     @Resource
-    private UserModuleRepository userModuleRepository;
+    private GroupModuleRepository groupModuleRepository;
 
     public User saveUser(User user) throws UserValidationException {
         if (user.getId() == null) {
-            if (!checkUniqueEmail(user.getEmail())) {
-                throw new NotUniqueEmailException();
-            }
             if (!checkUniqueUser(user)) {
                 throw new NotUniqueUserException();
             }
-        }
-        if(user.getId() != null) {
-            userModuleRepository.deleteByUserId(user.getId());
         }
         User saved = userRepository.save(user);
         return userRepository.findOne(saved.getId());
@@ -46,10 +37,6 @@ public class UserService {
 
     public List<User> findUsersInGroup(Group group) {
         return userRepository.findByGroup_Id(group.getId());
-    }
-
-    private boolean checkUniqueEmail(String email) {
-        return userRepository.findByEmail(email) == null;
     }
 
     private boolean checkUniqueUser(User user) {
@@ -70,7 +57,7 @@ public class UserService {
     }
 
     public boolean isModuleAvailableForUser(Long userId, Long moduleId) {
-        List<UserModules> modules = userModuleRepository.findByUserId(userId);
-        return modules.stream().anyMatch((item) -> item.getModule().getId().equals(moduleId));
+        List<GroupModules> groupModules = groupModuleRepository.findByGroupId(userRepository.findOne(userId).getGroupId());
+        return groupModules.stream().anyMatch((item) -> item.getModule().getId().equals(moduleId));
     }
 }

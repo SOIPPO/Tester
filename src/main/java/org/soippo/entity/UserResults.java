@@ -25,6 +25,9 @@ public class UserResults implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userresults_id_sequence")
     private Long id;
 
+    @Column(name = "question_id")
+    @JsonProperty("questionId")
+    private Long questionId;
 
     @Column(name = "user_id")
     @JsonProperty("userId")
@@ -40,7 +43,8 @@ public class UserResults implements Serializable {
     @JsonBackReference
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class)
+    @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
     private Question question = new Question();
 
     @Column(name = "is_correct")
@@ -57,6 +61,7 @@ public class UserResults implements Serializable {
 
     public UserResults setQuestionId(Long questionId) {
         this.question.setId(questionId);
+        this.questionId = questionId;
         return this;
     }
 
@@ -113,6 +118,6 @@ public class UserResults implements Serializable {
     }
 
     public Long getModuleId() {
-        return question.getInterviewId();
+        return question.getModuleId();
     }
 }

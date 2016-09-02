@@ -1,12 +1,16 @@
-angular.module("editGroup", []).controller("editGroupController",
+angular.module("editGroup", ['ngSanitize', 'ui.select']).controller("editGroupController",
     ["$scope", '$window', "$http",
         function ($scope, $window, $http) {
             var initialGroupName = "";
 
+            $scope.init = function() {
+                $scope.modulelist = $window['moduleListData'];
+            };
+
             $scope.submitForm = function (isValid) {
-                var groupName = $scope.data.name;
+                console.log($scope.data);
                 if (isValid && groupName != initialGroupName && groupName) {
-                    return $http.post('/admin/checkgroup', groupName).then(
+                    return $http.post('/admin/checkgroup', $scope.data).then(
                         function successCallback() {
                             $scope.registerForm.groupName.$setValidity("alreadyexists", true);
                             $http.post('/admin/savegroup', $scope.data).then(
@@ -34,6 +38,8 @@ angular.module("editGroup", []).controller("editGroupController",
             $scope.fillGroupData = function (data) {
                 $scope.registerForm.$setUntouched();
                 initialGroupName = data.name;
+                data.incoming_date = data.incoming_inspection_date;
+                data.final_date = data.final_inspection_date;
                 $scope.$apply(function () {
                     $scope.data = data;
                 });
@@ -51,7 +57,7 @@ angular.module("editGroup", []).controller("editGroupController",
                     function errorCallback() {
                         $('#editGroupModal').modal('hide');
                         $('#deleteConfirm').modal('hide');
-                        alertify.notify("can not delete group", 'error', 5, function () {
+                        alertify.notify(localizationMessages['fail-delete'], 'error', 5, function () {
                         });
                     }
                 );

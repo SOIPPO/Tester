@@ -5,7 +5,7 @@ angular.module("editUser", ['ngSanitize', 'ui.select']).controller("editUserCont
 
             $scope.fillGroupData = function (paramName) {
                 $scope.grouplist = $window[paramName];
-                $scope.modulelist = $window['moduleListData'];
+                // $scope.modulelist = $window['moduleListData'];
 
                 $scope.user.group = getFirstElement($scope.grouplist);
             };

@@ -6,6 +6,8 @@ import org.soippo.entity.UserResults;
 import org.soippo.entity.results.GroupModuleResults;
 import org.soippo.entity.results.ModuleResults;
 import org.soippo.entity.results.UserModuleResults;
+import org.soippo.entity.results.department.DepartmentModuleResult;
+import org.soippo.entity.results.department.DepartmentResults;
 import org.soippo.repository.InterviewRepository;
 import org.soippo.repository.UserResultsRepository;
 import org.springframework.stereotype.Service;
@@ -77,6 +79,21 @@ public class UserResultsService {
                         .stream()
                         .filter(res -> res.getUser().getGroupId().equals(item))
                         .collect(Collectors.toList())))
+                .collect(Collectors.toList());
+    }
+
+    public List<DepartmentModuleResult> collectResultsForDepartment() {
+        List<UserResults> userResultses = userResultsRepository.findAll();
+        Map<Long, String> moduleTitles = interviewRepository.findAll().stream().collect(Collectors.toMap(Module::getId, Module::getTitle));
+
+        DepartmentResults departmentResults = new DepartmentResults();
+        userResultses.forEach(departmentResults::addUserResult);
+
+        return departmentResults
+                .getModules()
+                .entrySet()
+                .stream()
+                .map(item -> (DepartmentModuleResult)item.getValue().setModuleTitle(moduleTitles.get(item.getKey())))
                 .collect(Collectors.toList());
     }
 }

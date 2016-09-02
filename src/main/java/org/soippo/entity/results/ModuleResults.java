@@ -9,19 +9,19 @@ import java.sql.Date;
 public class ModuleResults {
     @JsonProperty("id")
     @JsonView(View.Simplified.class)
-    private Long moduleId;
+    protected Long moduleId;
     @JsonProperty("moduleTitle")
     @JsonView(View.Simplified.class)
     private String moduleTitle;
     @JsonProperty("totalQuestions")
     @JsonView(View.Simplified.class)
-    private Long totalQuestions;
+    protected Long totalQuestions = 0L;
     @JsonProperty("correctAnswersCount")
     @JsonView(View.Simplified.class)
-    private Long correctAnswersCount;
+    protected Long correctAnswersCount = 0L;
     @JsonProperty("date")
     @JsonView(View.Simplified.class)
-    private Date date;
+    protected Date date;
 
     public Long getTotalQuestions() {
         return totalQuestions;

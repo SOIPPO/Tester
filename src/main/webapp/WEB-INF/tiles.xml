@@ -67,9 +67,19 @@
         <put-attribute name="body" value="/layout/views/pages/login.jsp"/>
     </definition>
 
+    <definition name="departmentresults" template="/layout/views/admin-layout.jsp">
+        <put-attribute name="title" value="title.userlist"/>
+        <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
+        <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
+
+        <put-attribute name="header" value="/layout/views/static/admin-header.jsp"/>
+        <put-attribute name="footer" value="/layout/views/static/admin-footer.jsp"/>
+
+        <put-attribute name="body" value="/layout/views/pages/departmentresults.jsp"/>
+    </definition>
 
     <definition name="userlist" template="/layout/views/admin-layout.jsp">
-        <put-attribute name="title" value="title.userlist"/>
+        <put-attribute name="title" value="menu.department-results"/>
         <put-attribute name="scriptjs" value="/layout/views/static/includes/admin-scriptjs.jsp"/>
         <put-attribute name="styles" value="/layout/views/static/includes/admin-styles.jsp"/>
 

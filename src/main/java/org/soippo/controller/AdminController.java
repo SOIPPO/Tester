@@ -117,13 +117,13 @@ public class AdminController {
         Group group = new Group()
                 .setName(objectMapper.readTree(groupData).get("name").asText());
 
-        if(objectMapper.readTree(groupData).get("id") != null)
+        if (objectMapper.readTree(groupData).get("id") != null)
             group.setId(Long.parseLong(objectMapper.readTree(groupData).get("id").asText()));
 
         String modulesData = objectMapper.readTree(groupData).get("modules").toString();
         List<Module> modules = Arrays.asList(objectMapper.readValue(modulesData, Module[].class));
 
-        Function<String, LocalDate> parseDateFromNode = item ->  LocalDate.parse(item, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        Function<String, LocalDate> parseDateFromNode = item -> LocalDate.parse(item, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
         LocalDate dateBegin = parseDateFromNode.apply(objectMapper.readTree(groupData).get("incoming_date").asText());
         LocalDate dateEnd = parseDateFromNode.apply(objectMapper.readTree(groupData).get("final_date").asText());
@@ -208,6 +208,16 @@ public class AdminController {
                 .writerWithView(View.Simplified.class)
                 .writeValueAsString(userResultsService.collectResults()));
         model.setViewName("usersresults");
+        return model;
+    }
+
+    @RequestMapping(value = "/department-report")
+    public ModelAndView departmentReport(ModelAndView model) throws JsonProcessingException {
+        model.addObject("results",
+                objectMapper
+                        .writerWithView(View.Simplified.class)
+                        .writeValueAsString(userResultsService.collectResultsForDepartment()));
+        model.setViewName("departmentresults");
         return model;
     }
 }

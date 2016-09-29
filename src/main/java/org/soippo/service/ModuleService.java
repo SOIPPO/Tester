@@ -1,8 +1,6 @@
 package org.soippo.service;
 
-import org.soippo.entity.GroupModules;
-import org.soippo.entity.Module;
-import org.soippo.entity.Question;
+import org.soippo.entity.*;
 import org.soippo.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +9,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -32,18 +31,38 @@ public class ModuleService {
     private AnswerRepository answerRepository;
     @Resource
     private QuestionService questionService;
+    @Resource
+    private RelationAnswerRepository relationAnswerRepository;
 
     public List<Module> findAll() {
         return interviewRepository.findAll();
     }
 
     public Module findOne(Long id) {
-        return interviewRepository.findOne(id);
+        Module module = interviewRepository.findOne(id);
+        List<Long> questionsIds = module.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
+        Map<Long, String> questionTexts = module.getQuestions().stream().collect(Collectors.toMap(Question::getId, Question::getText));
+        Map<Long, List<RelationAnswer>> answers = relationAnswerRepository
+                .findByQuestionIdIn(questionsIds)
+                .stream()
+                .collect(Collectors.groupingBy(RelationAnswer::getQuestionId));
+
+
+        List<QuestionRelation> questionList = answers.entrySet().stream().map(item ->
+                new QuestionRelation()
+                        .setQuestionId(item.getKey())
+                        .setText(questionTexts.get(item.getKey()))
+                        .setQuestions(answers.get(item.getKey()).stream().sorted((o1, o2) -> (Math.random() > 0.3) ? -1 : 1).collect(Collectors.toMap(RelationAnswer::getId, RelationAnswer::getText)))
+                        .setAnswers(answers.get(item.getKey()).stream().map(RelationAnswer::getAnswer).sorted((o1, o2) -> (Math.random() > 0.3) ? -1 : 1).collect(Collectors.toList())))
+                .collect(Collectors.toList());
+
+        module.setQuestionRelations(questionList);
+        return module;
     }
 
     public Module save(Module module) {
         List<Long> oldQuestions = new ArrayList<>();
-        if(module.getId() != null) {
+        if (module.getId() != null) {
             oldQuestions = interviewRepository.findOne(module.getId())
                     .getQuestions()
                     .stream()

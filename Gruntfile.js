@@ -6,6 +6,7 @@ module.exports = function (grunt) {
             userjs: {
                 src: [
                     'src/main/webapp/plugins/bower/jquery/dist/jquery.js',
+                    'src/main/webapp/plugins/bower/jquery-ui/jquery-ui.min.js',
                     'src/main/webapp/plugins/bower/angular/angular.js',
                     'src/main/webapp/plugins/bower/bootstrap/dist/js/bootstrap.js',
                     'src/main/webapp/plugins/bower/angular-messages/angular-messages.js',

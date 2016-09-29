@@ -2,7 +2,9 @@ package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.soippo.utils.QuestionType;
+import org.soippo.utils.View;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,15 +20,18 @@ public class Question {
             allocationSize = 1,
             sequenceName = "question_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_id_sequence")
+    @JsonView(View.Normal.class)
     private Long id;
 
     @Column(name = "text")
     @JsonProperty("text")
+    @JsonView(View.Normal.class)
     private String text;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     @JsonProperty("type")
+    @JsonView(View.Normal.class)
     private QuestionType type;
 
     @OneToMany(fetch = FetchType.LAZY,
@@ -36,15 +41,18 @@ public class Question {
     @OrderBy("answer_order")
     @OrderColumn(name = "answer_order")
     @JsonProperty("answers")
+    @JsonView(View.Normal.class)
     private List<Answer> answers;
 
     @Column(name = "question_order")
     @JsonProperty("questionOrder")
+    @JsonView(View.Normal.class)
     private Long questionOrder;
 
     @Column(name = "interview_id")
     @JsonProperty("interviewId")
     @JoinColumn(name = "questions_interview_FK")
+    @JsonView(View.Normal.class)
     private Long moduleId;
 
     public Long getOrder() {

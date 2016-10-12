@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spiring" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -22,6 +23,14 @@
                 <li <c:if test="${pageUrl == '/admin/results'}">class="active"</c:if>>
                     <a href="${pageContext.request.contextPath}/admin/results">
                         <spring:message code="menu.results"/>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav">
+                <li <c:if test="${pageUrl == '/admin/department-report'}">class="active"</c:if>>
+                    <a href="${pageContext.request.contextPath}/admin/department-report">
+                        <spring:message code="menu.department-results"/>
                     </a>
                 </li>
             </ul>

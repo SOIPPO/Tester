@@ -3,6 +3,7 @@ package org.soippo.service;
 import org.soippo.entity.GroupModules;
 import org.soippo.entity.Module;
 import org.soippo.entity.Question;
+import org.soippo.entity.QuestionRelation;
 import org.soippo.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -32,6 +34,10 @@ public class ModuleService {
     private AnswerRepository answerRepository;
     @Resource
     private QuestionService questionService;
+    @Resource
+    private RelationAnswerRepository relationAnswerRepository;
+    @Resource
+    private QuestionRelationRepository questionRelationRepository;
 
     public List<Module> findAll() {
         return interviewRepository.findAll();
@@ -43,13 +49,26 @@ public class ModuleService {
 
     public Module save(Module module) {
         List<Long> oldQuestions = new ArrayList<>();
-        if(module.getId() != null) {
-            oldQuestions = interviewRepository.findOne(module.getId())
+        List<Long> oldRelations = new ArrayList<>();
+
+        if (module.getId() != null) {
+            Module savedModule = findOne(module.getId());
+            oldQuestions = savedModule
                     .getQuestions()
                     .stream()
-                    .filter(item -> item != null)
+                    .filter(Objects::nonNull)
                     .map(Question::getId)
                     .collect(Collectors.toList());
+            oldRelations = Optional.ofNullable(savedModule.getQuestionRelations()).orElse(new ArrayList<>())
+                    .stream()
+                    .map(QuestionRelation::getQuestionId)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            module.getQuestionRelations().stream().filter(Objects::nonNull).forEach(item -> item.setModuleId(module.getId()));
+            module.setQuestionRelations(module.getQuestionRelations().stream().filter(Objects::nonNull).map(
+                    item -> item.setRelationAnswers(item.getRelationAnswers().stream().filter(Objects::nonNull).collect(Collectors.toList()))
+            ).collect(Collectors.toList()));
         }
         Module saved = interviewRepository.save(module);
 
@@ -58,6 +77,20 @@ public class ModuleService {
                 .filter(item -> item != null)
                 .map(Question::getId)
                 .collect(Collectors.toList());
+
+
+        List<Long> newRelationQuestions = Optional.ofNullable(saved.getQuestionRelations()).orElse(new ArrayList<>())
+                .stream()
+                .filter(Objects::nonNull)
+                .map(QuestionRelation::getQuestionId)
+                .collect(Collectors.toList());
+
+        oldRelations.removeAll(newRelationQuestions);
+        oldRelations.forEach(item -> {
+            questionRelationRepository.delete(item);
+            relationAnswerRepository.deleteByQuestionId(item);
+        });
+
 
         oldQuestions.removeAll(newQuestions);
         oldQuestions.forEach(item -> {

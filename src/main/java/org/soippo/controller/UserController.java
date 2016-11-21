@@ -89,7 +89,7 @@ public class UserController {
     @RequestMapping("/module/{id}")
     public ModelAndView modulePage(ModelAndView model, @PathVariable Long id) throws JsonProcessingException {
         if(userService.isModuleAvailableForUser(getCurrentUser().getId(), id)) {
-            model.addObject("moduleData", objectMapper.writeValueAsString(moduleService.findOne(id)));
+            model.addObject("moduleData", objectMapper.writerWithView(View.Normal.class).writeValueAsString(moduleService.findOne(id)));
             model.setViewName("module");
             return model;
         } else {
@@ -97,18 +97,19 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/module/saveresults", method = RequestMethod.POST)
+    @RequestMapping(value = "/module/saveresults/{moduleId}", method = RequestMethod.POST)
     @ResponseBody
-    public String saveModuleResults(@RequestBody String moduleData) throws IOException {
+    public String saveModuleResults(@RequestBody String moduleData, @PathVariable Long moduleId) throws IOException {
         Long userId = getCurrentUser().getId();
-        Map<Long, List<Long>> temporalDataMap = objectMapper
-                .readValue(moduleData, new TypeReference<Map<Long, List<Long>>>() {
+        Map<Long, String> temporalDataMap = objectMapper
+                .readValue(moduleData, new TypeReference<Map<Long, String>>() {
                 });
         Map<Long, Boolean> result = questionService.checkAnswers(temporalDataMap);
         List<UserResults> userResults = temporalDataMap.entrySet()
                 .stream()
                 .map(item -> new UserResults()
                         .setUserId(userId)
+                        .setModuleId(moduleId)
                         .setQuestionId(item.getKey())
                         .setDate(new Date(Calendar.getInstance().getTime().getTime()))
                         .setIsCorrect(result.get(item.getKey()))

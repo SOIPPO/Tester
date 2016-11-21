@@ -50,7 +50,7 @@ public class UserResultsService {
         Map<User, Map<Date, Map<Long, List<UserResults>>>> userResultsByDateAndModuleId = results.stream()
                 .collect(Collectors.groupingBy(UserResults::getUser,
                         Collectors.groupingBy(UserResults::getDate,
-                                Collectors.groupingBy(item -> item.getQuestion().getModuleId()))));
+                                Collectors.groupingBy(item -> item.getModuleId()))));
 
         List<UserModuleResults> modulesResults = userResultsByDateAndModuleId.entrySet().stream().map(
                 userResult -> new UserModuleResults()

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -57,7 +59,11 @@ public class UserService {
     }
 
     public boolean isModuleAvailableForUser(Long userId, Long moduleId) {
-        List<GroupModules> groupModules = groupModuleRepository.findByGroupId(userRepository.findOne(userId).getGroupId());
+        List<GroupModules> groupModules = groupModuleRepository
+                .findByGroupId(userRepository.findOne(userId).getGroupId())
+                .stream()
+                .filter(item -> item.getFinalDate().equals(LocalDate.now()) || item.getIncomingDate().equals(LocalDate.now()))
+                .collect(Collectors.toList());
         return groupModules.stream().anyMatch((item) -> item.getModule().getId().equals(moduleId));
     }
 }

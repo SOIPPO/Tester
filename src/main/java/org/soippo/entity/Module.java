@@ -39,6 +39,13 @@ public class Module implements Serializable {
     @JsonView(View.Normal.class)
     private List<Question> questions;
 
+
+    @JsonProperty("relation_questions")
+    @JsonView(View.Normal.class)
+    @OneToMany(mappedBy = "moduleId", cascade = {CascadeType.ALL})
+    private List<QuestionRelation> questionRelations;
+
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "module")
     @JsonIgnore
     @JsonView(View.Extended.class)
@@ -68,6 +75,15 @@ public class Module implements Serializable {
 
     public Module setQuestions(List<Question> questions) {
         this.questions = questions;
+        return this;
+    }
+
+    public List<QuestionRelation> getQuestionRelations() {
+        return questionRelations;
+    }
+
+    public Module setQuestionRelations(List<QuestionRelation> questionRelations) {
+        this.questionRelations = questionRelations;
         return this;
     }
 }

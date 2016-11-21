@@ -43,9 +43,18 @@ public class UserResults implements Serializable {
     @JsonBackReference
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class)
-    @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id", nullable = false)
-    private Question question = new Question();
+//    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Question.class)
+//    @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id")
+//    private Question question = new Question();
+//    @Column(name = "question_id")
+//    private Long questionId;
+
+    @Column(name = "module_id")
+    private Long moduleId;
+
+//    @ManyToOne(fetch = FetchType.EAGER, targetEntity = QuestionRelation.class)
+//    @JoinColumn(name = "question_id", insertable = false, updatable = false, referencedColumnName = "id")
+//    private QuestionRelation questionRelation = new QuestionRelation();
 
     @Column(name = "is_correct")
     @JsonProperty("isCorrect")
@@ -55,12 +64,11 @@ public class UserResults implements Serializable {
     @JsonProperty("date")
     private Date date;
 
-    public Long getQuestionId() {
-        return question.getId();
-    }
+//    public Long getQuestionId() {
+//        return question.getId();
+//    }
 
     public UserResults setQuestionId(Long questionId) {
-        this.question.setId(questionId);
         this.questionId = questionId;
         return this;
     }
@@ -100,13 +108,16 @@ public class UserResults implements Serializable {
         return this;
     }
 
-    public Question getQuestion() {
-        return question;
+    public Long getModuleId() {
+        return moduleId;
     }
+//    public Question getQuestion() {
+//        return question;
+//    }
 
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
+//    public void setQuestion(Question question) {
+//        this.question = question;
+//    }
 
     public Date getDate() {
         return date;
@@ -117,7 +128,12 @@ public class UserResults implements Serializable {
         return this;
     }
 
-    public Long getModuleId() {
-        return question.getModuleId();
+    public UserResults setModuleId(Long moduleId) {
+        this.moduleId = moduleId;
+        return this;
     }
+
+//    public Long getModuleId() {
+//        return question.getModuleId();
+//    }
 }

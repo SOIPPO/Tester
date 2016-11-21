@@ -2,6 +2,8 @@ package org.soippo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.soippo.utils.View;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,22 +19,27 @@ public class Answer implements Serializable {
             allocationSize = 1,
             sequenceName = "answers_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answers_id_sequence")
+    @JsonView(View.Normal.class)
     private Long id;
 
     @Column(name = "text")
     @JsonProperty("text")
+    @JsonView(View.Simplified.class)
     private String text;
 
     @Column(name = "answer_order")
     @JsonProperty("answerOrder")
+    @JsonView(View.Normal.class)
     private Long answerOrder;
 
     @Column(name = "question_id", insertable = false, updatable = false)
     @JsonProperty("questionId")
+    @JsonView(View.Normal.class)
     private Long questionId;
 
     @Column(name = "is_correct")
     @JsonProperty("isCorrect")
+    @JsonView(View.Extended.class)
     private Boolean isCorrect = Boolean.FALSE;
 
     public Long getOrder() {

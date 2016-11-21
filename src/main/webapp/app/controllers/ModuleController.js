@@ -14,19 +14,33 @@ angular.module("modulePage", []).controller("moduleController",
 
             $scope.sendResults = function () {
                 $.blockUI({message: null});
-                $http.post('/module/saveresults', $scope.result).then(
-                    function successCallback(response) {
-                        alertify.notify(localizationMessages['success-save'], 'success', 5, function () {});
-                        for (var key in  response.data) {
-                            $("#question_title_" + key).css("background-color", (response.data[key]) ? "green" : "red");
-                        }
-                        $.unblockUI();
-                    },
-                    function errorCallback() {
-                        alertify.notify(localizationMessages['fail-save'], 'error', 5, function () {});
-                        $.unblockUI();
+                $('[id ^= relation_answer_]').each(
+                    function () {
+                        var result = $(this).val();
+                        $scope.result[$(this).attr('id').split('_')[2]] = [result.substring(0, result.length - 1)];
                     }
-                );
+                ).promise().then(function() {
+                    angular.forEach($scope.result, function(element, index) {
+                        if(Array.isArray(element)) {
+                            $scope.result[index] = element.join();
+                        }
+                    });
+                    $http.post('/module/saveresults/' + $scope.data.id , $scope.result).then(
+                        function successCallback(response) {
+                            alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
+                            });
+                            for (var key in  response.data) {
+                                $("#question_title_" + key).css("background-color", (response.data[key]) ? "green" : "red");
+                            }
+                            $.unblockUI();
+                        },
+                        function errorCallback() {
+                            alertify.notify(localizationMessages['fail-save'], 'error', 5, function () {
+                            });
+                            $.unblockUI();
+                        }
+                    );
+                });
             };
 
             $scope.addRadioSelect = function (questionId, answerId) {

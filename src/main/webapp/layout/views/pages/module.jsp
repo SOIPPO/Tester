@@ -23,7 +23,7 @@
 
     $(function () {
         $("[id ^= answer]").draggable({
-            containment: "#question-block"
+            //containment: "#question-block"
         });
         $("[id ^= droppable_]").droppable({
             tolerance: "touch",

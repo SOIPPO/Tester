@@ -25,7 +25,7 @@ angular.module("modulePage", []).controller("moduleController",
                             $scope.result[index] = element.join();
                         }
                     });
-                    $http.post('/module/saveresults', $scope.result).then(
+                    $http.post('/module/saveresults/' + $scope.data.id , $scope.result).then(
                         function successCallback(response) {
                             alertify.notify(localizationMessages['success-save'], 'success', 5, function () {
                             });

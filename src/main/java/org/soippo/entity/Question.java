@@ -83,8 +83,9 @@ public class Question {
         return moduleId;
     }
 
-    public void setModuleId(Long interviewId) {
+    public Question setModuleId(Long interviewId) {
         this.moduleId = interviewId;
+        return this;
     }
 
     public Question setId(Long id) {

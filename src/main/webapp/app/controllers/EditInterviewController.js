@@ -3,6 +3,8 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
         function ($scope, $window, $http) {
             var localQuestionId = 0;
             var localAnswerId = 0;
+            var localRelationQuestionId = 0;
+            var localRelationAnswerId = 0;
             $scope.module = {};
             $scope.fillData = function (paramName) {
                 var data = $window[paramName];
@@ -11,7 +13,6 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
                     'title': data.title,
                     'questions': []
                 };
-
                 for (var questionPos in data.questions) {
                     if (!!data.questions[questionPos]) {
                         var currentQuestion = data.questions[questionPos];
@@ -28,6 +29,35 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
                         $scope.module['questions'].push(question);
                     }
                 }
+
+                $scope.module['relation_questions'] = [];
+                angular.forEach(data.relation_questions, function (question, index) {
+                    question['localId'] = localRelationQuestionId++;
+                    angular.forEach(question.relationAnswers, function (answer) {
+                        answer['localId'] = localRelationAnswerId++;
+                    });
+                    $scope.module['relation_questions'].push(question);
+                });
+            };
+
+            $scope.deleteRelationQuestion = function (questionId) {
+                angular.forEach($scope.module.relation_questions, function (question, index) {
+                    if (question && question.localId == questionId) {
+                        $scope.module.relation_questions[index] = null;
+                    }
+                });
+            };
+
+            $scope.deleteRelationAnswer = function (questionId, answerId) {
+                angular.forEach($scope.module.relation_questions, function (question) {
+                    if (question.localId == questionId) {
+                        angular.forEach(question.relationAnswers, function (answer, index) {
+                            if (answer && answer.localId == answerId) {
+                                question.relationAnswers[index] = null;
+                            }
+                        });
+                    }
+                });
             };
 
             var populateQuestionObjectByData = function (data) {
@@ -72,14 +102,26 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
             };
 
             $scope.addQuestion = function () {
-                var newQuestion = {
-                    'localId': localQuestionId++,
-                    'answers': [],
-                    'type': $('#questionType').val(),
-                    'questionOrder': $scope.module.questions.length + 1,
-                    'interviewId': $scope.module.id
-                };
-                $scope.module.questions.push(newQuestion);
+                if ($('#questionType').val() === 'RELATION') {
+                    var newQuestion = {
+                        'localId': localRelationQuestionId++,
+                        'type': $('#questionType').val(),
+                        'questionOrder': $scope.module.questions.length + 1,
+                        'interviewId': $scope.module.id,
+                        'relationAnswers' : []
+                    };
+                    $scope.module.relation_questions.push(newQuestion);
+                } else {
+                    var newQuestion = {
+                        'localId': localQuestionId++,
+                        'answers': [],
+                        'type': $('#questionType').val(),
+                        'questionOrder': $scope.module.questions.length + 1,
+                        'interviewId': $scope.module.id
+                    };
+                    $scope.module.questions.push(newQuestion);
+                }
+
                 $('#addNewQuestion').modal('hide');
             };
 
@@ -104,6 +146,20 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
                 $scope.module.questions[questionId].answers.push(answer);
             };
 
+            $scope.addRelationAnswer = function(questionId) {
+                angular.forEach($scope.module.relation_questions, function (question) {
+                    if (question && question.localId == questionId) {
+                        console.log(question);
+                        question.relationAnswers.push({
+                            'answer' : 'Answer',
+                            'text' : 'Question',
+                            'localId' : localRelationAnswerId++,
+                            'questionId' : question.questionId
+                        });
+                    }
+                });
+            };
+
             $scope.deleteAnswer = function (questionId, answerId) {
                 var answer = $scope.module.questions[questionId].answers[getAnswerPositionById(questionId, answerId)];
                 for (var key in $scope.module.questions[questionId].correctAnswers) {
@@ -119,7 +175,8 @@ angular.module("editInterview", ["xeditable", 'ngSanitize', 'ui.select']).contro
                 for (var id in $scope.module.questions) {
                     if ($scope.module.questions.hasOwnProperty(id) && $scope.module.questions[id]) {
                         var question = $scope.module.questions[id];
-                        if (!question.correctAnswers || question.correctAnswers.length == 0) {
+                        if (question.type != 'RELATION' && (!question.correctAnswers || question.correctAnswers.length == 0)) {
+                            $.unblockUI();
                             return;
                         }
                         for (var key in question.answers) {

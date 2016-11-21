@@ -48,7 +48,7 @@ public class QuestionService {
     }
 
     private Map<Long, List<RelationAnswer>> getCorrectAnswersForRelationQuestions(List<Long> ids) {
-        return relationAnswerRepository.findByQuestionIdIn(ids).stream().collect(Collectors.groupingBy(RelationAnswer::getQuestionId));
+        return relationAnswerRepository.findByQuestionIdIn(ids).stream().collect(Collectors.groupingBy(item -> item.getQuestionId()));
     }
 
     public Map<Long, Boolean> checkAnswers(Map<Long, String> userResult) {

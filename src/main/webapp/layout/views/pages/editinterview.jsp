@@ -10,23 +10,23 @@
     var localizationMessages = {};
     localizationMessages['success-save'] = "<spring:message code="popup.messages.success-save"/>"
     $(function () {
-        $("#sortable tbody").sortable({
-            revert: true,
-            placeholder: "ui-state-highlight",
-            axis: "y",
-            cursor: "move",
-            stop: function (event, ui) {
-                var sortedIDs = $("#sortable tbody").sortable("toArray");
-                var order = {};
-                for (var item in sortedIDs) {
-                    var id = sortedIDs[item].replace("question_", "");
-                    order[id] = parseInt(item) + 1;
-                }
-                angular.element('#interviewblock').scope().updateOrder(order);
-                angular.element('#interviewblock').scope().$apply()
-            }
-        });
-        $("tr").disableSelection();
+//        $("#sortable tbody").sortable({
+//            revert: true,
+//            placeholder: "ui-state-highlight",
+//            axis: "y",
+//            cursor: "move",
+//            stop: function (event, ui) {
+//                var sortedIDs = $("#sortable tbody").sortable("toArray");
+//                var order = {};
+//                for (var item in sortedIDs) {
+//                    var id = sortedIDs[item].replace("question_", "");
+//                    order[id] = parseInt(item) + 1;
+//                }
+//                angular.element('#interviewblock').scope().updateOrder(order);
+//                angular.element('#interviewblock').scope().$apply()
+//            }
+//        });
+//        $("tr").disableSelection();
     });
 </script>
 
@@ -37,6 +37,7 @@
 <div ng-app="editInterview"
      ng-controller="editInterviewController"
      ng-init="fillData('interviewdata')">
+    <%--{{module}}--%>
     <div class="center-block" id="interviewblock">
 
         <div class="panel panel-default">
@@ -50,6 +51,7 @@
                     <tbody>
                     <tr ng-repeat="question in module.questions | filter:emptyOrNull | orderBy:'questionOrder' track by $index"
                         ng-switch on="question.type"
+                        ng-if="question.type != 'RELATION'"
                         id="question_{{question.localId}}">
                         <td>
 
@@ -97,7 +99,7 @@
                                 </button>
                             </div>
                             <div style="margin-top: 10px;" class="col-md-12">
-                                <form class="form-horizontal" name = "correct_answers_{{question.localId}}">
+                                <form class="form-horizontal" name="correct_answers_{{question.localId}}">
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
@@ -140,6 +142,34 @@
                             </div>
                         </td>
                     </tr>
+
+                    <tr ng-repeat="question in module.relation_questions | filter:emptyOrNull | orderBy:'localId' track by $index">
+                        <td>
+                            <div>
+                                <b><a href="#" editable-text="question.text">{{ question.text|| "empty" }}</a></b>
+                                <div class="pull-right" ng-click="deleteRelationQuestion(question.localId)"
+                                     style="cursor: pointer">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </div>
+                            </div>
+
+                            <table class="table table-bordered">
+                                <br/>
+                                <tr ng-repeat="variant in question.relationAnswers | filter:emptyOrNull track by $index">
+                                    <td class="col-md-6"><span editable-text="variant.text"> {{variant.text}}</span></td>
+                                    <td class="col-md-6"><span editable-text="variant.answer"> {{variant.answer}}</span></td>
+                                    <td style="width:26px"  ng-click="deleteRelationAnswer(question.localId, variant.localId)"><span class="glyphicon glyphicon-remove"
+                                                                 aria-hidden="true"></span></td>
+                                </tr>
+                            </table>
+                            <div style="margin-top: 10px;">
+                                <button type="button" class="btn btn-info btn-xs"
+                                        ng-click="addRelationAnswer(question.localId)">
+                                    <spring:message code="admin.module.add-answer"/>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addNewQuestion">
@@ -175,6 +205,9 @@
                                     </option>
                                     <option value="MANY_VARIANTS">
                                         <spring:message code="modal.module.add-question.MANY_VARIANTS"/>
+                                    </option>
+                                    <option value="RELATION">
+                                        RELATION
                                     </option>
                                 </select>
                             </div>

@@ -42,7 +42,8 @@ public class Module implements Serializable {
 
     @JsonProperty("relation_questions")
     @JsonView(View.Normal.class)
-    private transient List<QuestionRelation> questionRelations;
+    @OneToMany(mappedBy = "moduleId", cascade = {CascadeType.ALL})
+    private List<QuestionRelation> questionRelations;
 
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "module")

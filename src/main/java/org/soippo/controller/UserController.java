@@ -97,9 +97,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/module/saveresults", method = RequestMethod.POST)
+    @RequestMapping(value = "/module/saveresults/{moduleId}", method = RequestMethod.POST)
     @ResponseBody
-    public String saveModuleResults(@RequestBody String moduleData) throws IOException {
+    public String saveModuleResults(@RequestBody String moduleData, @PathVariable Long moduleId) throws IOException {
         Long userId = getCurrentUser().getId();
         Map<Long, String> temporalDataMap = objectMapper
                 .readValue(moduleData, new TypeReference<Map<Long, String>>() {
@@ -109,6 +109,7 @@ public class UserController {
                 .stream()
                 .map(item -> new UserResults()
                         .setUserId(userId)
+                        .setModuleId(moduleId)
                         .setQuestionId(item.getKey())
                         .setDate(new Date(Calendar.getInstance().getTime().getTime()))
                         .setIsCorrect(result.get(item.getKey()))
